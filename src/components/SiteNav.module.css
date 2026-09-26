@@ -1,0 +1,15 @@
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in oklab,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+.scrolled{border-color:var(--line)}
+.nav :global(.wrap){display:flex;align-items:center;gap:28px;height:72px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0 0 0 auto;padding:0;font-weight:500;font-size:.96rem}
+.nav ul a{text-decoration:none;color:var(--muted);transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+.nav :global(.btn){padding:11px 18px;font-size:.95rem}
+.menuBtn{display:none;margin-left:auto;background:none;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600}
+@media (max-width:900px){
+  .nav ul{display:none;position:absolute;top:72px;left:0;right:0;flex-direction:column;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 20px 16px}
+  .nav ul.open{display:flex}
+  .nav ul a{display:block;padding:12px 0;font-size:1.05rem}
+  .menuBtn{display:inline-block}
+  .nav :global(.btn){display:none}
+}

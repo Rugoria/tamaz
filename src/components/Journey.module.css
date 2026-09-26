@@ -1,0 +1,32 @@
+.journey{padding:0;background:var(--deep);color:var(--deep-ink)}
+.scroll{height:460vh;position:relative}
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden}
+.journey :global(.wrap){width:100%;display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.journey h2{color:var(--deep-ink)}
+.journey :global(.eyebrow){color:var(--aqua)}
+.stages{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:4px;counter-reset:s}
+.stages li{display:grid;grid-template-columns:44px 1fr;gap:4px 14px;padding:12px 14px;border-radius:14px;opacity:.42;transition:opacity .4s,background .4s}
+.stages li::before{counter-increment:s;content:"0" counter(s);font:500 .82rem/1.6 var(--mono);color:var(--aqua);grid-row:span 2}
+.stages li b{font:650 1.08rem/1.3 var(--display)}
+.stages li p{font-size:.93rem;color:color-mix(in oklab,var(--deep-ink) 70%,transparent);max-height:0;overflow:hidden;transition:max-height .5s}
+.stages li.on{opacity:1;background:rgba(255,255,255,.06)}
+.stages li.on p{max-height:6em}
+.stages li.done{opacity:.72}
+.visual{display:grid;gap:14px}
+.visual :global(.smile-card){background:linear-gradient(160deg,#15293C,#0E1D2C);border-color:#223749}
+.visual :global(.readout){background:rgba(255,255,255,.04);border-color:#223749;color:#E7EEF2}
+.visual :global(.readout small){color:#94A6B5}
+.month{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.big{font:500 clamp(2.4rem,5vw,4rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff}
+.lbl{font-size:.9rem;color:#94A6B5}
+.progress{height:4px;border-radius:4px;background:#223749;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--aqua),var(--accent))}
+@media (max-width:960px){
+  .journey :global(.wrap){grid-template-columns:1fr;gap:14px}
+  .journey h2{font-size:1.7rem}
+  .journey :global(.lede){display:none}
+  .stages{margin-top:10px}
+  .stages li{display:none}
+  .stages li.on{display:grid}
+  .visual :global(.readouts){display:none}
+}

@@ -1,0 +1,6 @@
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.posts{grid-template-columns:1fr}}
+.post{display:grid;gap:12px;text-decoration:none}
+.post h3{transition:color .2s}
+.post:hover h3{color:var(--accent)}
+.kicker{font:500 .75rem/1 var(--mono);color:var(--aqua);text-transform:uppercase;letter-spacing:.06em}

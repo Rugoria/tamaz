@@ -1,0 +1,8 @@
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.reviews{grid-template-columns:1fr}}
+.review{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:grid;gap:18px;align-content:space-between}
+.review blockquote{margin:0;font:500 1.12rem/1.5 var(--display);letter-spacing:-.005em}
+.stars{color:#F4B400;letter-spacing:2px}
+.who{display:flex;gap:12px;align-items:center;font-size:.92rem}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font:700 .95rem/1 var(--display);color:#fff}
+.who small{display:block;color:var(--muted)}

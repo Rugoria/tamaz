@@ -1,0 +1,14 @@
+.tech{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+@media (max-width:900px){.tech{grid-template-columns:1fr}}
+.scanCard{background:var(--deep);border-radius:28px;padding:26px;color:#E7EEF2;position:relative;overflow:hidden;aspect-ratio:1/0.92;max-width:100%}
+.scanCard svg{width:100%;height:100%;display:block}
+.dot{fill:#53CFC5;opacity:.1;animation:dotscan 4.5s linear infinite}
+@keyframes dotscan{0%{opacity:.1}3%{opacity:1;r:2.4}10%{r:1.6}82%{opacity:.9}100%{opacity:.1}}
+.beam{animation:beam 4.5s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes beam{0%{transform:translateY(0)}72%{transform:translateY(300px)}100%{transform:translateY(300px);opacity:0}}
+.meta{position:absolute;left:26px;right:26px;bottom:22px;display:flex;justify-content:space-between;gap:10px;font:500 .78rem/1.3 var(--mono);color:#94A6B5}
+.meta b{display:block;color:#fff;font-size:1rem}
+.feat{display:grid;gap:4px;padding-block:22px;border-top:1px solid var(--line)}
+.feat:last-child{border-bottom:1px solid var(--line)}
+.feat p{color:var(--muted)}
+.k{font:500 .78rem/1 var(--mono);color:var(--aqua);letter-spacing:.06em}

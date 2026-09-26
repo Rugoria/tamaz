@@ -1,0 +1,1159 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>tamaz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F7F8;
+  --surface:#FFFFFF;
+  --surface-2:#E9F0F2;
+  --ink:#0F2438;
+  --muted:#566879;
+  --line:#D6E0E5;
+  --accent:#E9543F;          /* elastic coral */
+  --accent-ink:#FFFFFF;
+  --aqua:#2BA8A0;            /* aligner aqua */
+  --aqua-soft:#D5EFEC;
+  --deep:#0F2438;            /* dark bands */
+  --deep-ink:#EAF2F4;
+  --mouth:#3B1B24;
+  --gum-a:#C55B6B;
+  --gum-b:#E9959F;
+  --shadow:0 1px 2px rgba(15,36,56,.06),0 12px 32px -12px rgba(15,36,56,.18);
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --radius:18px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0A1520;--surface:#112131;--surface-2:#16293B;--ink:#E7EEF2;--muted:#94A6B5;--line:#223749;
+    --accent:#FF6F58;--accent-ink:#1A0B08;--aqua:#53CFC5;--aqua-soft:#133A3A;--deep:#07111A;--deep-ink:#E7EEF2;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 36px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0A1520;--surface:#112131;--surface-2:#16293B;--ink:#E7EEF2;--muted:#94A6B5;--line:#223749;
+  --accent:#FF6F58;--accent-ink:#1A0B08;--aqua:#53CFC5;--aqua-soft:#133A3A;--deep:#07111A;--deep-ink:#E7EEF2;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 36px -14px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.02em}
+h2{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:700}
+h3{font-size:1.3rem;font-weight:650;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--aqua);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:20px}
+.eyebrow{font:500 .78rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--aqua)}
+.lede{color:var(--muted);font-size:1.12rem;max-width:58ch}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+section{padding-block:clamp(72px,10vw,128px)}
+.sec-head{display:grid;gap:16px;margin-bottom:48px;max-width:760px}
+
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;text-decoration:none;font-weight:650;border-radius:999px;padding:14px 22px;transition:transform .25s cubic-bezier(.3,1.5,.5,1),background .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 10px 24px -10px var(--accent)}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn .arr{transition:transform .25s}
+.btn:hover .arr{transform:translateX(4px)}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in oklab,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font:700 1.25rem/1 var(--display);text-decoration:none;letter-spacing:-.02em}
+.logo svg{width:34px;height:34px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0 0 0 auto;padding:0;font-weight:500;font-size:.96rem}
+.nav ul a{text-decoration:none;color:var(--muted);transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+.nav .btn{padding:11px 18px;font-size:.95rem}
+.menu-btn{display:none;margin-left:auto;background:none;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600}
+@media (max-width:900px){
+  .nav ul{display:none;position:absolute;top:72px;left:0;right:0;flex-direction:column;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 20px 16px}
+  .nav ul.open{display:flex}
+  .nav ul a{display:block;padding:12px 0;font-size:1.05rem}
+  .menu-btn{display:inline-block}
+  .nav .btn{display:none}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding-block:clamp(40px,6vw,84px) clamp(56px,7vw,96px);overflow:hidden}
+.hero-arcs{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
+.hero-arcs path{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:2 10;animation:drift 18s linear infinite}
+.hero-arcs path:nth-child(even){animation-direction:reverse;animation-duration:24s}
+@keyframes drift{to{stroke-dashoffset:-240}}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+@media (max-width:960px){.hero .wrap{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(2.6rem,6.2vw,5rem);font-weight:750;letter-spacing:-.035em;margin-block:18px 22px}
+.hero h1 .w{position:relative;display:inline-block;color:var(--accent)}
+.hero h1 .w svg{position:absolute;left:0;right:0;bottom:-.16em;width:100%;height:.32em;overflow:visible}
+.hero h1 .w path{fill:none;stroke:var(--aqua);stroke-width:5;stroke-linecap:round}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.trust{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:36px;padding-top:26px;border-top:1px solid var(--line);font-size:.95rem;color:var(--muted)}
+.trust b{display:block;font:700 1.35rem/1.1 var(--display);color:var(--ink)}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.16s}.rise.d3{animation-delay:.24s}.rise.d4{animation-delay:.32s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}}
+
+.smile-card{position:relative;background:linear-gradient(160deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:28px;padding:22px 22px 18px;box-shadow:var(--shadow)}
+.smile-card svg.smile{display:block;width:100%;height:auto}
+.smile-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px}
+.pill{display:inline-flex;align-items:center;gap:8px;font:500 .78rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;background:var(--aqua-soft);color:var(--aqua);padding:8px 12px;border-radius:999px}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.readout{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.readout small{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.readout span{font:500 1.15rem/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.toggle{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
+.toggle button{border:0;background:none;padding:7px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.85rem;color:var(--muted);transition:background .25s,color .25s}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.float-chip{position:absolute;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:14px;padding:10px 14px;font-size:.85rem;display:flex;gap:10px;align-items:center;animation:bob 6s ease-in-out infinite}
+.float-chip b{font-family:var(--display);font-size:1rem}
+.float-chip.c1{top:-18px;right:24px}
+.float-chip.c2{bottom:86px;left:-22px;animation-delay:-3s}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@media (max-width:560px){.float-chip{display:none}.readouts{grid-template-columns:repeat(3,minmax(0,1fr))}.readout span{font-size:.95rem}}
+
+/* ---------- marquee ---------- */
+.marquee{background:var(--deep);color:var(--deep-ink);overflow:hidden;padding-block:22px;border-block:1px solid var(--line)}
+.marquee-track{display:flex;width:max-content;animation:scroll 38s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{display:inline-flex;align-items:center;gap:28px;padding-right:28px;font:600 clamp(1.3rem,2.6vw,2rem)/1 var(--display);letter-spacing:-.01em;white-space:nowrap}
+.marquee-track i{display:inline-block;width:18px;height:14px;border-radius:3px;background:var(--accent);box-shadow:inset 0 -6px 0 rgba(0,0,0,.18)}
+.marquee-track span:nth-child(3n+2) i{background:var(--aqua)}
+.marquee-track span:nth-child(3n) i{background:#F4B400}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- treatments ---------- */
+.treat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:960px){.treat-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.treat-grid{grid-template-columns:1fr}}
+.treat{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:grid;gap:14px;align-content:start;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;overflow:hidden}
+.treat:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:transparent}
+.treat .ic{width:58px;height:58px;border-radius:16px;background:var(--surface-2);display:grid;place-items:center;transition:background .35s}
+.treat:hover .ic{background:var(--aqua-soft)}
+.treat .ic svg{width:36px;height:36px;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.treat:hover .ic svg{transform:rotate(-8deg) scale(1.1)}
+.treat p{color:var(--muted);font-size:.98rem}
+.treat .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.tag{font:500 .75rem/1 var(--mono);padding:7px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+
+/* ---------- timeline (scroll-driven) ---------- */
+.journey{padding:0;background:var(--deep);color:var(--deep-ink)}
+.journey-scroll{height:460vh;position:relative}
+.journey-sticky{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden}
+.journey .wrap{width:100%;display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.journey h2{color:var(--deep-ink)}
+.journey .eyebrow{color:var(--aqua)}
+.stages{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:4px;counter-reset:s}
+.stages li{display:grid;grid-template-columns:44px 1fr;gap:4px 14px;padding:12px 14px;border-radius:14px;opacity:.42;transition:opacity .4s,background .4s}
+.stages li::before{counter-increment:s;content:"0" counter(s);font:500 .82rem/1.6 var(--mono);color:var(--aqua);grid-row:span 2}
+.stages li b{font:650 1.08rem/1.3 var(--display)}
+.stages li p{font-size:.93rem;color:color-mix(in oklab,var(--deep-ink) 70%,transparent);max-height:0;overflow:hidden;transition:max-height .5s}
+.stages li.on{opacity:1;background:rgba(255,255,255,.06)}
+.stages li.on p{max-height:6em}
+.stages li.done{opacity:.72}
+.j-visual{display:grid;gap:14px}
+.j-visual .smile-card{background:linear-gradient(160deg,#15293C,#0E1D2C);border-color:#223749}
+.j-visual .readout{background:rgba(255,255,255,.04);border-color:#223749;color:#E7EEF2}
+.j-visual .readout small{color:#94A6B5}
+.month{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.month .big{font:500 clamp(2.4rem,5vw,4rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff}
+.month .lbl{font-size:.9rem;color:#94A6B5}
+.progress{height:4px;border-radius:4px;background:#223749;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--aqua),var(--accent))}
+@media (max-width:960px){
+  .journey .wrap{grid-template-columns:1fr;gap:14px}
+  .journey h2{font-size:1.7rem}
+  .journey .lede{display:none}
+  .stages{margin-top:10px}
+  .stages li{display:none}
+  .stages li.on{display:grid}
+  .j-visual .readouts{display:none}
+}
+
+/* ---------- band builder ---------- */
+.builder{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:center}
+@media (max-width:900px){.builder{grid-template-columns:1fr}}
+.swatches{display:flex;flex-wrap:wrap;gap:12px;margin-block:22px 20px}
+.sw{width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;position:relative;box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 0 0 1px var(--line);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.sw:hover{transform:scale(1.12)}
+.sw[aria-pressed="true"]{box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 0 0 3px var(--bg),0 0 0 5px var(--ink)}
+.sw .n{position:absolute;inset:auto 0 -22px;font:500 .64rem/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;text-align:center}
+.pattern{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chipbtn{border:1.5px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.9rem;transition:border-color .2s,background .2s}
+.chipbtn[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.hint{font-size:.88rem;color:var(--muted);margin-top:16px}
+.slots{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:.9rem;color:var(--muted)}
+.slot{width:28px;height:28px;border-radius:50%;border:2px solid var(--bg);box-shadow:0 0 0 1.5px var(--line)}
+.slotbtn{background:none;border:1.5px solid var(--line);border-radius:999px;padding:5px 12px 5px 5px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;font-size:.85rem}
+.slotbtn[aria-pressed="true"]{border-color:var(--ink)}
+.builder .smile-card svg .band{cursor:pointer}
+
+/* ---------- technology ---------- */
+.tech{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+@media (max-width:900px){.tech{grid-template-columns:1fr}}
+.scan-card{background:var(--deep);border-radius:28px;padding:26px;color:#E7EEF2;position:relative;overflow:hidden;aspect-ratio:1/0.92;max-width:100%}
+.scan-card svg{width:100%;height:100%;display:block}
+.scan-card .dot{fill:#53CFC5;opacity:.1;animation:dotscan 4.5s linear infinite}
+@keyframes dotscan{0%{opacity:.1}3%{opacity:1;r:2.4}10%{r:1.6}82%{opacity:.9}100%{opacity:.1}}
+.scan-card .beam{animation:beam 4.5s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes beam{0%{transform:translateY(0)}72%{transform:translateY(300px)}100%{transform:translateY(300px);opacity:0}}
+.scan-meta{position:absolute;left:26px;right:26px;bottom:22px;display:flex;justify-content:space-between;gap:10px;font:500 .78rem/1.3 var(--mono);color:#94A6B5}
+.scan-meta b{display:block;color:#fff;font-size:1rem}
+.feat{display:grid;gap:4px;padding-block:22px;border-top:1px solid var(--line)}
+.feat:last-child{border-bottom:1px solid var(--line)}
+.feat p{color:var(--muted)}
+.feat .k{font:500 .78rem/1 var(--mono);color:var(--aqua);letter-spacing:.06em}
+
+/* ---------- cost ---------- */
+.cost{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,4vw,44px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,56px)}
+@media (max-width:860px){.cost{grid-template-columns:1fr}}
+.field{display:grid;gap:10px;margin-bottom:24px}
+.field label{font-weight:600;display:flex;justify-content:space-between;gap:10px}
+.field label output{font-family:var(--mono);font-weight:500;color:var(--aqua)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.check{display:flex;gap:10px;align-items:center;font-size:.96rem;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--accent)}
+.result{background:var(--deep);color:#E7EEF2;border-radius:22px;padding:28px;display:grid;align-content:space-between;gap:24px}
+.result .monthly{font:500 clamp(3rem,7vw,4.6rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:-.03em}
+.result .monthly small{font-size:1rem;color:#94A6B5;letter-spacing:0}
+.result dl{display:grid;grid-template-columns:1fr auto;gap:10px 16px;margin:0;font-size:.95rem}
+.result dt{color:#94A6B5}
+.result dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.result .note{font-size:.8rem;color:#94A6B5}
+
+/* ---------- reviews ---------- */
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.reviews{grid-template-columns:1fr}}
+.review{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:grid;gap:18px;align-content:space-between}
+.review blockquote{margin:0;font:500 1.12rem/1.5 var(--display);letter-spacing:-.005em}
+.stars{color:#F4B400;letter-spacing:2px}
+.who{display:flex;gap:12px;align-items:center;font-size:.92rem}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font:700 .95rem/1 var(--display);color:#fff}
+.who small{display:block;color:var(--muted)}
+
+/* ---------- locations + faq ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px)}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.locs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.locs{grid-template-columns:1fr}}
+.loc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:6px;font-size:.94rem}
+.loc b{font:650 1.08rem/1.2 var(--display)}
+.loc span{color:var(--muted)}
+.loc .open{font:500 .74rem/1 var(--mono);color:var(--aqua);text-transform:uppercase;letter-spacing:.06em}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:20px 40px 20px 0;position:relative;font:600 1.08rem/1.35 var(--display)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:6px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(currentColor,currentColor) center/14px 2px no-repeat,linear-gradient(currentColor,currentColor) center/2px 14px no-repeat;transition:transform .35s}
+details[open] summary::after{transform:rotate(135deg)}
+details p{padding:0 0 20px;color:var(--muted);max-width:60ch}
+
+/* ---------- consult ---------- */
+.consult{background:var(--accent);color:var(--accent-ink);border-radius:32px;padding:clamp(26px,5vw,60px);display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,56px);position:relative;overflow:hidden}
+@media (max-width:900px){.consult{grid-template-columns:1fr}}
+.consult h2{color:inherit}
+.consult .lede{color:inherit;opacity:.85}
+.consult ul{margin:24px 0 0;padding:0;list-style:none;display:grid;gap:10px;font-weight:500}
+.consult ul li{display:flex;gap:10px;align-items:center}
+.consult ul li::before{content:"";width:20px;height:20px;border-radius:50%;flex:none;background:rgba(255,255,255,.25) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+form.card{background:var(--surface);color:var(--ink);border-radius:22px;padding:clamp(18px,3vw,30px);display:grid;grid-template-columns:1fr 1fr;gap:14px;box-shadow:0 30px 60px -30px rgba(0,0,0,.4)}
+form.card .full{grid-column:1/-1}
+@media (max-width:520px){form.card{grid-template-columns:1fr}}
+form.card label{display:grid;gap:6px;font-size:.85rem;font-weight:600}
+form.card input,form.card select,form.card textarea{border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;font-size:1rem;width:100%;transition:border-color .2s}
+form.card input:focus,form.card select:focus,form.card textarea:focus{border-color:var(--aqua);outline:none}
+form.card .btn{justify-content:center;width:100%}
+.form-note{font-size:.85rem;color:var(--muted)}
+.sent{grid-column:1/-1;background:var(--aqua-soft);color:var(--ink);border-radius:12px;padding:14px 16px;font-size:.95rem}
+
+footer{padding-block:48px 40px;color:var(--muted);font-size:.9rem}
+footer{border-top:1px solid var(--line);padding-block:0 40px}
+
+/* ---------- placeholders ---------- */
+.tbd{background:color-mix(in oklab,#F4B400 22%,transparent);border-bottom:1.5px dashed #C99400;border-radius:3px;padding-inline:3px}
+.ph{position:relative;margin:0;border-radius:var(--radius);overflow:hidden;background:var(--surface-2);border:1.5px dashed color-mix(in oklab,var(--muted) 45%,transparent);aspect-ratio:var(--ar,4/3);max-width:100%;isolation:isolate}
+.ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in oklab,var(--line) 70%,transparent) 14px 15px);z-index:-1}
+.ph::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in oklab,var(--surface) 55%,transparent) 50%,transparent 70%);background-size:250% 100%;animation:shimmer 3.2s ease-in-out infinite;pointer-events:none}
+@keyframes shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+.ph-in{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:6px;text-align:center;padding:14px;color:var(--muted)}
+.ph-in svg{width:34px;height:34px;opacity:.7}
+.ph-in b{font:650 .95rem/1.2 var(--display);color:var(--ink)}
+.ph-in small{font:500 .7rem/1.3 var(--mono);word-break:break-all}
+.ph.loaded{border:0}
+.ph.loaded::before,.ph.loaded::after,.ph.loaded .ph-in{display:none}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:imgin .8s ease both}
+@keyframes imgin{from{opacity:0;transform:scale(1.04)}}
+
+.promo{background:var(--ink);color:var(--bg);font-size:.88rem;text-align:center;padding:9px 16px}
+.promo a{font-weight:650}
+
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.team{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.team{grid-template-columns:1fr}}
+.doc{display:grid;gap:14px}
+.doc .ph{--ar:4/5;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.doc:hover .ph{transform:translateY(-6px) rotate(-.6deg)}
+.doc p{color:var(--muted);font-size:.95rem}
+.doc .creds{display:flex;flex-wrap:wrap;gap:6px}
+
+.ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.ba-grid{grid-template-columns:1fr}}
+.ba{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;max-width:100%;--pos:50%}
+.ba .ph{position:absolute;inset:0;border-radius:0;aspect-ratio:auto}
+.ba .after{clip-path:inset(0 0 0 var(--pos))}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.15);pointer-events:none;z-index:3}
+.ba .handle::after{content:"◀ ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;color:#0F2438;font-size:.6rem;letter-spacing:2px;border-radius:999px;padding:9px 10px;box-shadow:var(--shadow)}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
+.ba .lab{position:absolute;top:12px;z-index:2;font:500 .7rem/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;background:rgba(15,36,56,.75);color:#fff;padding:6px 9px;border-radius:999px}
+.ba .lab.l{left:12px}.ba .lab.r{right:12px}
+.ba-cap{display:flex;justify-content:space-between;gap:10px;margin-top:12px;font-size:.92rem}
+.ba-cap span{color:var(--muted)}
+
+.mosaic{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:repeat(2,minmax(150px,1fr));gap:14px}
+.mosaic .ph{aspect-ratio:auto;min-height:150px}
+.mosaic .big{grid-row:span 2}
+@media (max-width:760px){.mosaic{grid-template-columns:1fr 1fr}.mosaic .big{grid-column:span 2;grid-row:auto;min-height:220px}}
+
+.logos{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;align-items:center}
+.logos .lg{flex:1 1 130px;height:56px;border:1.5px dashed color-mix(in oklab,var(--muted) 40%,transparent);border-radius:12px;display:grid;place-items:center;font:500 .72rem/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+.map{--ar:16/9;margin-top:16px}
+
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.posts{grid-template-columns:1fr}}
+.post{display:grid;gap:12px;text-decoration:none}
+.post .ph{--ar:16/10}
+.post:hover h3{color:var(--accent)}
+.post h3{transition:color .2s}
+.post span{font:500 .75rem/1 var(--mono);color:var(--aqua);text-transform:uppercase;letter-spacing:.06em}
+
+.foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding-block:56px 32px}
+@media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.foot-grid{grid-template-columns:1fr}}
+.foot-grid h4{font:650 .95rem/1 var(--display);color:var(--ink);margin:0 0 14px}
+.foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.foot-grid a{text-decoration:none}
+.foot-grid a:hover{color:var(--ink)}
+.social{display:flex;gap:10px;margin-top:16px}
+.social a{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;transition:border-color .2s,transform .25s}
+.social a:hover{border-color:var(--ink);transform:translateY(-2px)}
+.social svg{width:18px;height:18px;fill:var(--ink)}
+
+/* reveal */
+.reveal{transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.pending{opacity:0;transform:translateY(28px)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .reveal.pending{opacity:1;transform:none}
+}
+</style>
+
+<div class="promo"><span class="tbd">[Current offer]</span> Free consultation + $500 off braces when you start by <span class="tbd">[date]</span>. <a href="#consult">Claim it →</a></div>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="tamaz home">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="10" fill="var(--ink)"/><rect x="10" y="11" width="14" height="12" rx="3" fill="var(--bg)"/><path d="M3 18.5 Q17 14 31 18.5" stroke="var(--accent)" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>
+      tamaz
+    </a>
+    <ul id="menu">
+      <li><a href="#treatments">Treatments</a></li>
+      <li><a href="#team">Our team</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#journey">Your journey</a></li>
+      <li><a href="#cost">Cost</a></li>
+      <li><a href="#visit">Locations</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#consult">Book free consult</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <svg class="hero-arcs" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M-100 720 Q600 -80 1300 720"/><path d="M-60 720 Q600 20 1260 720"/><path d="M-20 720 Q600 120 1220 720"/><path d="M20 720 Q600 220 1180 720"/><path d="M60 720 Q600 320 1140 720"/><path d="M100 720 Q600 420 1100 720"/>
+  </svg>
+  <div class="wrap">
+    <div>
+      <span class="eyebrow rise">Braces &amp; clear aligners · kids, teens, adults</span>
+      <h1 class="rise d1">Straighter smiles, one <span class="w">millimeter<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 10 Q 27 -4 52 10 T 102 10 T 152 10 T 198 10"><animate attributeName="d" begin="0.9s" dur="1.6s" fill="freeze" calcMode="spline" keySplines=".6 0 .2 1" values="M2 10 Q 27 -4 52 10 T 102 10 T 152 10 T 198 10;M2 10 Q 27 10 52 10 T 102 10 T 152 10 T 198 10"/></path></svg></span> at a time.</h1>
+      <p class="lede rise d2">Board-certified orthodontists, four neighborhood studios and a free first visit. You leave with a 3D scan, a written treatment plan and your monthly price before you commit to anything.</p>
+      <div class="hero-cta rise d3">
+        <a class="btn btn-primary" href="#consult">Book a free consultation <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="#treatments">Compare treatments</a>
+      </div>
+      <div class="trust rise d4">
+        <div><b>4.9 ★</b>2,300+ patient reviews</div>
+        <div><b>$0 down</b>interest-free plans</div>
+        <div><b>Sat &amp; evenings</b>at every studio</div>
+      </div>
+    </div>
+
+    <div class="rise d2" style="position:relative">
+      <div class="smile-card">
+        <div class="smile-top">
+          <span class="pill"><span class="dot"></span><span id="heroPhase">Month 0</span></span>
+          <div class="toggle" role="group" aria-label="Show smile">
+            <button type="button" id="btnBefore" aria-pressed="false">Before</button>
+            <button type="button" id="btnAfter" aria-pressed="true">After</button>
+          </div>
+        </div>
+        <svg class="smile" id="heroSmile" role="img" aria-label="Animated upper teeth moving from crowded to straight as braces are applied"></svg>
+        <div class="readouts">
+          <div class="readout"><small>Crowding</small><span id="rCrowd">5.5 mm</span></div>
+          <div class="readout"><small>Midline gap</small><span id="rGap">1.6 mm</span></div>
+          <div class="readout"><small>Max rotation</small><span id="rRot">16°</span></div>
+        </div>
+      </div>
+      <div class="float-chip c1"><b>18 mo</b> average treatment</div>
+      <div class="float-chip c2"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="var(--aqua-soft)"/><path d="M6.5 11.5l3 3 6-6.5" stroke="var(--aqua)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Free 3D scan</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <span>Metal braces <i></i></span><span>Clear ceramic braces <i></i></span><span>Clear aligners <i></i></span><span>Self-ligating braces <i></i></span><span>Early treatment, age 7+ <i></i></span><span>Adult orthodontics <i></i></span><span>Retainers <i></i></span><span>Same-week repairs <i></i></span>
+  </div>
+</div>
+
+<!-- TREATMENTS -->
+<section id="treatments">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Treatments</span>
+      <h2>The right appliance for your bite, age and schedule.</h2>
+      <p class="lede">Every option is planned digitally by the same orthodontist who sees you at each visit. We’ll recommend one; you choose.</p>
+    </div>
+    <div class="treat-grid">
+      <article class="treat reveal">
+        <div class="ic"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="3.5" fill="#A9B4C0"/><rect x="9" y="16.6" width="18" height="2.8" fill="#6E7A88"/><path d="M2 18 Q18 14 34 18" stroke="#8B97A5" stroke-width="2" fill="none"/><rect x="7" y="8" width="22" height="20" rx="8" fill="none" stroke="var(--accent)" stroke-width="2.6"/></svg></div>
+        <h3>Metal braces</h3>
+        <p>The most precise tool for complex bites. Smaller brackets than you remember, plus colored bands you can change every visit.</p>
+        <div class="meta"><span class="tag">18–24 months</span><span class="tag">from $4,800</span></div>
+      </article>
+      <article class="treat reveal">
+        <div class="ic"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="3.5" fill="#F4EFE6" stroke="#D8CFBE"/><rect x="9" y="16.6" width="18" height="2.8" fill="#E1D8C8"/><path d="M2 18 Q18 14 34 18" stroke="#E9EEF2" stroke-width="2" fill="none"/><rect x="7" y="8" width="22" height="20" rx="8" fill="none" stroke="#D5DCE3" stroke-width="2.6"/></svg></div>
+        <h3>Clear ceramic braces</h3>
+        <p>Tooth-colored brackets that blend in, with the same control as metal. A favorite for adults and senior photos.</p>
+        <div class="meta"><span class="tag">18–24 months</span><span class="tag">from $5,600</span></div>
+      </article>
+      <article class="treat reveal">
+        <div class="ic"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M5 12 Q18 6 31 12 L30 22 Q18 30 6 22 Z" fill="none" stroke="var(--aqua)" stroke-width="2.4" stroke-linejoin="round"/><path d="M9 13 v7 M14 11 v9.5 M18 10.5 v10 M22 11 v9.5 M27 13 v7" stroke="var(--aqua)" stroke-width="1.4" opacity=".5"/></svg></div>
+        <h3>Clear aligners</h3>
+        <p>Removable trays you swap every one to two weeks. We check progress with in-office scans, not guesswork by mail.</p>
+        <div class="meta"><span class="tag">6–18 months</span><span class="tag">from $5,900</span></div>
+      </article>
+      <article class="treat reveal">
+        <div class="ic"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="3.5" fill="#A9B4C0"/><path d="M11 13 h14 v3 h-14z" fill="#6E7A88"/><path d="M2 18 Q18 14 34 18" stroke="#8B97A5" stroke-width="2" fill="none"/><path d="M11 20 h14" stroke="#EEF2F6" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+        <h3>Self-ligating braces</h3>
+        <p>Brackets with a built-in sliding door instead of bands. Lighter forces, fewer adjustments, quicker visits.</p>
+        <div class="meta"><span class="tag">16–22 months</span><span class="tag">from $5,300</span></div>
+      </article>
+      <article class="treat reveal">
+        <div class="ic"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="14" r="7" fill="none" stroke="var(--accent)" stroke-width="2.4"/><path d="M8 31 q10 -12 20 0" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round"/><path d="M15 15.5 q3 2.5 6 0" stroke="var(--accent)" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div>
+        <h3>Early treatment (Phase 1)</h3>
+        <p>A check-up by age 7 can catch crossbites and crowding early. Most kids only need monitoring, and the visit is free.</p>
+        <div class="meta"><span class="tag">ages 7–10</span><span class="tag">from $2,900</span></div>
+      </article>
+      <article class="treat reveal">
+        <div class="ic"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M9 12 Q18 7 27 12 v4 Q18 20 9 16 z" fill="none" stroke="var(--aqua)" stroke-width="2.2" stroke-linejoin="round"/><path d="M9 24 Q18 20 27 24 v2 Q18 30 9 26z" fill="none" stroke="var(--aqua)" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+        <h3>Retainers &amp; adult relapse</h3>
+        <p>Had braces years ago and teeth shifted back? Short aligner courses and bonded retainers keep results for life.</p>
+        <div class="meta"><span class="tag">3–9 months</span><span class="tag">from $1,400</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Meet your orthodontists</span>
+      <h2>Specialists who finished two to three extra years of orthodontic training.</h2>
+      <p class="lede">You see the same doctor from your first scan to the day your braces come off.</p>
+    </div>
+    <div class="team">
+      <article class="doc reveal">
+        <figure class="ph" data-src="images/doctor-1.jpg" data-label="Doctor portrait" data-size="800 × 1000" data-alt="Portrait of the founding orthodontist"></figure>
+        <h3>Dr. <span class="tbd">[Full name]</span>, DDS, MS</h3>
+        <div class="creds"><span class="tag">Founder</span><span class="tag">Board certified</span></div>
+        <p><span class="tbd">[Short bio: residency, years in practice, what patients like about them.]</span></p>
+      </article>
+      <article class="doc reveal">
+        <figure class="ph" data-src="images/doctor-2.jpg" data-label="Doctor portrait" data-size="800 × 1000" data-alt="Portrait of an orthodontist"></figure>
+        <h3>Dr. <span class="tbd">[Full name]</span>, DMD, MS</h3>
+        <div class="creds"><span class="tag">Adult &amp; aligner care</span></div>
+        <p><span class="tbd">[Short bio: residency, focus areas, languages spoken.]</span></p>
+      </article>
+      <article class="doc reveal">
+        <figure class="ph" data-src="images/doctor-3.jpg" data-label="Doctor portrait" data-size="800 × 1000" data-alt="Portrait of an orthodontist"></figure>
+        <h3>Dr. <span class="tbd">[Full name]</span>, DDS, MS</h3>
+        <div class="creds"><span class="tag">Early treatment</span></div>
+        <p><span class="tbd">[Short bio: residency, focus areas, community work.]</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Real results</span>
+      <h2>Drag to compare before and after.</h2>
+      <p class="lede">Every case shown is a tamaz patient, shared with written consent.</p>
+    </div>
+    <div class="ba-grid">
+      <div class="reveal">
+        <div class="ba">
+          <figure class="ph before" data-src="images/case-1-before.jpg" data-label="Case 1 · before" data-size="1200 × 900" data-alt="Crowded teeth before treatment"></figure>
+          <figure class="ph after" data-src="images/case-1-after.jpg" data-label="Case 1 · after" data-size="1200 × 900" data-alt="Straight teeth after treatment"></figure>
+          <span class="lab l">Before</span><span class="lab r">After</span><span class="handle"></span>
+          <input type="range" min="0" max="100" value="50" aria-label="Compare case 1 before and after" id="ba1">
+        </div>
+        <div class="ba-cap"><b>Crowding</b><span>Metal braces · 20 months</span></div>
+      </div>
+      <div class="reveal">
+        <div class="ba">
+          <figure class="ph before" data-src="images/case-2-before.jpg" data-label="Case 2 · before" data-size="1200 × 900" data-alt="Gap between front teeth before treatment"></figure>
+          <figure class="ph after" data-src="images/case-2-after.jpg" data-label="Case 2 · after" data-size="1200 × 900" data-alt="Gap closed after treatment"></figure>
+          <span class="lab l">Before</span><span class="lab r">After</span><span class="handle"></span>
+          <input type="range" min="0" max="100" value="50" aria-label="Compare case 2 before and after" id="ba2">
+        </div>
+        <div class="ba-cap"><b>Spacing</b><span>Clear aligners · 9 months</span></div>
+      </div>
+      <div class="reveal">
+        <div class="ba">
+          <figure class="ph before" data-src="images/case-3-before.jpg" data-label="Case 3 · before" data-size="1200 × 900" data-alt="Overbite before treatment"></figure>
+          <figure class="ph after" data-src="images/case-3-after.jpg" data-label="Case 3 · after" data-size="1200 × 900" data-alt="Corrected bite after treatment"></figure>
+          <span class="lab l">Before</span><span class="lab r">After</span><span class="handle"></span>
+          <input type="range" min="0" max="100" value="50" aria-label="Compare case 3 before and after" id="ba3">
+        </div>
+        <div class="ba-cap"><b>Deep overbite</b><span>Ceramic braces · 22 months</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY (scroll-driven) -->
+<section class="journey" id="journey" aria-label="Treatment timeline">
+  <div class="journey-scroll" id="journeyScroll">
+    <div class="journey-sticky">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow">Your 18-month journey</span>
+          <h2 style="margin-top:14px">Scroll to watch a smile move into place.</h2>
+          <p class="lede" style="color:#94A6B5;margin-top:16px">Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.</p>
+          <ol class="stages" id="stages">
+            <li><b>Scan</b><p>Free consultation and 3D scan. About four minutes, with no impression trays.</p></li>
+            <li><b>Plan</b><p>Your orthodontist sets a target position for every tooth and shows you the result on screen.</p></li>
+            <li><b>Bond</b><p>Brackets go on in about an hour. You pick your band colors.</p></li>
+            <li><b>Align</b><p>The archwire gently pulls teeth into line. Adjustment visits every 6–8 weeks.</p></li>
+            <li><b>Detail</b><p>Fine-tuning of the bite, root angles and the last fractions of a millimeter.</p></li>
+            <li><b>Retain</b><p>Brackets off, retainers on. Your first set is included.</p></li>
+          </ol>
+        </div>
+        <div class="j-visual">
+          <div class="month"><span class="big" id="jMonth">Day 1</span><span class="lbl" id="jStage">Consultation</span></div>
+          <div class="progress"><i id="jBar"></i></div>
+          <div class="smile-card"><svg class="smile" id="journeySmile" role="img" aria-label="Teeth moving from crowded to straight across treatment stages"></svg></div>
+          <div class="readouts">
+            <div class="readout"><small>Crowding</small><span id="jCrowd">5.5 mm</span></div>
+            <div class="readout"><small>Visits so far</small><span id="jVisits">1</span></div>
+            <div class="readout"><small>Plan complete</small><span id="jPct">0%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BAND BUILDER -->
+<section id="bands">
+  <div class="wrap builder">
+    <div class="smile-card reveal"><svg class="smile" id="bandSmile" role="img" aria-label="Preview of braces with your chosen band colors"></svg></div>
+    <div class="reveal">
+      <span class="eyebrow">Band color studio</span>
+      <h2 style="margin-top:14px">Make your braces yours.</h2>
+      <p class="lede" style="margin-top:16px">Pick new colors at every adjustment. Try a combination here and we’ll have it ready at your next visit.</p>
+      <div class="slots">
+        <button type="button" class="slotbtn" id="slotA" aria-pressed="true"><span class="slot" id="slotAc"></span>Color A</button>
+        <button type="button" class="slotbtn" id="slotB" aria-pressed="false"><span class="slot" id="slotBc"></span>Color B</button>
+      </div>
+      <div class="swatches" id="swatches"></div>
+      <div class="pattern" role="group" aria-label="Pattern">
+        <button type="button" class="chipbtn" data-p="solid" aria-pressed="false">Solid</button>
+        <button type="button" class="chipbtn" data-p="alt" aria-pressed="true">Alternate A/B</button>
+        <button type="button" class="chipbtn" data-p="split" aria-pressed="false">Split sides</button>
+        <button type="button" class="chipbtn" data-p="rainbow" aria-pressed="false">Rainbow</button>
+      </div>
+      <p class="hint">Tip: tap any band on the smile to paint just that tooth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section style="padding-top:0">
+  <div class="wrap tech">
+    <div class="scan-card reveal" aria-label="Animation of an intraoral 3D scan building a point cloud of a tooth">
+      <svg id="scanSvg" viewBox="0 0 400 370" aria-hidden="true"></svg>
+      <div class="scan-meta"><div>Scan accuracy<b>±20 µm</b></div><div>Scan time<b>~4 min</b></div><div>Radiation<b>0 mSv</b></div></div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">Technology</span>
+      <h2 style="margin-top:14px;margin-bottom:28px">See your finished smile before day one.</h2>
+      <div class="feat"><span class="k">3D INTRAORAL SCAN</span><h3>No goopy impressions</h3><p>A wand captures thousands of points per second to build a model of every tooth, accurate to about 20 microns.</p></div>
+      <div class="feat"><span class="k">DIGITAL SETUP</span><h3>A plan you can watch</h3><p>We move each tooth virtually and show you the path, the timeline and the final bite on screen at your consultation.</p></div>
+      <div class="feat"><span class="k">LOW-DOSE IMAGING</span><h3>Less radiation, more detail</h3><p>Digital X-rays use a fraction of film dose, and we only take them when they change a decision.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COST -->
+<section id="cost" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Cost &amp; financing</span>
+      <h2>Know your monthly payment in 20 seconds.</h2>
+      <p class="lede">Interest-free plans on every treatment. We bill most insurance plans directly and apply your orthodontic benefit up front.</p>
+    </div>
+    <div class="cost reveal">
+      <div>
+        <div class="field">
+          <label>Treatment</label>
+          <div class="seg" role="group" aria-label="Treatment" id="costTreat">
+            <button type="button" class="chipbtn" data-price="4800" aria-pressed="true">Metal</button>
+            <button type="button" class="chipbtn" data-price="5600" aria-pressed="false">Ceramic</button>
+            <button type="button" class="chipbtn" data-price="5900" aria-pressed="false">Aligners</button>
+            <button type="button" class="chipbtn" data-price="2900" aria-pressed="false">Phase 1</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="down">Down payment <output id="downOut">$0</output></label>
+          <input type="range" id="down" min="0" max="1500" step="50" value="0">
+        </div>
+        <div class="field">
+          <label for="months">Months to pay <output id="monthsOut">24</output></label>
+          <input type="range" id="months" min="6" max="36" step="1" value="24">
+        </div>
+        <label class="check"><input type="checkbox" id="ins" checked> My insurance includes orthodontic coverage</label>
+      </div>
+      <div class="result">
+        <div>
+          <div style="color:#94A6B5;font-size:.9rem;margin-bottom:8px">Estimated monthly payment</div>
+          <div class="monthly"><span id="monthly">$138</span><small> /mo</small></div>
+        </div>
+        <dl>
+          <dt>Treatment fee</dt><dd id="dFee">$4,800</dd>
+          <dt>Estimated insurance benefit</dt><dd id="dIns">−$1,500</dd>
+          <dt>Down payment</dt><dd id="dDown">−$0</dd>
+          <dt>Interest</dt><dd>$0</dd>
+        </dl>
+        <p class="note">Sample pricing for illustration. Your exact fee is set at your free consultation.</p>
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:36px;color:var(--muted);font-size:.95rem">In-network with most major plans, including:</p>
+    <div class="logos reveal" aria-label="Insurance partner logos (placeholders)">
+      <span class="lg">Insurance logo 1</span><span class="lg">Insurance logo 2</span><span class="lg">Insurance logo 3</span><span class="lg">Insurance logo 4</span><span class="lg">Insurance logo 5</span><span class="lg">Financing partner</span>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIOS GALLERY -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Inside our studios</span>
+      <h2>Bright rooms, short waits and a coffee bar for parents.</h2>
+    </div>
+    <div class="mosaic reveal">
+      <figure class="ph big" data-src="images/studio-1.jpg" data-label="Studio interior, wide" data-size="1600 × 1200" data-alt="Treatment area at a tamaz studio"></figure>
+      <figure class="ph" data-src="images/studio-2.jpg" data-label="Reception" data-size="800 × 600" data-alt="Reception desk"></figure>
+      <figure class="ph" data-src="images/studio-3.jpg" data-label="3D scanner in use" data-size="800 × 600" data-alt="Patient having a 3D scan"></figure>
+      <figure class="ph" data-src="images/studio-4.jpg" data-label="Team photo" data-size="800 × 600" data-alt="The tamaz clinical team"></figure>
+      <figure class="ph" data-src="images/studio-5.jpg" data-label="Smiling patient" data-size="800 × 600" data-alt="Patient smiling after braces removal"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Patient stories</span><h2>Rated 4.9 by 2,300+ patients and parents.</h2></div>
+    <div class="reviews">
+      <figure class="review reveal" style="margin:0"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>They showed my daughter her finished smile on the screen at the first visit. She counted down the months after that.</blockquote><figcaption class="who"><span class="av" style="background:var(--accent)">MR</span><span>Maria R.<small>Parent · metal braces</small></span></figcaption></figure>
+      <figure class="review reveal" style="margin:0"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>I’m 41 and was nervous to start. Ceramic brackets, Saturday appointments, and nobody at work noticed for months.</blockquote><figcaption class="who"><span class="av" style="background:var(--aqua)">DK</span><span>Daniel K.<small>Adult · ceramic braces</small></span></figcaption></figure>
+      <figure class="review reveal" style="margin:0"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>My aligner popped a bump on a Friday and they fixed it the next morning. The payment plan was exactly what they quoted.</blockquote><figcaption class="who"><span class="av" style="background:#6B5BD6">AT</span><span>Aisha T.<small>Clear aligners</small></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS + FAQ -->
+<section id="visit" style="padding-top:0">
+  <div class="wrap two">
+    <div class="reveal">
+      <span class="eyebrow">Studios</span>
+      <h2 style="margin-top:14px;margin-bottom:28px">Four studios, open evenings and Saturdays.</h2>
+      <div class="locs">
+        <div class="loc"><span class="open">Mon–Fri 8a–7p</span><b class="tbd">[Studio 1 name]</b><span class="tbd">[Street address, city, ZIP]</span><span class="mono tbd">[Phone number]</span></div>
+        <div class="loc"><span class="open">Mon–Fri 9a–8p</span><b class="tbd">[Studio 2 name]</b><span class="tbd">[Street address, city, ZIP]</span><span class="mono tbd">[Phone number]</span></div>
+        <div class="loc"><span class="open">Mon–Fri 8a–6p</span><b class="tbd">[Studio 3 name]</b><span class="tbd">[Street address, city, ZIP]</span><span class="mono tbd">[Phone number]</span></div>
+        <div class="loc"><span class="open">Sat 8a–2p</span><b class="tbd">[Studio 4 name]</b><span class="tbd">[Street address, city, ZIP]</span><span class="mono tbd">[Phone number]</span></div>
+      </div>
+      <figure class="ph map" data-src="images/map.jpg" data-label="Map of studio locations" data-size="1600 × 900 (static map image or screenshot)" data-alt="Map showing the four tamaz studios"></figure>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">Questions</span>
+      <h2 style="margin-top:14px;margin-bottom:28px">Before you book</h2>
+      <details open><summary>Is the first consultation really free?</summary><p>Yes. It includes the exam, a 3D scan, any X-rays we need, and a written plan with pricing. There’s no obligation to start.</p></details>
+      <details><summary>Do braces hurt?</summary><p>Most people feel pressure and mild soreness for two or three days after bonding and after adjustments. Soft foods and an over-the-counter pain reliever usually cover it.</p></details>
+      <details><summary>How often are appointments?</summary><p>Braces patients visit every 6–8 weeks. Aligner patients usually come in every 8–10 weeks, and each visit takes 20–30 minutes.</p></details>
+      <details><summary>What if a bracket breaks?</summary><p>Call the studio. We keep same-week repair slots open at every location, and Saturday hours for school and work schedules.</p></details>
+      <details><summary>At what age should my child be checked?</summary><p>The American Association of Orthodontists recommends a first check by age 7. Most children won’t need treatment yet, but early checks catch crossbites and crowding.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Smile guide</span><h2>Tips for life with braces and aligners.</h2></div>
+    <div class="posts">
+      <a class="post reveal" href="#resources"><figure class="ph" data-src="images/blog-1.jpg" data-label="Article image" data-size="1200 × 750" data-alt="Braces-friendly foods"></figure><span>Braces care · 4 min</span><h3>What you can eat in the first week with braces</h3></a>
+      <a class="post reveal" href="#resources"><figure class="ph" data-src="images/blog-2.jpg" data-label="Article image" data-size="1200 × 750" data-alt="Clear aligner case"></figure><span>Aligners · 5 min</span><h3>How to wear aligners 22 hours a day without noticing</h3></a>
+      <a class="post reveal" href="#resources"><figure class="ph" data-src="images/blog-3.jpg" data-label="Article image" data-size="1200 × 750" data-alt="Child at an orthodontic check-up"></figure><span>Parents · 3 min</span><h3>Why an orthodontic check at age 7 matters</h3></a>
+    </div>
+  </div>
+</section>
+
+<!-- CONSULT -->
+<section id="consult" style="padding-top:0">
+  <div class="wrap">
+    <div class="consult reveal">
+      <div>
+        <h2>Book your free consultation.</h2>
+        <p class="lede" style="margin-top:16px">Tell us a little about yourself and a coordinator will call to confirm a time within one business day.</p>
+        <ul><li>3D scan and exam</li><li>Written plan and exact price</li><li>No obligation, no pressure</li></ul>
+      </div>
+      <form class="card" id="consultForm" novalidate>
+        <label>First name<input id="fName" name="fName" autocomplete="given-name" required></label>
+        <label>Last name<input id="lName" name="lName" autocomplete="family-name"></label>
+        <label>Phone<input id="fPhone" name="fPhone" type="tel" autocomplete="tel" required></label>
+        <label>Email<input id="fEmail" name="fEmail" type="email" autocomplete="email"></label>
+        <label>Interested in<select id="fTreat" name="fTreat"><option>Not sure yet</option><option>Metal braces</option><option>Clear ceramic braces</option><option>Clear aligners</option><option>Early treatment for my child</option></select></label>
+        <label>Preferred studio<select id="fLoc" name="fLoc"><option>[Studio 1 name]</option><option>[Studio 2 name]</option><option>[Studio 3 name]</option><option>[Studio 4 name]</option></select></label>
+        <label class="full">Anything we should know?<textarea id="fMsg" name="fMsg" rows="3"></textarea></label>
+        <div class="full"><button class="btn btn-primary" type="submit">Request my consultation <span class="arr">→</span></button></div>
+        <p class="form-note full" id="formNote">This is a design preview; the form isn’t connected to a booking system yet.</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <a class="logo" href="#top"><svg viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="10" fill="var(--ink)"/><rect x="10" y="11" width="14" height="12" rx="3" fill="var(--bg)"/><path d="M3 18.5 Q17 14 31 18.5" stroke="var(--accent)" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>tamaz</a>
+      <p style="margin-top:14px;max-width:34ch">Braces and clear aligners for kids, teens and adults, from board-certified orthodontists.</p>
+      <div class="social">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7.3A4.7 4.7 0 1 0 12 16.7 4.7 4.7 0 0 0 12 7.3zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm4.9-8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.6c2.7 0 3 0 4.1.1 2.7.1 4 1.4 4.1 4.1.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c-.1 2.7-1.4 4-4.1 4.1-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-2.7-.1-4-1.4-4.1-4.1C3.7 15 3.6 14.7 3.6 12s0-3 .1-4.1c.1-2.7 1.4-4 4.1-4.1C8.9 3.6 9.3 3.6 12 3.6zM12 2C9.3 2 8.9 2 7.9 2.1 4.2 2.2 2.2 4.3 2.1 7.9 2 8.9 2 9.3 2 12s0 3.1.1 4.1c.1 3.6 2.2 5.7 5.8 5.8 1 .1 1.4.1 4.1.1s3.1 0 4.1-.1c3.6-.2 5.7-2.2 5.8-5.8.1-1 .1-1.4.1-4.1s0-3.1-.1-4.1c-.2-3.6-2.2-5.7-5.8-5.8C15.1 2 14.7 2 12 2z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3z"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.7 5.7 0 1 0 4.9 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg></a>
+      </div>
+    </div>
+    <div><h4>Treatments</h4><ul><li><a href="#treatments">Metal braces</a></li><li><a href="#treatments">Clear ceramic braces</a></li><li><a href="#treatments">Clear aligners</a></li><li><a href="#treatments">Early treatment</a></li><li><a href="#treatments">Retainers</a></li></ul></div>
+    <div><h4>Patients</h4><ul><li><a href="#consult">Book a consultation</a></li><li><a href="#cost">Cost &amp; financing</a></li><li><a href="#" class="tbd">[Patient portal link]</a></li><li><a href="#" class="tbd">[Pay my bill link]</a></li><li><a href="#resources">Smile guide</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li class="tbd">[Main phone number]</li><li class="tbd">hello@[your-domain].com</li><li>Emergency repairs: call your studio</li><li><a href="#visit">All locations</a></li></ul></div>
+  </div>
+  <div class="wrap" style="display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;border-top:1px solid var(--line);padding-top:24px">
+    <span>© 2026 tamaz · <span class="tbd">[Practice license / registration no.]</span></span>
+    <span style="display:flex;gap:20px;flex-wrap:wrap"><a href="#">Privacy policy</a><a href="#">Accessibility</a><a href="#">Terms</a><a href="#">Notice of privacy practices</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NS = 'http://www.w3.org/2000/svg';
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2;
+const lerp = (a, b, t) => a + (b - a) * t;
+function el(tag, attrs, parent){ const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
+
+/* ---------------- Smile renderer ---------------- */
+const SPEC = [{w:48,h:76,k:'inc'},{w:38,h:66,k:'inc'},{w:36,h:72,k:'can'},{w:32,h:60,k:'pre'},{w:29,h:55,k:'pre'},{w:26,h:50,k:'mol'}];
+const CROOK = [
+  {dx:3,dy:4,r:-5},{dx:-4,dy:-3,r:7},{dx:7,dy:9,r:-12},{dx:-6,dy:-7,r:10},{dx:9,dy:6,r:-16},{dx:-7,dy:3,r:9},
+  {dx:6,dy:-2,r:-8},{dx:-8,dy:8,r:14},{dx:5,dy:-6,r:-9},{dx:-9,dy:10,r:11},{dx:4,dy:-4,r:-6},{dx:-3,dy:5,r:4}
+];
+function toothPath(k, w, h){
+  if (k === 'can') return `M0 0 L0 ${h-18} Q${w*.18} ${h-3} ${w/2} ${h} Q${w*.82} ${h-3} ${w} ${h-18} L${w} 0 Z`;
+  if (k === 'pre') return `M0 0 L0 ${h-13} Q${w*.12} ${h} ${w/2} ${h} Q${w*.88} ${h} ${w} ${h-13} L${w} 0 Z`;
+  const r = k === 'mol' ? 9 : Math.min(10, w*.24);
+  return `M0 0 L0 ${h-r} Q0 ${h} ${r} ${h} L${w-r} ${h} Q${w} ${h} ${w} ${h-r} L${w} 0 Z`;
+}
+function crPath(p){
+  const f = n => n.toFixed(1);
+  let d = `M${f(p[0][0])} ${f(p[0][1])}`;
+  for (let i = 0; i < p.length - 1; i++){
+    const p0 = p[i-1] || p[i], p1 = p[i], p2 = p[i+1], p3 = p[i+2] || p2;
+    d += ` C${f(p1[0]+(p2[0]-p0[0])/6)} ${f(p1[1]+(p2[1]-p0[1])/6)} ${f(p2[0]-(p3[0]-p1[0])/6)} ${f(p2[1]-(p3[1]-p1[1])/6)} ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return d;
+}
+let uidN = 0;
+function Smile(svg){
+  const uid = 's' + (uidN++);
+  svg.setAttribute('viewBox', '0 0 560 250');
+  const defs = el('defs', {}, svg);
+  defs.innerHTML = `
+    <linearGradient id="tg${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE6D8"/><stop offset=".35" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EFE8DA"/></linearGradient>
+    <linearGradient id="lt${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6DECF"/><stop offset="1" stop-color="#B9AF9E"/></linearGradient>
+    <linearGradient id="mg${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1F4F7"/><stop offset=".55" stop-color="#A5B1BE"/><stop offset="1" stop-color="#D3DAE1"/></linearGradient>
+    <linearGradient id="gg${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--gum-a)"/><stop offset="1" stop-color="var(--gum-b)"/></linearGradient>
+    <linearGradient id="sc${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#53CFC5" stop-opacity="0"/><stop offset="1" stop-color="#53CFC5" stop-opacity=".55"/></linearGradient>
+    <clipPath id="cl${uid}"><path d="M24 118 C110 22 450 22 536 118 C450 238 110 238 24 118 Z"/></clipPath>`;
+  const root = el('g', {'clip-path': `url(#cl${uid})`}, svg);
+  el('rect', {x:0, y:0, width:560, height:250, fill:'var(--mouth)'}, root);
+  // lower teeth (static, behind)
+  const gl = el('g', {}, root);
+  for (let i = 0; i < 12; i++){
+    const w = [22,25,28,30,26,24,24,26,30,28,25,22][i];
+    const x = 280 + (i - 5.5) * 30 - w/2, dx = Math.abs(i - 5.5) * 30;
+    el('rect', {x, y: 176 - dx*dx*0.0006, width: w, height: 60, rx: 7, fill: `url(#lt${uid})`}, gl);
+  }
+  const gGhost = el('g', {opacity:0}, root);
+  const gTeeth = el('g', {}, root);
+  const gGum = el('g', {}, root);
+  const wireG = el('g', {}, root);
+  const wire = el('path', {fill:'none', stroke:'#9AA6B3', 'stroke-width':3, 'stroke-linecap':'round', pathLength:1, 'stroke-dasharray':1}, wireG);
+  const wireHi = el('path', {fill:'none', stroke:'#F4F7FA', 'stroke-width':1, 'stroke-linecap':'round', opacity:.8, pathLength:1, 'stroke-dasharray':1}, wireG);
+  const gBands = el('g', {}, root);
+  const scan = el('g', {opacity:0}, root);
+  el('rect', {x:0, y:-40, width:560, height:40, fill:`url(#sc${uid})`}, scan);
+  el('rect', {x:0, y:-1.5, width:560, height:3, fill:'#53CFC5'}, scan);
+  el('path', {d:'M24 118 C110 22 450 22 536 118 C450 238 110 238 24 118 Z', fill:'none', stroke:'var(--line)', 'stroke-width':2}, svg);
+
+  // layout teeth left→right
+  const T = [];
+  let x = 280 - 1.5;
+  SPEC.forEach((s, i) => { x -= s.w; T.push({...s, rank:i, x0:x}); x -= 3; });
+  x = 280 + 1.5;
+  SPEC.forEach((s, i) => { T.push({...s, rank:i, x0:x}); x += s.w + 3; });
+  T.sort((a, b) => a.x0 - b.x0);
+  T.forEach((t, i) => { const d = t.x0 + t.w/2 - 280; t.top = 86 + 0.00028*d*d; t.c = CROOK[i]; });
+
+  // gum with scalloped edge
+  let gd = `M0 0 L560 0 L560 ${T[11].top + 18}`;
+  for (let i = T.length - 1; i >= 0; i--){
+    const t = T[i];
+    gd += ` L${t.x0 + t.w + 1.5} ${t.top + 15} Q${t.x0 + t.w/2} ${t.top - 7} ${t.x0 - 1.5} ${t.top + 15}`;
+  }
+  gd += ` L0 ${T[0].top + 18} Z`;
+  el('path', {d: gd, fill: `url(#gg${uid})`}, gGum);
+
+  const bandEls = [];
+  T.forEach((t, i) => {
+    t.g = el('g', {}, gTeeth);
+    el('path', {d: toothPath(t.k, t.w, t.h), fill: `url(#tg${uid})`, stroke: '#D6CCBA', 'stroke-width': 1.2}, t.g);
+    el('ellipse', {cx: t.w*.3, cy: t.h*.42, rx: t.w*.1, ry: t.h*.16, fill: '#fff', opacity: .75}, t.g);
+    const s = Math.max(.64, t.w/48), bw = 16*s, bh = 13*s, bx = t.w/2, by = t.h*.55;
+    t.br = el('g', {}, t.g);
+    if (t.k === 'mol'){
+      el('rect', {x: bx - bw*.75, y: by - bh*.35, width: bw*1.5, height: bh*.7, rx: 2, fill: `url(#mg${uid})`, stroke: '#7D8997', 'stroke-width': .8}, t.br);
+    } else {
+      el('rect', {x: bx - bw/2, y: by - bh/2, width: bw, height: bh, rx: 2.8, fill: `url(#mg${uid})`, stroke: '#7D8997', 'stroke-width': .8}, t.br);
+      el('rect', {x: bx - bw/2, y: by - 1.3, width: bw, height: 2.6, fill: '#6B7785'}, t.br);
+    }
+    el('path', {d: toothPath(t.k, t.w, t.h), fill: 'none', stroke: '#53CFC5', 'stroke-width': 1.6, 'stroke-dasharray': '4 3', transform: `translate(${t.x0} ${t.top})`}, gGhost);
+    t.bandG = el('g', {}, gBands);
+    if (t.k !== 'mol'){
+      const b = el('rect', {class: 'band', x: bx - bw/2 - 3, y: by - bh/2 - 3, width: bw + 6, height: bh + 6, rx: (bh + 6)*.42, fill: 'none', 'stroke-width': 3.6, stroke: '#E9543F'}, t.bandG);
+      b.dataset.i = i; bandEls[i] = b;
+    }
+  });
+
+  const api = {
+    t: 0, b: 0,
+    set(t, b, ghost = 0, scanY = -1){
+      this.t = t; this.b = b;
+      const pts = [];
+      T.forEach(tt => {
+        const e = ease(clamp((t - tt.rank*.045) / (1 - .225)));
+        const k = 1 - e, c = tt.c, rot = c.r*k, tx = tt.x0 + c.dx*k, ty = tt.top + c.dy*k;
+        const tr = `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) rotate(${rot.toFixed(2)} ${tt.w/2} ${(tt.h*.6).toFixed(1)})`;
+        tt.g.setAttribute('transform', tr); tt.bandG.setAttribute('transform', tr);
+        tt.br.setAttribute('opacity', clamp(b*1.6));
+        const th = rot*Math.PI/180;
+        pts.push([tx + tt.w/2 + .05*tt.h*Math.sin(th), ty + .6*tt.h - .05*tt.h*Math.cos(th)]);
+      });
+      const a = pts[0], z = pts[pts.length - 1];
+      pts.unshift([a[0] - 16, a[1] - 3]); pts.push([z[0] + 16, z[1] - 3]);
+      const d = crPath(pts);
+      wire.setAttribute('d', d); wireHi.setAttribute('d', d);
+      const off = (1 - clamp((b - .25)/.75)).toFixed(3);
+      wire.setAttribute('stroke-dashoffset', off); wireHi.setAttribute('stroke-dashoffset', off);
+      gBands.setAttribute('opacity', clamp((b - .55)/.45));
+      gGhost.setAttribute('opacity', ghost);
+      if (scanY < 0) scan.setAttribute('opacity', 0);
+      else { scan.setAttribute('opacity', 1); scan.setAttribute('transform', `translate(0 ${20 + scanY*215})`); }
+    },
+    setBands(colors){ bandEls.forEach((b, i) => b && b.setAttribute('stroke', colors[i])); },
+    bandEls, count: T.length
+  };
+  return api;
+}
+
+/* ---------------- Hero ---------------- */
+const hero = Smile(document.getElementById('heroSmile'));
+hero.setBands(['#E9543F','#2BA8A0','#E9543F','#2BA8A0','#E9543F','#2BA8A0','#2BA8A0','#E9543F','#2BA8A0','#E9543F','#2BA8A0','#E9543F']);
+const hPhase = document.getElementById('heroPhase'), rCrowd = document.getElementById('rCrowd'), rGap = document.getElementById('rGap'), rRot = document.getElementById('rRot');
+const bBefore = document.getElementById('btnBefore'), bAfter = document.getElementById('btnAfter');
+function heroRead(t){
+  const e = ease(t);
+  hPhase.textContent = 'Month ' + Math.round(e*18);
+  rCrowd.textContent = (5.5*(1-e)).toFixed(1) + ' mm';
+  rGap.textContent = (1.6*(1-e)).toFixed(1) + ' mm';
+  rRot.textContent = Math.round(16*(1-e)) + '°';
+}
+let heroAnim = 0;
+function heroTo(target, dur){
+  cancelAnimationFrame(heroAnim);
+  bBefore.setAttribute('aria-pressed', target === 0); bAfter.setAttribute('aria-pressed', target === 1);
+  if (RM){ hero.set(target, 1); heroRead(target); return; }
+  const t0 = hero.t, b0 = hero.b, start = performance.now();
+  const step = now => {
+    const p = clamp((now - start)/dur);
+    const b = lerp(b0, 1, clamp(p*3));               // brackets & wire first
+    const t = lerp(t0, target, clamp((p - (b0 < 1 ? .28 : 0)) / (b0 < 1 ? .72 : 1)));
+    hero.set(t, b); heroRead(t);
+    if (p < 1) heroAnim = requestAnimationFrame(step);
+  };
+  heroAnim = requestAnimationFrame(step);
+}
+hero.set(0, 0); heroRead(0);
+if (RM) heroTo(1); else setTimeout(() => heroTo(1, 4200), 700);
+bBefore.addEventListener('click', () => heroTo(0, 1800));
+bAfter.addEventListener('click', () => heroTo(1, 2600));
+
+/* ---------------- Journey (scroll-driven) ---------------- */
+const js = Smile(document.getElementById('journeySmile'));
+js.setBands(Array(12).fill('#53CFC5').map((c, i) => i % 2 ? '#FF6F58' : c));
+const jScroll = document.getElementById('journeyScroll');
+const jMonth = document.getElementById('jMonth'), jStage = document.getElementById('jStage'), jBar = document.getElementById('jBar');
+const jCrowd = document.getElementById('jCrowd'), jVisits = document.getElementById('jVisits'), jPct = document.getElementById('jPct');
+const stageEls = [...document.querySelectorAll('#stages li')];
+const STAGES = [[0,.12,'Consultation'],[.12,.22,'Treatment plan'],[.22,.32,'Bonding day'],[.32,.8,'Alignment'],[.8,.9,'Detailing'],[.9,1.01,'Retention']];
+let lastP = -1;
+function journey(){
+  const r = jScroll.getBoundingClientRect();
+  const p = clamp(-r.top / (r.height - innerHeight));
+  if (Math.abs(p - lastP) < .0005) return; lastP = p;
+  let si = STAGES.findIndex(s => p >= s[0] && p < s[1]); if (si < 0) si = 5;
+  const scanY = p < .12 ? p/.12 : -1;
+  const ghost = p < .12 ? 0 : p < .22 ? (p - .12)/.1 : p < .8 ? 1 - (p - .32)/.48*.7 : p < .9 ? .3 : .3*(1 - (p - .9)/.1);
+  const b = p < .22 ? 0 : p < .32 ? (p - .22)/.1 : p < .9 ? 1 : 1 - (p - .9)/.08;
+  const t = clamp((p - .32)/.48);
+  js.set(t, clamp(b), clamp(ghost), scanY);
+  let label;
+  if (p < .12) label = 'Day 1';
+  else if (p < .22) label = 'Week 1';
+  else if (p < .32) label = 'Month 01';
+  else if (p < .9) label = 'Month ' + String(Math.max(1, Math.round(1 + clamp((p - .32)/.58)*17))).padStart(2, '0');
+  else label = 'Month 18+';
+  jMonth.textContent = label; jStage.textContent = STAGES[si][2];
+  jBar.style.width = (p*100).toFixed(1) + '%';
+  jCrowd.textContent = (5.5*(1 - ease(t))).toFixed(1) + ' mm';
+  jVisits.textContent = p < .22 ? 1 : p < .32 ? 2 : 2 + Math.round(clamp((p - .32)/.58)*10);
+  jPct.textContent = Math.round(p*100) + '%';
+  stageEls.forEach((li, i) => { li.classList.toggle('on', i === si); li.classList.toggle('done', i < si); });
+}
+let ticking = false;
+addEventListener('scroll', () => { if (!ticking){ ticking = true; requestAnimationFrame(() => { journey(); ticking = false; }); } }, {passive:true});
+addEventListener('resize', () => { lastP = -1; journey(); });
+journey();
+
+/* ---------------- Band builder ---------------- */
+const COLORS = [['Coral','#E9543F'],['Sunflower','#F4B400'],['Mint','#3CC8A0'],['Sky','#3E9BE8'],['Violet','#8B6BE8'],['Rose','#F27BB0'],['Midnight','#1E2A5A'],['Glow','#C7F464'],['Pearl','#E9EEF2'],['Ruby','#B3163A']];
+const bs = Smile(document.getElementById('bandSmile'));
+bs.set(1, 1);
+const state = {a:'#E9543F', b:'#3E9BE8', slot:'a', pattern:'alt', colors:[]};
+const swWrap = document.getElementById('swatches');
+COLORS.forEach(([n, c]) => {
+  const btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'sw'; btn.style.background = c; btn.dataset.c = c;
+  btn.setAttribute('aria-label', n); btn.innerHTML = `<span class="n">${n}</span>`;
+  btn.addEventListener('click', () => { state[state.slot] = c; applyPattern(); syncUI(); });
+  swWrap.appendChild(btn);
+});
+function applyPattern(){
+  const R = COLORS.slice(0, 6).map(c => c[1]);
+  state.colors = Array.from({length:12}, (_, i) => {
+    if (state.pattern === 'solid') return state.a;
+    if (state.pattern === 'alt') return i % 2 ? state.b : state.a;
+    if (state.pattern === 'split') return i < 6 ? state.a : state.b;
+    return R[i % 6];
+  });
+  bs.setBands(state.colors);
+}
+function syncUI(){
+  document.getElementById('slotAc').style.background = state.a;
+  document.getElementById('slotBc').style.background = state.b;
+  document.getElementById('slotA').setAttribute('aria-pressed', state.slot === 'a');
+  document.getElementById('slotB').setAttribute('aria-pressed', state.slot === 'b');
+  swWrap.querySelectorAll('.sw').forEach(s => s.setAttribute('aria-pressed', s.dataset.c === state[state.slot]));
+  document.querySelectorAll('.pattern .chipbtn').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === state.pattern));
+}
+document.getElementById('slotA').addEventListener('click', () => { state.slot = 'a'; syncUI(); });
+document.getElementById('slotB').addEventListener('click', () => { state.slot = 'b'; syncUI(); });
+document.querySelectorAll('.pattern .chipbtn').forEach(b => b.addEventListener('click', () => { state.pattern = b.dataset.p; applyPattern(); syncUI(); }));
+bs.bandEls.forEach(b => b && b.addEventListener('click', () => {
+  state.colors[+b.dataset.i] = state[state.slot]; bs.setBands(state.colors);
+  if (!RM) b.animate([{strokeWidth:6},{strokeWidth:3.6}], {duration:350, easing:'cubic-bezier(.3,1.6,.5,1)'});
+}));
+applyPattern(); syncUI();
+
+/* ---------------- Scan point cloud ---------------- */
+(() => {
+  const svg = document.getElementById('scanSvg');
+  const g = el('g', {}, svg);
+  // molar crown silhouette: superellipse body + cusps
+  const inside = (x, y) => {
+    const nx = (x - 200)/120, ny = (y - 150)/105;
+    if (ny < -0.55){ const cusp = Math.abs(Math.sin((x - 80)/240*Math.PI*2)); return Math.abs(nx) < 1 && ny > -0.55 - cusp*0.4; }
+    if (ny > 0.55){ const root = Math.abs(nx + (nx < 0 ? .5 : -.5)); return root < 0.28 - (ny - .55)*0.28 && ny < 1.4; }
+    return Math.pow(Math.abs(nx), 4) + Math.pow(Math.abs(ny*0.9), 4) < 1;
+  };
+  let n = 0;
+  for (let y = 20; y <= 300; y += 9){
+    for (let x = 60; x <= 340; x += 9){
+      const jx = x + (y/9 % 2 ? 4.5 : 0);
+      if (!inside(jx, y)) continue;
+      const c = el('circle', {class:'dot', cx: jx, cy: y, r: 1.6}, g);
+      c.style.animationDelay = ((y - 20)/300*3.24).toFixed(2) + 's';
+      n++;
+    }
+  }
+  const beam = el('g', {class:'beam'}, svg);
+  el('rect', {x: 30, y: -30, width: 340, height: 34, fill: 'url(#beamG)'}, beam);
+  el('rect', {x: 30, y: 3, width: 340, height: 2, fill: '#53CFC5'}, beam);
+  const defs = el('defs', {}, svg);
+  defs.innerHTML = '<linearGradient id="beamG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#53CFC5" stop-opacity="0"/><stop offset="1" stop-color="#53CFC5" stop-opacity=".35"/></linearGradient>';
+  const lbl = el('text', {x: 30, y: 16, fill: '#94A6B5', 'font-family': 'JetBrains Mono, monospace', 'font-size': 12}, svg);
+  lbl.textContent = `UR6 · ${n * 48} pts`;
+})();
+
+/* ---------------- Cost ---------------- */
+const cost = {price: 4800};
+const $ = id => document.getElementById(id);
+const money = v => '$' + Math.round(v).toLocaleString('en-US');
+function calc(){
+  const down = +$('down').value, months = +$('months').value, ins = $('ins').checked ? Math.min(1500, cost.price*.5) : 0;
+  const bal = Math.max(0, cost.price - ins - down);
+  $('downOut').textContent = money(down); $('monthsOut').textContent = months;
+  $('monthly').textContent = money(bal/months);
+  $('dFee').textContent = money(cost.price); $('dIns').textContent = '−' + money(ins); $('dDown').textContent = '−' + money(down);
+}
+document.querySelectorAll('#costTreat .chipbtn').forEach(b => b.addEventListener('click', () => {
+  cost.price = +b.dataset.price;
+  document.querySelectorAll('#costTreat .chipbtn').forEach(x => x.setAttribute('aria-pressed', x === b));
+  calc();
+}));
+['down','months','ins'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+
+/* ---------------- Form ---------------- */
+$('consultForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const note = $('formNote');
+  if (!$('fName').value.trim() || !$('fPhone').value.trim()){
+    note.textContent = 'Add your first name and a phone number so a coordinator can reach you.';
+    ($('fName').value.trim() ? $('fPhone') : $('fName')).focus();
+    return;
+  }
+  note.className = 'sent';
+  note.textContent = `Thanks, ${$('fName').value.trim()}. In the live site this request would go to the ${$('fLoc').value} studio. This preview doesn’t send anything.`;
+});
+
+/* ---------------- Image slots: placeholder until the file exists ---------------- */
+const PH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 9"/></svg>';
+document.querySelectorAll('.ph[data-src]').forEach(f => {
+  const inner = document.createElement('span');
+  inner.className = 'ph-in';
+  inner.innerHTML = `${PH_ICON}<b></b><small></small>`;
+  inner.querySelector('b').textContent = f.dataset.label || 'Image';
+  inner.querySelector('small').textContent = `${f.dataset.src}${f.dataset.size ? ' · ' + f.dataset.size : ''}`;
+  f.appendChild(inner);
+  f.setAttribute('role', 'img');
+  f.setAttribute('aria-label', f.dataset.alt || f.dataset.label || '');
+  const img = new Image();
+  img.onload = () => { img.alt = f.dataset.alt || ''; f.appendChild(img); f.classList.add('loaded'); };
+  img.src = f.dataset.src;
+});
+
+/* ---------------- Before / after sliders ---------------- */
+document.querySelectorAll('.ba').forEach(ba => {
+  const input = ba.querySelector('input');
+  const set = v => ba.style.setProperty('--pos', v + '%');
+  input.addEventListener('input', () => set(input.value));
+  set(input.value);
+  if (!RM && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; io.disconnect();
+      const t0 = performance.now();
+      const run = now => {
+        const p = clamp((now - t0)/1800);
+        const v = 50 + Math.sin(p*Math.PI*2)*28*(1 - p);
+        set(v); input.value = v;
+        if (p < 1) requestAnimationFrame(run);
+      };
+      requestAnimationFrame(run);
+    }), {threshold:.6});
+    io.observe(ba);
+  }
+});
+
+/* ---------------- Nav, marquee, reveal ---------------- */
+const nav = $('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), {passive:true});
+$('menuBtn').addEventListener('click', () => {
+  const open = $('menu').classList.toggle('open'); $('menuBtn').setAttribute('aria-expanded', open);
+});
+$('menu').addEventListener('click', e => { if (e.target.tagName === 'A'){ $('menu').classList.remove('open'); $('menuBtn').setAttribute('aria-expanded', false); } });
+const mq = $('marquee'); mq.innerHTML += mq.innerHTML;
+
+if (!RM && 'IntersectionObserver' in window){
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.remove('pending'); io.unobserve(e.target); }
+  }), {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach((n, i) => {
+    if (n.getBoundingClientRect().top > innerHeight){
+      n.classList.add('pending');
+      n.style.transitionDelay = (n.closest('.treat-grid,.reviews,.team,.posts,.ba-grid') ? (i % 3)*90 : 0) + 'ms';
+      io.observe(n);
+    }
+  });
+}
+})();
+</script>

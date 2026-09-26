@@ -1,0 +1,8 @@
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:900px){.team{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.team{grid-template-columns:1fr}}
+.doc{display:grid;gap:14px}
+.doc .portrait{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.doc:hover .portrait{transform:translateY(-6px) rotate(-.6deg)}
+.doc p{color:var(--muted);font-size:.95rem}
+.creds{display:flex;flex-wrap:wrap;gap:6px}
