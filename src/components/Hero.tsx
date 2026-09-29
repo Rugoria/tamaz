@@ -1,11 +1,16 @@
 import { hero } from "@/content/site";
+import { publicFileExists } from "@/lib/publicFile";
+import { HeroAligner } from "./HeroAligner";
 import { HeroSmileCard } from "./HeroSmileCard";
+import { VideoSlot } from "./video-slot/VideoSlot";
 import styles from "./Hero.module.css";
 
 const WAVY = "M2 10 Q 27 -4 52 10 T 102 10 T 152 10 T 198 10";
 const STRAIGHT = "M2 10 Q 27 10 52 10 T 102 10 T 152 10 T 198 10";
 
 export function Hero() {
+  const hasVideo = hero.aligner.sources.some(publicFileExists);
+  const hasImage = publicFileExists(hero.aligner.image);
   return (
     <section className={styles.hero}>
       <svg className={styles.arcs} viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -59,7 +64,21 @@ export function Hero() {
         </div>
 
         <div className={`${styles.rise} ${styles.d2}`} style={{ position: "relative" }}>
-          <HeroSmileCard />
+          {hasVideo ? (
+            <VideoSlot
+              src={hero.aligner.sources}
+              poster={hero.aligner.image}
+              title={hero.aligner.title}
+              label="Hero aligner render"
+              aspect="6/5"
+              mode="ambient"
+              className={styles.aligner}
+            />
+          ) : hasImage ? (
+            <HeroAligner src={hero.aligner.image} alt={hero.aligner.alt} />
+          ) : (
+            <HeroSmileCard />
+          )}
           <div className={`${styles.chip} ${styles.c1}`}>
             <b>{hero.chips.duration}</b> {hero.chips.durationLabel}
           </div>

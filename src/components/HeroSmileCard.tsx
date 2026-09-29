@@ -6,7 +6,8 @@ import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
 import { Smile, type SmileHandle } from "./smile/Smile";
 import styles from "./HeroSmileCard.module.css";
 
-const HERO_BANDS = ["#E9543F", "#2BA8A0", "#E9543F", "#2BA8A0", "#E9543F", "#2BA8A0", "#2BA8A0", "#E9543F", "#2BA8A0", "#E9543F", "#2BA8A0", "#E9543F"];
+// CSS variables, so the bands follow the active color scheme and light/dark mode.
+const HERO_BANDS = Array.from({ length: 12 }, (_, i) => ((i < 6 ? i % 2 : (i + 1) % 2) ? "var(--aqua)" : "var(--accent)"));
 
 export function HeroSmileCard() {
   const smile = useRef<SmileHandle>(null);

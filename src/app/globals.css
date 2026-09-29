@@ -19,6 +19,12 @@
   --danger:#B42318;
   --shadow:0 1px 2px rgba(15,36,56,.06),0 12px 32px -12px rgba(15,36,56,.18);
   --radius:18px;
+  /* derived from the scheme tokens; do not set per scheme */
+  --accent-text:var(--accent);
+  --deep-2:color-mix(in oklab,var(--deep),white 7%);
+  --deep-line:color-mix(in oklab,var(--deep),white 15%);
+  --deep-muted:color-mix(in oklab,var(--deep-ink) 62%,var(--deep));
+  --deep-aqua:color-mix(in oklab,var(--aqua),white 22%);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -41,6 +47,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{transition:background-color .45s,color .45s}
 h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.02em}
 h2{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:700}
 h3{font-size:1.3rem;font-weight:650;letter-spacing:-.01em}

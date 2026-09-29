@@ -1,4 +1,4 @@
-import { team } from "@/content/site";
+import { gallery, team } from "@/content/site";
 import { ImageSlot } from "./image-slot/ImageSlot";
 import { SectionHead } from "./SectionHead";
 import { Copy } from "./Tbd";
@@ -29,6 +29,31 @@ export function Team() {
               </div>
               <p><Copy text={d.bio} /></p>
             </article>
+          ))}
+        </div>
+
+        <div className={`${styles.sub} reveal`}>
+          <span className="eyebrow">{gallery.eyebrow}</span>
+          <h3>{gallery.title}</h3>
+        </div>
+        <div className={`${styles.mosaic} reveal`}>
+          {gallery.images.map((img, i) => (
+            <ImageSlot
+              key={img.src}
+              {...img}
+              className={i === 0 ? `${styles.tile} ${styles.big}` : styles.tile}
+              sizes={i === 0 ? "(max-width: 760px) 100vw, 600px" : "(max-width: 760px) 50vw, 300px"}
+            />
+          ))}
+        </div>
+
+        <div className={`${styles.sub} reveal`}>
+          <h3>{gallery.patientsTitle}</h3>
+          <p>{gallery.patientsLede}</p>
+        </div>
+        <div className={styles.patients} data-stagger>
+          {gallery.patients.map((img) => (
+            <ImageSlot key={img.src} {...img} className="reveal" aspect="1/1" sizes="(max-width: 760px) 50vw, 290px" />
           ))}
         </div>
       </div>

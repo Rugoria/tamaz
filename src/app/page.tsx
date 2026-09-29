@@ -1,50 +1,56 @@
-import { BandStudio } from "@/components/BandStudio";
 import { Consultation } from "@/components/Consultation";
 import { CostCalculator } from "@/components/CostCalculator";
 import { Faq } from "@/components/Faq";
 import { Hero } from "@/components/Hero";
 import { Journey } from "@/components/Journey";
 import { Locations } from "@/components/Locations";
-import { PromoBar } from "@/components/PromoBar";
+import { PaymentPackages } from "@/components/PaymentPackages";
+import { Process } from "@/components/Process";
 import { Results } from "@/components/Results";
 import { RevealObserver } from "@/components/RevealObserver";
 import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SmileGuide } from "@/components/SmileGuide";
-import { StudioGallery } from "@/components/StudioGallery";
+import { SmileReveal } from "@/components/SmileReveal";
 import { Team } from "@/components/Team";
-import { Technology } from "@/components/Technology";
-import { TreatmentMarquee } from "@/components/TreatmentMarquee";
-import { Treatments } from "@/components/Treatments";
 import styles from "./page.module.css";
 
+/** Section order follows the approved website layout (1–11). */
 export default function Home() {
   return (
     <>
-      <PromoBar />
       <SiteNav />
       <main id="top">
+        {/* 1. Hero: 3D aligner display */}
         <Hero />
-        <TreatmentMarquee />
-        <Treatments />
-        <Team />
+        {/* 2. Before & after */}
+        <SmileReveal />
         <Results />
+        {/* 3. Scroll to see the smile */}
         <Journey />
-        <BandStudio />
-        <Technology />
+        {/* 4. Process */}
+        <Process />
+        {/* 5. Payment packages */}
+        <PaymentPackages />
         <CostCalculator />
-        <StudioGallery />
+        {/* 6. Clinic, patients and doctors */}
+        <Team />
+        {/* 7. Reviews & testimonials */}
         <Reviews />
+        {/* 8. FAQs, studios & map */}
         <section id="visit" style={{ paddingTop: 0 }}>
           <div className={`wrap ${styles.two}`}>
-            <Locations />
             <Faq />
+            <Locations />
           </div>
         </section>
+        {/* 9. Tips & video tutorials */}
         <SmileGuide />
+        {/* 10. Book your session */}
         <Consultation />
       </main>
+      {/* 11. Bottom bar */}
       <SiteFooter />
       <RevealObserver />
     </>

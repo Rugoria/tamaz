@@ -5,3 +5,5 @@
 .faq summary::after{content:"";position:absolute;right:6px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(currentColor,currentColor) center/14px 2px no-repeat,linear-gradient(currentColor,currentColor) center/2px 14px no-repeat;transition:transform .35s}
 .faq details[open] summary::after{transform:rotate(135deg)}
 .faq details p{padding:0 0 20px;color:var(--muted);max-width:60ch}
+.group + .group{margin-top:28px}
+.group h3{font:500 .75rem/1 var(--mono);color:var(--aqua);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}

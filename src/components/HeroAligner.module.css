@@ -1,0 +1,13 @@
+/* Transparent render floats on the page in light mode. In dark mode it sits on a
+   light "display" plinth so the clear plastic stays readable. */
+.stage{--rx:0deg;--ry:0deg;position:relative;isolation:isolate;border-radius:28px;perspective:1000px}
+.float{transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s cubic-bezier(.2,.8,.2,1);animation:float 7s ease-in-out infinite}
+.float img{display:block;width:100%;height:auto}
+.shadow{position:absolute;left:18%;right:18%;bottom:2%;height:8%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in oklab,var(--ink) 18%,transparent),transparent);z-index:-1;animation:shadow 7s ease-in-out infinite}
+@keyframes float{50%{translate:0 -12px}}
+@keyframes shadow{50%{scale:.88;opacity:.7}}
+@media (prefers-reduced-motion:reduce){.float,.shadow{animation:none}.float{transition:none}}
+@media (prefers-color-scheme:dark){
+  :global(:root:not([data-theme="light"])) .stage{background:radial-gradient(ellipse at 50% 40%,var(--deep-ink),color-mix(in oklab,var(--deep-ink) 82%,var(--muted)));box-shadow:var(--shadow)}
+}
+:global(:root[data-theme="dark"]) .stage{background:radial-gradient(ellipse at 50% 40%,var(--deep-ink),color-mix(in oklab,var(--deep-ink) 82%,var(--muted)));box-shadow:var(--shadow)}

@@ -7,15 +7,6 @@
 
 export type NavLink = { label: string; href: string };
 
-export type Treatment = {
-  /** Which icon to draw (see components/Treatments.tsx). */
-  icon: "metal" | "ceramic" | "aligners" | "selfLigating" | "phase1" | "retainers";
-  title: string;
-  body: string;
-  duration: string;
-  price: string;
-};
-
 export type Doctor = {
   name: string;
   image: string;
@@ -29,25 +20,42 @@ export type Case = {
   detail: string;
   before: { src: string; label: string; alt: string };
   after: { src: string; label: string; alt: string };
+  /** Optional before → after clip (relative to public/). When the file exists it replaces the slider. */
+  video?: string;
 };
 
-export type JourneyStage = { name: string; body: string; label: string; start: number; end: number };
+type StageCopy = { name: string; body: string; label: string };
 
-export type BandColor = { name: string; hex: string };
+/** `aligners` overrides the copy when the aligner view is selected. */
+export type JourneyStage = StageCopy & { start: number; end: number; aligners?: StageCopy };
+
+export type Appliance = "braces" | "aligners";
 
 export type CostOption = { label: string; price: number };
 
-export type TechFeature = { kicker: string; title: string; body: string };
+export type PaymentPackage = {
+  name: string;
+  price: string;
+  monthly: string;
+  includes: string[];
+  /** Highlights one card as the recommended package. */
+  featured?: boolean;
+};
+
+export type ProcessStep = { title: string; body: string; time: string };
 
 export type GalleryImage = { src: string; label: string; size: string; alt: string };
 
 export type Review = { quote: string; name: string; detail: string; initials: string; color: string };
 
+export type Testimonial = { name: string; detail: string; quote: string; video: string; poster?: string };
+
 export type Studio = { name: string; hours: string; address: string; phone: string };
 
 export type Faq = { question: string; answer: string };
 
-export type Article = { image: GalleryImage; kicker: string; title: string; href: string };
+/** `video` is a YouTube URL or a path relative to public/. */
+export type VideoTip = { kicker: string; title: string; video: string; poster?: string };
 
 export const brand = {
   name: "tamaz",
@@ -55,20 +63,13 @@ export const brand = {
     "Braces and clear aligners for kids, teens and adults, from board-certified orthodontists. Free first visit with a 3D scan, a written plan and your monthly price.",
 };
 
-export const promo = {
-  offer: "[Current offer]",
-  text: "Free consultation + $500 off braces when you start by",
-  date: "[date]",
-  cta: { label: "Claim it →", href: "#consult" },
-};
-
 export const nav: { links: NavLink[]; cta: NavLink } = {
   links: [
-    { label: "Treatments", href: "#treatments" },
-    { label: "Our team", href: "#team" },
     { label: "Results", href: "#results" },
     { label: "Your journey", href: "#journey" },
-    { label: "Cost", href: "#cost" },
+    { label: "Process", href: "#process" },
+    { label: "Cost", href: "#packages" },
+    { label: "Reviews", href: "#reviews" },
     { label: "Locations", href: "#visit" },
   ],
   cta: { label: "Book free consult", href: "#consult" },
@@ -82,7 +83,7 @@ export const hero = {
   lede:
     "Board-certified orthodontists, four neighborhood studios and a free first visit. You leave with a 3D scan, a written treatment plan and your monthly price before you commit to anything.",
   primaryCta: { label: "Book a free consultation", href: "#consult" },
-  secondaryCta: { label: "Compare treatments", href: "#treatments" },
+  secondaryCta: { label: "See real results", href: "#before-after" },
   trust: [
     { value: "4.9 ★", label: "2,300+ patient reviews" },
     { value: "$0 down", label: "interest-free plans" },
@@ -90,67 +91,28 @@ export const hero = {
   ],
   chips: { duration: "18 mo", durationLabel: "average treatment", scan: "Free 3D scan" },
   smileLabel: "Animated upper teeth moving from crowded to straight as braces are applied",
+  /**
+   * 3D aligner display. A video (transparent background) wins if present: list the
+   * HEVC-with-alpha .mov (Safari) before the VP9-with-alpha .webm (Chrome, Firefox, Edge).
+   * Otherwise the still render is shown (a PNG with its white background cut out).
+   * With neither file, the hero falls back to the animated smile card.
+   */
+  aligner: {
+    sources: ["videos/hero-aligner.mov", "videos/hero-aligner.webm"],
+    image: "images/hero-aligner.png",
+    alt: "3D render of a clear aligner",
+    title: "3D render of a clear aligner rotating",
+  },
 };
 
-export const marquee = [
-  "Metal braces",
-  "Clear ceramic braces",
-  "Clear aligners",
-  "Self-ligating braces",
-  "Early treatment, age 7+",
-  "Adult orthodontics",
-  "Retainers",
-  "Same-week repairs",
-];
-
-export const treatments = {
-  eyebrow: "Treatments",
-  title: "The right appliance for your bite, age and schedule.",
-  lede: "Every option is planned digitally by the same orthodontist who sees you at each visit. We’ll recommend one; you choose.",
-  items: [
-    {
-      icon: "metal",
-      title: "Metal braces",
-      body: "The most precise tool for complex bites. Smaller brackets than you remember, plus colored bands you can change every visit.",
-      duration: "18–24 months",
-      price: "from $4,800",
-    },
-    {
-      icon: "ceramic",
-      title: "Clear ceramic braces",
-      body: "Tooth-colored brackets that blend in, with the same control as metal. A favorite for adults and senior photos.",
-      duration: "18–24 months",
-      price: "from $5,600",
-    },
-    {
-      icon: "aligners",
-      title: "Clear aligners",
-      body: "Removable trays you swap every one to two weeks. We check progress with in-office scans, not guesswork by mail.",
-      duration: "6–18 months",
-      price: "from $5,900",
-    },
-    {
-      icon: "selfLigating",
-      title: "Self-ligating braces",
-      body: "Brackets with a built-in sliding door instead of bands. Lighter forces, fewer adjustments, quicker visits.",
-      duration: "16–22 months",
-      price: "from $5,300",
-    },
-    {
-      icon: "phase1",
-      title: "Early treatment (Phase 1)",
-      body: "A check-up by age 7 can catch crossbites and crowding early. Most kids only need monitoring, and the visit is free.",
-      duration: "ages 7–10",
-      price: "from $2,900",
-    },
-    {
-      icon: "retainers",
-      title: "Retainers & adult relapse",
-      body: "Had braces years ago and teeth shifted back? Short aligner courses and bonded retainers keep results for life.",
-      duration: "3–9 months",
-      price: "from $1,400",
-    },
-  ] satisfies Treatment[],
+/** Scroll-driven before → after wipe shown right after the hero. */
+export const smileReveal = {
+  eyebrow: "Before & after",
+  title: "Scroll to see the difference.",
+  lede: "[One line about this patient’s treatment, e.g. treatment type and months.]",
+  label: "Compare this smile before and after treatment",
+  before: { src: "images/reveal-before.jpg", label: "Before", size: "1040 × 547", alt: "Crowded, uneven front teeth before treatment" },
+  after: { src: "images/reveal-after.jpg", label: "After", size: "1040 × 547", alt: "Straight, even front teeth after treatment" },
 };
 
 export const team = {
@@ -184,81 +146,117 @@ export const team = {
 
 export const results = {
   eyebrow: "Real results",
-  title: "Drag to compare before and after.",
-  lede: "Every case shown is a tamaz patient, shared with written consent.",
+  title: "Watch real smiles change.",
+  lede: "Every case shown is a tamaz patient, shared with written consent. Drag the photos to compare before and after.",
   cases: [
     {
       title: "Crowding",
       detail: "Metal braces · 20 months",
       before: { src: "images/case-1-before.jpg", label: "Case 1 · before", alt: "Crowded teeth before treatment" },
       after: { src: "images/case-1-after.jpg", label: "Case 1 · after", alt: "Straight teeth after treatment" },
+      video: "videos/case-1.mp4",
     },
     {
       title: "Spacing",
       detail: "Clear aligners · 9 months",
       before: { src: "images/case-2-before.jpg", label: "Case 2 · before", alt: "Gap between front teeth before treatment" },
       after: { src: "images/case-2-after.jpg", label: "Case 2 · after", alt: "Gap closed after treatment" },
+      video: "videos/case-2.mp4",
     },
     {
       title: "Deep overbite",
       detail: "Ceramic braces · 22 months",
       before: { src: "images/case-3-before.jpg", label: "Case 3 · before", alt: "Overbite before treatment" },
       after: { src: "images/case-3-after.jpg", label: "Case 3 · after", alt: "Corrected bite after treatment" },
+      video: "videos/case-3.mp4",
     },
   ] satisfies Case[],
 };
 
 export const journey = {
-  eyebrow: "Your 18-month journey",
+  /** {months} is replaced with the average for the selected appliance. */
+  eyebrow: "Your {months}-month journey",
   title: "Scroll to watch a smile move into place.",
   lede: "Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.",
-  smileLabel: "Teeth moving from crowded to straight across treatment stages",
+  /** Real-teeth animation: the after photo fades in over the before photo as you scroll. */
+  photos: {
+    before: { src: "images/journey-before.jpg", alt: "Smile with crooked, uneven teeth before treatment" },
+    after: { src: "images/journey-after.jpg", alt: "The same smile with straight, even teeth after treatment" },
+  },
+  toggleLabel: "Show treatment with",
+  appliances: {
+    // Placeholder average until the client confirms it; update `months` to match.
+    aligners: { label: "Clear aligners", months: 12, average: "[12] months" },
+    braces: { label: "Braces", months: 18, average: "18 months" },
+  } satisfies Record<Appliance, { label: string; months: number; average: string }>,
   /** start/end are fractions of the scroll through the section. */
   stages: [
     { name: "Scan", label: "Consultation", start: 0, end: 0.12, body: "Free consultation and 3D scan. About four minutes, with no impression trays." },
     { name: "Plan", label: "Treatment plan", start: 0.12, end: 0.22, body: "Your orthodontist sets a target position for every tooth and shows you the result on screen." },
-    { name: "Bond", label: "Bonding day", start: 0.22, end: 0.32, body: "Brackets go on in about an hour. You pick your band colors." },
-    { name: "Align", label: "Alignment", start: 0.32, end: 0.8, body: "The archwire gently pulls teeth into line. Adjustment visits every 6–8 weeks." },
-    { name: "Detail", label: "Detailing", start: 0.8, end: 0.9, body: "Fine-tuning of the bite, root angles and the last fractions of a millimeter." },
-    { name: "Retain", label: "Retention", start: 0.9, end: 1.01, body: "Brackets off, retainers on. Your first set is included." },
+    {
+      name: "Bond", label: "Bonding day", start: 0.22, end: 0.32, body: "Brackets go on in about an hour. You pick your band colors.",
+      aligners: { name: "Fit", label: "First trays", body: "You get your first set of clear trays and learn how to put them in and take them out." },
+    },
+    {
+      name: "Align", label: "Alignment", start: 0.32, end: 0.8, body: "The archwire gently pulls teeth into line. Adjustment visits every 6–8 weeks.",
+      aligners: { name: "Align", label: "Alignment", body: "A new set of trays every one to two weeks, worn 22 hours a day. Check-ins every 8–10 weeks." },
+    },
+    {
+      name: "Detail", label: "Detailing", start: 0.8, end: 0.9, body: "Fine-tuning of the bite, root angles and the last fractions of a millimeter.",
+      aligners: { name: "Refine", label: "Refinement", body: "Refinement trays fine-tune the bite and the last fractions of a millimeter." },
+    },
+    {
+      name: "Retain", label: "Retention", start: 0.9, end: 1.01, body: "Brackets off, retainers on. Your first set is included.",
+      aligners: { name: "Retain", label: "Retention", body: "Last trays done, retainers on. Your first set is included." },
+    },
   ] satisfies JourneyStage[],
 };
 
-export const bandStudio = {
-  eyebrow: "Band color studio",
-  title: "Make your braces yours.",
-  lede: "Pick new colors at every adjustment. Try a combination here and we’ll have it ready at your next visit.",
-  hint: "Tip: tap any band on the smile to paint just that tooth.",
-  smileLabel: "Preview of braces with your chosen band colors",
-  colors: [
-    { name: "Coral", hex: "#E9543F" },
-    { name: "Sunflower", hex: "#F4B400" },
-    { name: "Mint", hex: "#3CC8A0" },
-    { name: "Sky", hex: "#3E9BE8" },
-    { name: "Violet", hex: "#8B6BE8" },
-    { name: "Rose", hex: "#F27BB0" },
-    { name: "Midnight", hex: "#1E2A5A" },
-    { name: "Glow", hex: "#C7F464" },
-    { name: "Pearl", hex: "#E9EEF2" },
-    { name: "Ruby", hex: "#B3163A" },
-  ] satisfies BandColor[],
-  defaults: { a: "#E9543F", b: "#3E9BE8" },
+/** The aligner case pipeline, from scan to delivery. Durations are placeholders until the client confirms them. */
+export const process = {
+  eyebrow: "How it works",
+  title: "From scan to your door.",
+  lede: "Every aligner case moves through the same six stages, and we keep you updated at each one.",
+  steps: [
+    { title: "Scan received", body: "Your 3D scan reaches our lab and your case is opened.", time: "[Duration]" },
+    { title: "Design & proposal", body: "Your orthodontist plans every tooth movement and shares the proposed result with you.", time: "[Duration]" },
+    { title: "Modifications & refinements", body: "We adjust the plan with your feedback until you and your orthodontist approve it.", time: "[Duration]" },
+    { title: "Production in progress", body: "Your custom aligners are manufactured and checked for fit and quality.", time: "[Duration]" },
+    { title: "Out for delivery", body: "Your aligners are packed and on their way to you or your studio.", time: "[Duration]" },
+    { title: "Delivered", body: "Your aligners arrive and your treatment begins.", time: "[Duration]" },
+  ] satisfies ProcessStep[],
 };
 
-export const technology = {
-  eyebrow: "Technology",
-  title: "See your finished smile before day one.",
-  scanLabel: "Animation of an intraoral 3D scan building a point cloud of a tooth",
-  stats: [
-    { label: "Scan accuracy", value: "±20 µm" },
-    { label: "Scan time", value: "~4 min" },
-    { label: "Radiation", value: "0 mSv" },
-  ],
-  features: [
-    { kicker: "3D INTRAORAL SCAN", title: "No goopy impressions", body: "A wand captures thousands of points per second to build a model of every tooth, accurate to about 20 microns." },
-    { kicker: "DIGITAL SETUP", title: "A plan you can watch", body: "We move each tooth virtually and show you the path, the timeline and the final bite on screen at your consultation." },
-    { kicker: "LOW-DOSE IMAGING", title: "Less radiation, more detail", body: "Digital X-rays use a fraction of film dose, and we only take them when they change a decision." },
-  ] satisfies TechFeature[],
+/** Package names, prices and inclusions are placeholders until the client confirms them. */
+export const packages = {
+  eyebrow: "Payment packages",
+  title: "One price, everything included.",
+  lede: "[Short intro to the packages from the client.]",
+  items: [
+    {
+      name: "[Package 1 name]",
+      price: "[$0,000]",
+      monthly: "[or $000/mo]",
+      includes: ["[Inclusion 1]", "[Inclusion 2]", "[Inclusion 3]"],
+    },
+    {
+      name: "[Package 2 name]",
+      price: "[$0,000]",
+      monthly: "[or $000/mo]",
+      includes: ["[Inclusion 1]", "[Inclusion 2]", "[Inclusion 3]", "[Inclusion 4]"],
+      featured: true,
+    },
+    {
+      name: "[Package 3 name]",
+      price: "[$0,000]",
+      monthly: "[or $000/mo]",
+      includes: ["[Inclusion 1]", "[Inclusion 2]", "[Inclusion 3]", "[Inclusion 4]", "[Inclusion 5]"],
+    },
+  ] satisfies PaymentPackage[],
+  featuredLabel: "Most popular",
+  // Points at the booking form until online deposits (Stripe Checkout) are connected.
+  cta: { label: "Reserve this package", href: "#consult" },
+  calculatorLink: { label: "Or estimate your monthly payment", href: "#cost" },
 };
 
 export const cost = {
@@ -292,6 +290,14 @@ export const gallery = {
     { src: "images/studio-4.jpg", label: "Team photo", size: "800 × 600", alt: "The tamaz clinical team" },
     { src: "images/studio-5.jpg", label: "Smiling patient", size: "800 × 600", alt: "Patient smiling after braces removal" },
   ] satisfies GalleryImage[],
+  patientsTitle: "Our patients",
+  patientsLede: "Real tamaz patients, shared with their permission.",
+  patients: [
+    { src: "images/patient-1.jpg", label: "Patient photo", size: "800 × 800", alt: "Patient smiling while wearing clear aligners" },
+    { src: "images/patient-2.jpg", label: "Patient photo", size: "800 × 800", alt: "tamaz patient smiling" },
+    { src: "images/patient-3.jpg", label: "Patient photo", size: "800 × 800", alt: "tamaz patient smiling" },
+    { src: "images/patient-4.jpg", label: "Patient photo", size: "800 × 800", alt: "tamaz patient smiling" },
+  ] satisfies GalleryImage[],
 };
 
 export const reviews = {
@@ -317,9 +323,24 @@ export const reviews = {
       name: "Aisha T.",
       detail: "Clear aligners",
       initials: "AT",
-      color: "#6B5BD6",
+      color: "var(--deep)",
     },
   ] satisfies Review[],
+  /**
+   * Summary badge. These static reviews stand in until the Google Places API is
+   * connected; `url` is the practice's Google Maps reviews link (hidden while empty).
+   */
+  google: { rating: "4.9", count: "[2,300+] Google reviews", url: "", linkLabel: "Read all reviews on Google" },
+};
+
+export const testimonials = {
+  eyebrow: "Testimonials",
+  title: "In their own words.",
+  items: [
+    { name: "[Patient name]", detail: "[Treatment]", quote: "[Short quote from the video.]", video: "videos/testimonial-1.mp4", poster: "images/testimonial-1.jpg" },
+    { name: "[Patient name]", detail: "[Treatment]", quote: "[Short quote from the video.]", video: "videos/testimonial-2.mp4", poster: "images/testimonial-2.jpg" },
+    { name: "[Patient name]", detail: "[Treatment]", quote: "[Short quote from the video.]", video: "videos/testimonial-3.mp4", poster: "images/testimonial-3.jpg" },
+  ] satisfies Testimonial[],
 };
 
 export const locations = {
@@ -341,39 +362,84 @@ export const locations = {
 
 export const faq = {
   eyebrow: "Questions",
-  title: "Before you book",
-  items: [
-    { question: "Is the first consultation really free?", answer: "Yes. It includes the exam, a 3D scan, any X-rays we need, and a written plan with pricing. There’s no obligation to start." },
-    { question: "Do braces hurt?", answer: "Most people feel pressure and mild soreness for two or three days after bonding and after adjustments. Soft foods and an over-the-counter pain reliever usually cover it." },
-    { question: "How often are appointments?", answer: "Braces patients visit every 6–8 weeks. Aligner patients usually come in every 8–10 weeks, and each visit takes 20–30 minutes." },
-    { question: "What if a bracket breaks?", answer: "Call the studio. We keep same-week repair slots open at every location, and Saturday hours for school and work schedules." },
-    { question: "At what age should my child be checked?", answer: "The American Association of Orthodontists recommends a first check by age 7. Most children won’t need treatment yet, but early checks catch crossbites and crowding." },
-  ] satisfies Faq[],
+  title: "FAQ",
+  groups: [
+    {
+      title: "General & technology",
+      items: [
+        {
+          question: "What are clear aligners, and how are they different from metal braces?",
+          answer: "Clear aligners are removable, custom-made trays of clear thermoplastic that fit snugly over your teeth. Unlike braces, they’re barely noticeable, you take them out to eat so there are no food restrictions, and there are no metal brackets or wires to rub your cheeks and gums.",
+        },
+        {
+          question: "How do aligners actually move my teeth?",
+          answer: "Each set of aligners is digitally designed to apply gentle, precise pressure to specific teeth. You wear each set for one to two weeks, and every new set moves your teeth a little further, in small planned steps, toward the final position your orthodontist has prescribed.",
+        },
+      ],
+    },
+    {
+      title: "Candidacy & duration",
+      items: [
+        {
+          question: "Am I a suitable candidate for clear aligners?",
+          answer: "Aligners treat most mild to moderate cases, including crowding, spacing and simple overbites or underbites. More severe or complex bite problems may need traditional braces or a combination of both. The only way to know for sure is an orthodontic evaluation with a 3D scan and digital imaging, which is part of your free consultation.",
+        },
+        {
+          question: "How long will my treatment take?",
+          answer: "Most aligner treatment takes 6 to 18 months, depending on how complex your case is. The biggest factor you control is wear time: leaving aligners out too often is the most common reason treatment takes longer than planned.",
+        },
+      ],
+    },
+    {
+      title: "Lifestyle & wear time",
+      items: [
+        {
+          question: "How important is wearing my aligners every day?",
+          answer: "It’s essential. Aligners need to be worn 20 to 22 hours a day and taken out only to eat, to drink anything other than plain water, and to brush your teeth. Aligners that stay in their case don’t move teeth.",
+        },
+        {
+          question: "Can I eat or drink with my aligners in?",
+          answer: "Take them out to eat, and for anything other than plain, cool water. Hot drinks can warp the plastic, and sugary or colored drinks can stain the trays and trap sugar and acid against your teeth, which raises the risk of cavities.",
+        },
+      ],
+    },
+    {
+      title: "Care & comfort",
+      items: [
+        {
+          question: "How do I clean my aligners?",
+          answer: "Clean them every day with a soft toothbrush and a mild, non-abrasive soap or an approved cleaning solution, using cool or lukewarm water. Hot water can damage the material. After eating, brush and floss before you put them back in so food isn’t trapped against your teeth.",
+        },
+        {
+          question: "Do clear aligners hurt?",
+          answer: "You may feel some pressure or tenderness for a day or two when you switch to a new set. That’s a sign they’re working. Most people find aligners much more comfortable than metal braces.",
+        },
+      ],
+    },
+    {
+      title: "Process & aftercare",
+      items: [
+        {
+          question: "Will aligners affect my speech or cause a lisp?",
+          answer: "Some people have a slight lisp for the first few days while their tongue gets used to a new set. It usually goes away quickly, and aligners have very little effect on speech overall.",
+        },
+        {
+          question: "Will I need a retainer after treatment?",
+          answer: "Yes. Teeth naturally tend to drift back toward their old positions, so everyone needs some form of retainer after treatment to keep their new smile in place. Your first retainer is included.",
+        },
+      ],
+    },
+  ] satisfies { title: string; items: Faq[] }[],
 };
 
 export const smileGuide = {
-  eyebrow: "Smile guide",
+  eyebrow: "Video tips",
   title: "Tips for life with braces and aligners.",
-  articles: [
-    {
-      image: { src: "images/blog-1.jpg", label: "Article image", size: "1200 × 750", alt: "Braces-friendly foods" },
-      kicker: "Braces care · 4 min",
-      title: "What you can eat in the first week with braces",
-      href: "#resources",
-    },
-    {
-      image: { src: "images/blog-2.jpg", label: "Article image", size: "1200 × 750", alt: "Clear aligner case" },
-      kicker: "Aligners · 5 min",
-      title: "How to wear aligners 22 hours a day without noticing",
-      href: "#resources",
-    },
-    {
-      image: { src: "images/blog-3.jpg", label: "Article image", size: "1200 × 750", alt: "Child at an orthodontic check-up" },
-      kicker: "Parents · 3 min",
-      title: "Why an orthodontic check at age 7 matters",
-      href: "#resources",
-    },
-  ] satisfies Article[],
+  tips: [
+    { kicker: "Braces care · [0:00]", title: "[Tutorial 1 title]", video: "videos/tip-1.mp4", poster: "images/tip-1.jpg" },
+    { kicker: "Aligners · [0:00]", title: "[Tutorial 2 title]", video: "videos/tip-2.mp4", poster: "images/tip-2.jpg" },
+    { kicker: "Parents · [0:00]", title: "[Tutorial 3 title]", video: "videos/tip-3.mp4", poster: "images/tip-3.jpg" },
+  ] satisfies VideoTip[],
 };
 
 export const consultation = {
@@ -403,13 +469,13 @@ export const footer = {
   ] as const,
   columns: [
     {
-      title: "Treatments",
+      title: "Explore",
       links: [
-        { label: "Metal braces", href: "#treatments" },
-        { label: "Clear ceramic braces", href: "#treatments" },
-        { label: "Clear aligners", href: "#treatments" },
-        { label: "Early treatment", href: "#treatments" },
-        { label: "Retainers", href: "#treatments" },
+        { label: "Before & after", href: "#before-after" },
+        { label: "Your journey", href: "#journey" },
+        { label: "How it works", href: "#process" },
+        { label: "Payment packages", href: "#packages" },
+        { label: "Reviews", href: "#reviews" },
       ],
     },
     {
@@ -419,7 +485,7 @@ export const footer = {
         { label: "Cost & financing", href: "#cost" },
         { label: "[Patient portal link]", href: "#" },
         { label: "[Pay my bill link]", href: "#" },
-        { label: "Smile guide", href: "#resources" },
+        { label: "Video tips", href: "#resources" },
       ],
     },
     {

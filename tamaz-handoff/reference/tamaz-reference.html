@@ -26,6 +26,12 @@
   --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --radius:18px;
+  /* derived from the scheme tokens; do not set per scheme */
+  --accent-text:var(--accent);
+  --deep-2:color-mix(in oklab,var(--deep),white 7%);
+  --deep-line:color-mix(in oklab,var(--deep),white 15%);
+  --deep-muted:color-mix(in oklab,var(--deep-ink) 62%,var(--deep));
+  --deep-aqua:color-mix(in oklab,var(--aqua),white 22%);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -95,7 +101,7 @@ section{padding-block:clamp(72px,10vw,128px)}
 .hero .wrap{position:relative;display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
 @media (max-width:960px){.hero .wrap{grid-template-columns:1fr}}
 .hero h1{font-size:clamp(2.6rem,6.2vw,5rem);font-weight:750;letter-spacing:-.035em;margin-block:18px 22px}
-.hero h1 .w{position:relative;display:inline-block;color:var(--accent)}
+.hero h1 .w{position:relative;display:inline-block;color:var(--accent-text)}
 .hero h1 .w svg{position:absolute;left:0;right:0;bottom:-.16em;width:100%;height:.32em;overflow:visible}
 .hero h1 .w path{fill:none;stroke:var(--aqua);stroke-width:5;stroke-linecap:round}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
@@ -165,13 +171,13 @@ section{padding-block:clamp(72px,10vw,128px)}
 .stages li.on p{max-height:6em}
 .stages li.done{opacity:.72}
 .j-visual{display:grid;gap:14px}
-.j-visual .smile-card{background:linear-gradient(160deg,#15293C,#0E1D2C);border-color:#223749}
-.j-visual .readout{background:rgba(255,255,255,.04);border-color:#223749;color:#E7EEF2}
-.j-visual .readout small{color:#94A6B5}
+.j-visual .smile-card{background:linear-gradient(160deg,var(--deep-2),var(--deep));border-color:var(--deep-line)}
+.j-visual .readout{background:rgba(255,255,255,.04);border-color:var(--deep-line);color:var(--deep-ink)}
+.j-visual .readout small{color:var(--deep-muted)}
 .month{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .month .big{font:500 clamp(2.4rem,5vw,4rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff}
-.month .lbl{font-size:.9rem;color:#94A6B5}
-.progress{height:4px;border-radius:4px;background:#223749;overflow:hidden}
+.month .lbl{font-size:.9rem;color:var(--deep-muted)}
+.progress{height:4px;border-radius:4px;background:var(--deep-line);overflow:hidden}
 .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--aqua),var(--accent))}
 @media (max-width:960px){
   .journey .wrap{grid-template-columns:1fr;gap:14px}
@@ -186,11 +192,11 @@ section{padding-block:clamp(72px,10vw,128px)}
 /* ---------- band builder ---------- */
 .builder{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:center}
 @media (max-width:900px){.builder{grid-template-columns:1fr}}
-.swatches{display:flex;flex-wrap:wrap;gap:12px;margin-block:22px 20px}
+.swatches{display:flex;flex-wrap:wrap;gap:30px 18px;margin-block:22px 26px}
 .sw{width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;position:relative;box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 0 0 1px var(--line);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
 .sw:hover{transform:scale(1.12)}
 .sw[aria-pressed="true"]{box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 0 0 3px var(--bg),0 0 0 5px var(--ink)}
-.sw .n{position:absolute;inset:auto 0 -22px;font:500 .64rem/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;text-align:center}
+.sw .n{position:absolute;inset:auto -12px -20px;font:500 .6rem/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0;white-space:nowrap;text-align:center}
 .pattern{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
 .chipbtn{border:1.5px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.9rem;transition:border-color .2s,background .2s}
 .chipbtn[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
@@ -204,13 +210,13 @@ section{padding-block:clamp(72px,10vw,128px)}
 /* ---------- technology ---------- */
 .tech{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
 @media (max-width:900px){.tech{grid-template-columns:1fr}}
-.scan-card{background:var(--deep);border-radius:28px;padding:26px;color:#E7EEF2;position:relative;overflow:hidden;aspect-ratio:1/0.92;max-width:100%}
+.scan-card{background:var(--deep);border-radius:28px;padding:26px;position:relative;overflow:hidden;aspect-ratio:1/0.92;max-width:100%;color:var(--deep-ink)}
 .scan-card svg{width:100%;height:100%;display:block}
-.scan-card .dot{fill:#53CFC5;opacity:.1;animation:dotscan 4.5s linear infinite}
+.scan-card .dot{fill:var(--deep-aqua);opacity:.1;animation:dotscan 4.5s linear infinite}
 @keyframes dotscan{0%{opacity:.1}3%{opacity:1;r:2.4}10%{r:1.6}82%{opacity:.9}100%{opacity:.1}}
 .scan-card .beam{animation:beam 4.5s cubic-bezier(.45,0,.55,1) infinite}
 @keyframes beam{0%{transform:translateY(0)}72%{transform:translateY(300px)}100%{transform:translateY(300px);opacity:0}}
-.scan-meta{position:absolute;left:26px;right:26px;bottom:22px;display:flex;justify-content:space-between;gap:10px;font:500 .78rem/1.3 var(--mono);color:#94A6B5}
+.scan-meta{position:absolute;left:26px;right:26px;bottom:22px;display:flex;justify-content:space-between;gap:10px;font:500 .78rem/1.3 var(--mono);color:var(--deep-muted)}
 .scan-meta b{display:block;color:#fff;font-size:1rem}
 .feat{display:grid;gap:4px;padding-block:22px;border-top:1px solid var(--line)}
 .feat:last-child{border-bottom:1px solid var(--line)}
@@ -227,13 +233,13 @@ section{padding-block:clamp(72px,10vw,128px)}
 input[type=range]{width:100%;accent-color:var(--accent);height:28px}
 .check{display:flex;gap:10px;align-items:center;font-size:.96rem;cursor:pointer}
 .check input{width:20px;height:20px;accent-color:var(--accent)}
-.result{background:var(--deep);color:#E7EEF2;border-radius:22px;padding:28px;display:grid;align-content:space-between;gap:24px}
+.result{background:var(--deep);color:var(--deep-ink);border-radius:22px;padding:28px;display:grid;align-content:space-between;gap:24px}
 .result .monthly{font:500 clamp(3rem,7vw,4.6rem)/1 var(--mono);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:-.03em}
-.result .monthly small{font-size:1rem;color:#94A6B5;letter-spacing:0}
+.result .monthly small{font-size:1rem;color:var(--deep-muted);letter-spacing:0}
 .result dl{display:grid;grid-template-columns:1fr auto;gap:10px 16px;margin:0;font-size:.95rem}
-.result dt{color:#94A6B5}
+.result dt{color:var(--deep-muted)}
 .result dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
-.result .note{font-size:.8rem;color:#94A6B5}
+.result .note{font-size:.8rem;color:var(--deep-muted)}
 
 /* ---------- reviews ---------- */
 .reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -337,7 +343,7 @@ footer{border-top:1px solid var(--line);padding-block:0 40px}
 @media (max-width:900px){.posts{grid-template-columns:1fr}}
 .post{display:grid;gap:12px;text-decoration:none}
 .post .ph{--ar:16/10}
-.post:hover h3{color:var(--accent)}
+.post:hover h3{color:var(--accent-text)}
 .post h3{transition:color .2s}
 .post span{font:500 .75rem/1 var(--mono);color:var(--aqua);text-transform:uppercase;letter-spacing:.06em}
 
@@ -352,6 +358,75 @@ footer{border-top:1px solid var(--line);padding-block:0 40px}
 .social a{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;transition:border-color .2s,transform .25s}
 .social a:hover{border-color:var(--ink);transform:translateY(-2px)}
 .social svg{width:18px;height:18px;fill:var(--ink)}
+
+/* ===== tamaz color schemes =====
+   Set <html data-scheme="…"> to switch palettes. Each scheme has a light and a dark version;
+   dark follows prefers-color-scheme, or force it with data-theme="dark" / "light". */
+/* Coral & Aqua: Current design. Friendly, energetic, all ages. */
+:root[data-scheme="elastic"]{--bg:#F4F7F8;--surface:#FFFFFF;--surface-2:#E9F0F2;--ink:#0F2438;--muted:#566879;--line:#D6E0E5;--accent:#E9543F;--accent-ink:#FFFFFF;--aqua:#2BA8A0;--aqua-soft:#D5EFEC;--deep:#0F2438;--deep-ink:#EAF2F4}
+@media (prefers-color-scheme:dark){:root[data-scheme="elastic"]:not([data-theme="light"]){color-scheme:dark;--bg:#0A1520;--surface:#112131;--surface-2:#16293B;--ink:#E7EEF2;--muted:#94A6B5;--line:#223749;--accent:#FF6F58;--accent-ink:#1A0B08;--aqua:#53CFC5;--aqua-soft:#133A3A;--deep:#07111A;--deep-ink:#E7EEF2;--accent-text:var(--accent)}}
+:root[data-scheme="elastic"][data-theme="dark"]{color-scheme:dark;--bg:#0A1520;--surface:#112131;--surface-2:#16293B;--ink:#E7EEF2;--muted:#94A6B5;--line:#223749;--accent:#FF6F58;--accent-ink:#1A0B08;--aqua:#53CFC5;--aqua-soft:#133A3A;--deep:#07111A;--deep-ink:#E7EEF2;--accent-text:var(--accent)}
+/* Clinical Blue: Trustworthy and medical. Closest to Diamond Braces. */
+:root[data-scheme="clinical"]{--bg:#F3F7FC;--surface:#FFFFFF;--surface-2:#E6EEF8;--ink:#0B1F3A;--muted:#52657E;--line:#D3DFEC;--accent:#1D6FE8;--accent-ink:#FFFFFF;--aqua:#0E8FB3;--aqua-soft:#D6F0F7;--deep:#0B1F3A;--deep-ink:#EAF1FA}
+@media (prefers-color-scheme:dark){:root[data-scheme="clinical"]:not([data-theme="light"]){color-scheme:dark;--bg:#08121F;--surface:#0F1D30;--surface-2:#14263D;--ink:#E6EEF8;--muted:#93A5BC;--line:#1F334D;--accent:#4D8FF5;--accent-ink:#04122A;--aqua:#3CC2E3;--aqua-soft:#0F3445;--deep:#050C16;--deep-ink:#E6EEF8;--accent-text:var(--accent)}}
+:root[data-scheme="clinical"][data-theme="dark"]{color-scheme:dark;--bg:#08121F;--surface:#0F1D30;--surface-2:#14263D;--ink:#E6EEF8;--muted:#93A5BC;--line:#1F334D;--accent:#4D8FF5;--accent-ink:#04122A;--aqua:#3CC2E3;--aqua-soft:#0F3445;--deep:#050C16;--deep-ink:#E6EEF8;--accent-text:var(--accent)}
+/* Mint Fresh: Clean, hygienic, calm. Good for aligner-led practices. */
+:root[data-scheme="mint"]{--bg:#F2F8F5;--surface:#FFFFFF;--surface-2:#E3F1EA;--ink:#0D2B24;--muted:#4F6A62;--line:#D2E5DC;--accent:#0A8A5F;--accent-ink:#FFFFFF;--aqua:#2F7FB8;--aqua-soft:#DCEBF6;--deep:#0D2B24;--deep-ink:#E8F4EF}
+@media (prefers-color-scheme:dark){:root[data-scheme="mint"]:not([data-theme="light"]){color-scheme:dark;--bg:#07140F;--surface:#0E211A;--surface-2:#132B22;--ink:#E4F1EB;--muted:#8FAAA0;--line:#1D3A2F;--accent:#34D399;--accent-ink:#04150E;--aqua:#5BA8E0;--aqua-soft:#10283A;--deep:#04100B;--deep-ink:#E4F1EB;--accent-text:var(--accent)}}
+:root[data-scheme="mint"][data-theme="dark"]{color-scheme:dark;--bg:#07140F;--surface:#0E211A;--surface-2:#132B22;--ink:#E4F1EB;--muted:#8FAAA0;--line:#1D3A2F;--accent:#34D399;--accent-ink:#04150E;--aqua:#5BA8E0;--aqua-soft:#10283A;--deep:#04100B;--deep-ink:#E4F1EB;--accent-text:var(--accent)}
+/* Ocean Teal: Premium clinical tech. Closest to Ormco. */
+:root[data-scheme="ocean"]{--bg:#F1F8F8;--surface:#FFFFFF;--surface-2:#DFF0F0;--ink:#0B2F33;--muted:#4E6C70;--line:#CFE4E5;--accent:#0F8B8D;--accent-ink:#FFFFFF;--aqua:#B7821A;--aqua-soft:#FBF0D6;--deep:#0B2F33;--deep-ink:#E6F4F4}
+@media (prefers-color-scheme:dark){:root[data-scheme="ocean"]:not([data-theme="light"]){color-scheme:dark;--bg:#061618;--surface:#0C2226;--surface-2:#112B30;--ink:#E3F2F2;--muted:#8FAEB0;--line:#1B3B40;--accent:#3CC3C5;--accent-ink:#03191B;--aqua:#F2C14E;--aqua-soft:#3A2E10;--deep:#031012;--deep-ink:#E3F2F2;--accent-text:var(--accent)}}
+:root[data-scheme="ocean"][data-theme="dark"]{color-scheme:dark;--bg:#061618;--surface:#0C2226;--surface-2:#112B30;--ink:#E3F2F2;--muted:#8FAEB0;--line:#1B3B40;--accent:#3CC3C5;--accent-ink:#03191B;--aqua:#F2C14E;--aqua-soft:#3A2E10;--deep:#031012;--deep-ink:#E3F2F2;--accent-text:var(--accent)}
+/* Blush & Plum: Warm and fun. Appeals to teens. */
+:root[data-scheme="rose"]{--bg:#FBF5F7;--surface:#FFFFFF;--surface-2:#F5E6EC;--ink:#2A1230;--muted:#6E5A70;--line:#EBD9E1;--accent:#D6336C;--accent-ink:#FFFFFF;--aqua:#7B4FB8;--aqua-soft:#EDE3F8;--deep:#2A1230;--deep-ink:#F8ECF2}
+@media (prefers-color-scheme:dark){:root[data-scheme="rose"]:not([data-theme="light"]){color-scheme:dark;--bg:#150A18;--surface:#201224;--surface-2:#2A1830;--ink:#F5E8EF;--muted:#B39BB3;--line:#3A2540;--accent:#FF6B9E;--accent-ink:#2A0714;--aqua:#B18CF0;--aqua-soft:#2E2046;--deep:#0F0612;--deep-ink:#F5E8EF;--accent-text:var(--accent)}}
+:root[data-scheme="rose"][data-theme="dark"]{color-scheme:dark;--bg:#150A18;--surface:#201224;--surface-2:#2A1830;--ink:#F5E8EF;--muted:#B39BB3;--line:#3A2540;--accent:#FF6B9E;--accent-ink:#2A0714;--aqua:#B18CF0;--aqua-soft:#2E2046;--deep:#0F0612;--deep-ink:#F5E8EF;--accent-text:var(--accent)}
+/* Sunny Kids: Bright and playful. Pediatric and family focus. */
+:root[data-scheme="sunny"]{--bg:#FFFBF0;--surface:#FFFFFF;--surface-2:#FFF1CC;--ink:#1B2559;--muted:#5A6284;--line:#F0E3BF;--accent:#FFB400;--accent-ink:#1B2559;--aqua:#2F6FE0;--aqua-soft:#DDE7FB;--deep:#1B2559;--deep-ink:#FFF6DE;--accent-text:#B06A00}
+@media (prefers-color-scheme:dark){:root[data-scheme="sunny"]:not([data-theme="light"]){color-scheme:dark;--bg:#0E1330;--surface:#161C42;--surface-2:#1D2452;--ink:#FFF3D6;--muted:#A9AED0;--line:#2A3263;--accent:#FFC53D;--accent-ink:#1B2559;--aqua:#6E9CFF;--aqua-soft:#1F2C5E;--deep:#090D24;--deep-ink:#FFF3D6;--accent-text:var(--accent)}}
+:root[data-scheme="sunny"][data-theme="dark"]{color-scheme:dark;--bg:#0E1330;--surface:#161C42;--surface-2:#1D2452;--ink:#FFF3D6;--muted:#A9AED0;--line:#2A3263;--accent:#FFC53D;--accent-ink:#1B2559;--aqua:#6E9CFF;--aqua-soft:#1F2C5E;--deep:#090D24;--deep-ink:#FFF3D6;--accent-text:var(--accent)}
+/* Lavender Calm: Soft and modern. Reassuring for anxious adults. */
+:root[data-scheme="lavender"]{--bg:#F6F5FC;--surface:#FFFFFF;--surface-2:#ECE9FA;--ink:#1D1846;--muted:#5E5A80;--line:#DDD9F0;--accent:#6A4CF0;--accent-ink:#FFFFFF;--aqua:#138A87;--aqua-soft:#D5F1F0;--deep:#1D1846;--deep-ink:#EEECFB}
+@media (prefers-color-scheme:dark){:root[data-scheme="lavender"]:not([data-theme="light"]){color-scheme:dark;--bg:#0D0B20;--surface:#16132F;--surface-2:#1D1A3B;--ink:#ECEAFB;--muted:#A09CC4;--line:#2A2650;--accent:#9B85FF;--accent-ink:#120B33;--aqua:#48D1CC;--aqua-soft:#133838;--deep:#08061A;--deep-ink:#ECEAFB;--accent-text:var(--accent)}}
+:root[data-scheme="lavender"][data-theme="dark"]{color-scheme:dark;--bg:#0D0B20;--surface:#16132F;--surface-2:#1D1A3B;--ink:#ECEAFB;--muted:#A09CC4;--line:#2A2650;--accent:#9B85FF;--accent-ink:#120B33;--aqua:#48D1CC;--aqua-soft:#133838;--deep:#08061A;--deep-ink:#ECEAFB;--accent-text:var(--accent)}
+/* Sage & Clay: Natural and welcoming. Closest to Team Dental. */
+:root[data-scheme="sage"]{--bg:#F4F4EF;--surface:#FFFFFF;--surface-2:#E7ECE4;--ink:#1F2E27;--muted:#5E6B63;--line:#D9E0D6;--accent:#C0562F;--accent-ink:#FFFFFF;--aqua:#3F7A5C;--aqua-soft:#DDEBE2;--deep:#1F2E27;--deep-ink:#EEF2EC}
+@media (prefers-color-scheme:dark){:root[data-scheme="sage"]:not([data-theme="light"]){color-scheme:dark;--bg:#0C120F;--surface:#141D18;--surface-2:#1A2520;--ink:#E9EFEA;--muted:#9AA89F;--line:#26332C;--accent:#E57A52;--accent-ink:#1C0A04;--aqua:#7CC09C;--aqua-soft:#16301F;--deep:#070B09;--deep-ink:#E9EFEA;--accent-text:var(--accent)}}
+:root[data-scheme="sage"][data-theme="dark"]{color-scheme:dark;--bg:#0C120F;--surface:#141D18;--surface-2:#1A2520;--ink:#E9EFEA;--muted:#9AA89F;--line:#26332C;--accent:#E57A52;--accent-ink:#1C0A04;--aqua:#7CC09C;--aqua-soft:#16301F;--deep:#070B09;--deep-ink:#E9EFEA;--accent-text:var(--accent)}
+/* Champagne & Charcoal: Luxury boutique. Adult and cosmetic focus. */
+:root[data-scheme="champagne"]{--bg:#F7F5F1;--surface:#FFFFFF;--surface-2:#EFEBE3;--ink:#1C1B19;--muted:#6B665D;--line:#E2DDD2;--accent:#8F6524;--accent-ink:#FFFFFF;--aqua:#3E6E6A;--aqua-soft:#DDE8E6;--deep:#1C1B19;--deep-ink:#F3EFE7}
+@media (prefers-color-scheme:dark){:root[data-scheme="champagne"]:not([data-theme="light"]){color-scheme:dark;--bg:#0F0E0D;--surface:#1A1917;--surface-2:#22201D;--ink:#F1ECE3;--muted:#A39D92;--line:#302D29;--accent:#D4A857;--accent-ink:#1C1407;--aqua:#7FB3AD;--aqua-soft:#1E302E;--deep:#0A0908;--deep-ink:#F1ECE3;--accent-text:var(--accent)}}
+:root[data-scheme="champagne"][data-theme="dark"]{color-scheme:dark;--bg:#0F0E0D;--surface:#1A1917;--surface-2:#22201D;--ink:#F1ECE3;--muted:#A39D92;--line:#302D29;--accent:#D4A857;--accent-ink:#1C1407;--aqua:#7FB3AD;--aqua-soft:#1E302E;--deep:#0A0908;--deep-ink:#F1ECE3;--accent-text:var(--accent)}
+/* Graphite & Tangerine: Bold and urban. Stands out from typical dental sites. */
+:root[data-scheme="graphite"]{--bg:#F5F5F4;--surface:#FFFFFF;--surface-2:#EBEBE9;--ink:#17181C;--muted:#5E6068;--line:#DDDDDA;--accent:#F26B1D;--accent-ink:#1A0D05;--aqua:#2F7EC7;--aqua-soft:#DDEBF8;--deep:#17181C;--deep-ink:#F2F2F0}
+@media (prefers-color-scheme:dark){:root[data-scheme="graphite"]:not([data-theme="light"]){color-scheme:dark;--bg:#0E0F11;--surface:#17181B;--surface-2:#1E2024;--ink:#EFEFED;--muted:#9A9CA3;--line:#2B2D32;--accent:#FF8840;--accent-ink:#1A0D05;--aqua:#5BA8F0;--aqua-soft:#15283C;--deep:#08090A;--deep-ink:#EFEFED;--accent-text:var(--accent)}}
+:root[data-scheme="graphite"][data-theme="dark"]{color-scheme:dark;--bg:#0E0F11;--surface:#17181B;--surface-2:#1E2024;--ink:#EFEFED;--muted:#9A9CA3;--line:#2B2D32;--accent:#FF8840;--accent-ink:#1A0D05;--aqua:#5BA8F0;--aqua-soft:#15283C;--deep:#08090A;--deep-ink:#EFEFED;--accent-text:var(--accent)}
+
+/* ---------- scheme picker ---------- */
+.schemer{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;display:grid;justify-items:end;gap:10px}
+.schemer-btn{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 16px 10px 12px;font-weight:650;font-size:.9rem;cursor:pointer;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.schemer-btn:hover{transform:translateY(-2px)}
+.dots{display:inline-flex}
+.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--surface);margin-left:-5px}
+.dots i:first-child{margin-left:0}
+.schemer-panel{width:min(360px,calc(100vw - 32px));max-height:min(72vh,640px);overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:14px;transform-origin:bottom right;animation:pop .28s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:scale(.92) translateY(8px)}}
+.schemer-panel h4{margin:4px 6px 10px;font:650 1rem/1.2 var(--display);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.schemer-panel h4 small{font:500 .7rem/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.scheme-opt{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;width:100%;text-align:left;border:1.5px solid transparent;background:none;border-radius:14px;padding:10px;cursor:pointer;color:inherit}
+.scheme-opt:hover{background:var(--surface-2)}
+.scheme-opt[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-2)}
+.scheme-opt .dots{grid-row:span 2}
+.scheme-opt .dots i{width:20px;height:20px;margin-left:-7px;border-color:var(--surface)}
+.scheme-opt .dots i:first-child{margin-left:0}
+.scheme-opt b{font:650 .95rem/1.2 var(--display)}
+.scheme-opt span{font-size:.8rem;color:var(--muted);line-height:1.35}
+.theme-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px;margin:4px 0 10px}
+.theme-seg button{border:0;background:none;border-radius:999px;padding:7px 8px;font-weight:600;font-size:.82rem;cursor:pointer;color:var(--muted)}
+.theme-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+html{transition:background-color .4s}
+body,.treat,.review,.loc,.smile-card,.cost,.marquee,.journey,.result,.consult{transition:background-color .45s,color .45s,border-color .45s}
 
 /* reveal */
 .reveal{transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
@@ -562,7 +637,7 @@ footer{border-top:1px solid var(--line);padding-block:0 40px}
         <div>
           <span class="eyebrow">Your 18-month journey</span>
           <h2 style="margin-top:14px">Scroll to watch a smile move into place.</h2>
-          <p class="lede" style="color:#94A6B5;margin-top:16px">Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.</p>
+          <p class="lede" style="color:var(--deep-muted);margin-top:16px">Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.</p>
           <ol class="stages" id="stages">
             <li><b>Scan</b><p>Free consultation and 3D scan. About four minutes, with no impression trays.</p></li>
             <li><b>Plan</b><p>Your orthodontist sets a target position for every tooth and shows you the result on screen.</p></li>
@@ -659,7 +734,7 @@ footer{border-top:1px solid var(--line);padding-block:0 40px}
       </div>
       <div class="result">
         <div>
-          <div style="color:#94A6B5;font-size:.9rem;margin-bottom:8px">Estimated monthly payment</div>
+          <div style="color:var(--deep-muted);font-size:.9rem;margin-bottom:8px">Estimated monthly payment</div>
           <div class="monthly"><span id="monthly">$138</span><small> /mo</small></div>
         </div>
         <dl>
@@ -791,6 +866,17 @@ footer{border-top:1px solid var(--line);padding-block:0 40px}
     <span style="display:flex;gap:20px;flex-wrap:wrap"><a href="#">Privacy policy</a><a href="#">Accessibility</a><a href="#">Terms</a><a href="#">Notice of privacy practices</a></span>
   </div>
 </footer>
+
+<div class="schemer" id="schemer">
+  <div class="schemer-panel" id="schemerPanel" hidden role="dialog" aria-label="Color scheme">
+    <h4>Color scheme <small id="schemeCount"></small></h4>
+    <div class="theme-seg" role="group" aria-label="Light or dark">
+      <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="light">Light</button><button type="button" data-mode="dark">Dark</button>
+    </div>
+    <div id="schemeList"></div>
+  </div>
+  <button type="button" class="schemer-btn" id="schemerBtn" aria-expanded="false" aria-controls="schemerPanel"><span class="dots" id="schemerDots"><i></i><i></i><i></i></span><span id="schemerName">Colors</span></button>
+</div>
 
 <script>
 (() => {
@@ -1133,6 +1219,51 @@ document.querySelectorAll('.ba').forEach(ba => {
     io.observe(ba);
   }
 });
+
+
+/* ---------------- Color scheme picker ---------------- */
+const SCHEMES = [{"id":"elastic","name":"Coral & Aqua","mood":"Current design. Friendly, energetic, all ages.","sw":["#E9543F","#2BA8A0","#0F2438"]},{"id":"clinical","name":"Clinical Blue","mood":"Trustworthy and medical. Closest to Diamond Braces.","sw":["#1D6FE8","#0E8FB3","#0B1F3A"]},{"id":"mint","name":"Mint Fresh","mood":"Clean, hygienic, calm. Good for aligner-led practices.","sw":["#0A8A5F","#2F7FB8","#0D2B24"]},{"id":"ocean","name":"Ocean Teal","mood":"Premium clinical tech. Closest to Ormco.","sw":["#0F8B8D","#B7821A","#0B2F33"]},{"id":"rose","name":"Blush & Plum","mood":"Warm and fun. Appeals to teens.","sw":["#D6336C","#7B4FB8","#2A1230"]},{"id":"sunny","name":"Sunny Kids","mood":"Bright and playful. Pediatric and family focus.","sw":["#FFB400","#2F6FE0","#1B2559"]},{"id":"lavender","name":"Lavender Calm","mood":"Soft and modern. Reassuring for anxious adults.","sw":["#6A4CF0","#138A87","#1D1846"]},{"id":"sage","name":"Sage & Clay","mood":"Natural and welcoming. Closest to Team Dental.","sw":["#C0562F","#3F7A5C","#1F2E27"]},{"id":"champagne","name":"Champagne & Charcoal","mood":"Luxury boutique. Adult and cosmetic focus.","sw":["#8F6524","#3E6E6A","#1C1B19"]},{"id":"graphite","name":"Graphite & Tangerine","mood":"Bold and urban. Stands out from typical dental sites.","sw":["#F26B1D","#2F7EC7","#17181C"]}];
+const rootEl = document.documentElement;
+const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(k, v); } catch(e){} } };
+const cssVar = n => getComputedStyle(rootEl).getPropertyValue(n).trim();
+function recolorSmiles(){
+  const a = cssVar("--accent"), q = cssVar("--aqua"), dq = cssVar("--deep-aqua") || q;
+  hero.setBands(Array.from({length:12}, (_, i) => (i < 6 ? i % 2 : (i + 1) % 2) ? q : a));
+  js.setBands(Array.from({length:12}, (_, i) => i % 2 ? a : dq));
+}
+function setScheme(id){
+  const s = SCHEMES.find(x => x.id === id) || SCHEMES[0];
+  if (s.id === "elastic") rootEl.removeAttribute("data-scheme"); else rootEl.setAttribute("data-scheme", s.id);
+  document.querySelectorAll(".scheme-opt").forEach(b => b.setAttribute("aria-pressed", b.dataset.id === s.id));
+  document.querySelectorAll("#schemerDots i").forEach((d, i) => d.style.background = s.sw[i]);
+  $("schemerName").textContent = s.name;
+  store.set("tamaz-scheme", s.id);
+  requestAnimationFrame(recolorSmiles);
+}
+function setMode(m){
+  if (m === "auto") rootEl.removeAttribute("data-theme"); else rootEl.setAttribute("data-theme", m);
+  document.querySelectorAll(".theme-seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === m));
+  store.set("tamaz-mode", m);
+  requestAnimationFrame(recolorSmiles);
+}
+const list = $("schemeList");
+SCHEMES.forEach(s => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "scheme-opt"; b.dataset.id = s.id;
+  b.innerHTML = "<span class=\"dots\">" + s.sw.map(c => "<i style=\"background:" + c + "\"></i>").join("") + "</span><b></b><span></span>";
+  b.querySelector("b").textContent = s.name; b.querySelector("span:last-child").textContent = s.mood;
+  b.addEventListener("click", () => setScheme(s.id));
+  list.appendChild(b);
+});
+$("schemeCount").textContent = SCHEMES.length + " palettes";
+document.querySelectorAll(".theme-seg button").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+$("schemerBtn").addEventListener("click", () => {
+  const open = $("schemerPanel").hidden; $("schemerPanel").hidden = !open; $("schemerBtn").setAttribute("aria-expanded", open);
+});
+addEventListener("keydown", e => { if (e.key === "Escape" && !$("schemerPanel").hidden){ $("schemerPanel").hidden = true; $("schemerBtn").setAttribute("aria-expanded", false); $("schemerBtn").focus(); } });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => requestAnimationFrame(recolorSmiles));
+setMode(store.get("tamaz-mode") || "auto");
+setScheme(store.get("tamaz-scheme") || "elastic");
 
 /* ---------------- Nav, marquee, reveal ---------------- */
 const nav = $('nav');

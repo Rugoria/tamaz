@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Figtree, JetBrains_Mono } from "next/font/google";
+import { SchemePicker } from "@/components/SchemePicker";
 import { brand } from "@/content/site";
+import { MODE_KEY, SCHEME_KEY, SCHEMES, schemeAttr, showSchemePicker, siteScheme } from "@/lib/schemes";
 import "./globals.css";
+import "./color-schemes.css";
 
 const display = Bricolage_Grotesque({
   variable: "--display",
@@ -48,10 +51,27 @@ export const viewport: Viewport = {
   ],
 };
 
+// Review builds only: restore the palette chosen in the picker before first paint.
+const restoreScheme = `try{var r=document.documentElement,s=localStorage.getItem(${JSON.stringify(SCHEME_KEY)}),m=localStorage.getItem(${JSON.stringify(MODE_KEY)});if(${JSON.stringify(SCHEMES.map((x) => x.id))}.indexOf(s)>-1){s==="elastic"?r.removeAttribute("data-scheme"):r.setAttribute("data-scheme",s)}if(m==="light"||m==="dark")r.setAttribute("data-theme",m)}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const scheme = siteScheme();
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
-      <body suppressHydrationWarning>{children}</body>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      data-scheme={schemeAttr(scheme)}
+      suppressHydrationWarning={showSchemePicker}
+    >
+      {showSchemePicker && (
+        <head>
+          <script dangerouslySetInnerHTML={{ __html: restoreScheme }} />
+        </head>
+      )}
+      <body suppressHydrationWarning>
+        {children}
+        {showSchemePicker && <SchemePicker initialScheme={scheme} />}
+      </body>
     </html>
   );
 }

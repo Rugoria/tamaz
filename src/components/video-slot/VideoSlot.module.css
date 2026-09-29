@@ -1,0 +1,6 @@
+.frame{position:relative;margin:0;border-radius:var(--radius);overflow:hidden;background:var(--deep);aspect-ratio:var(--ar,16/9);max-width:100%}
+.frame video,.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;display:block}
+.facade{position:absolute;inset:0;width:100%;border:0;padding:0;cursor:pointer;background:var(--deep) center/cover no-repeat;display:grid;place-items:center}
+.play{width:68px;height:68px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.play svg{width:28px;height:28px;fill:currentColor;margin-left:3px}
+.facade:hover .play,.facade:focus-visible .play{transform:scale(1.08)}

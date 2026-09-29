@@ -31,7 +31,7 @@ export type SmileProps = {
   ref?: Ref<SmileHandle>;
 };
 
-const SCAN = "#53CFC5";
+const SCAN = "var(--deep-aqua)";
 
 export function Smile({ t, bracket, ghost = 0, scanY = -1, bandColors, onBandClick, label, ref }: SmileProps) {
   const uid = "s" + useId().replace(/[^a-zA-Z0-9_-]/g, "");

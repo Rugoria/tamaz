@@ -1,5 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
+import { publicFileExists } from "@/lib/publicFile";
 import { ImageSlotView } from "./ImageSlotView";
 
 type ImageSlotProps = {
@@ -21,6 +20,5 @@ type ImageSlotProps = {
  * expected file path and size.
  */
 export function ImageSlot({ src, ...rest }: ImageSlotProps) {
-  const exists = fs.existsSync(path.join(process.cwd(), "public", src));
-  return <ImageSlotView src={src} exists={exists} {...rest} />;
+  return <ImageSlotView src={src} exists={publicFileExists(src)} {...rest} />;
 }

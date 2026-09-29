@@ -153,3 +153,16 @@ Text placeholders: wrap them in a `<Tbd>` component that renders the yellow high
 
 Work section by section, run the dev server, and compare each section against the reference
 HTML in the browser before moving on.
+
+## 9. Color schemes
+
+`color-schemes.css` defines 10 palettes (each with light + dark) using the same 12 tokens;
+`COLOR-SCHEMES.md` lists every value. Import `color-schemes.css` after `globals.css`.
+The active scheme is set with `<html data-scheme="clinical">` etc. (no attribute = Coral & Aqua).
+
+- Add the derived tokens from the reference `:root` (`--accent-text`, `--deep-2`, `--deep-line`,
+  `--deep-muted`, `--deep-aqua`) and never hard-code colors in components.
+- Pick the production scheme via an env/config value (`SITE_SCHEME`) applied in `app/layout.tsx`.
+- Keep the floating "Color scheme" picker from the reference behind a flag
+  (`NEXT_PUBLIC_SHOW_SCHEME_PICKER=true`) for client review only; hide it in production.
+- The animated smile band colors read `--accent` / `--aqua` at runtime; re-apply them when the scheme or theme changes.
