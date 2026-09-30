@@ -6,17 +6,24 @@ import { LogoMark } from "./Logo";
 import styles from "./SiteNav.module.css";
 
 export function SiteNav() {
-  const [scrolled, setScrolled] = useState(false);
+  const [shown, setShown] = useState(false);
   const [open, setOpen] = useState(false);
 
+  // Stay hidden until the hero has scrolled completely out of view.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+    const io = new IntersectionObserver(([entry]) => {
+      const past = !entry.isIntersecting && entry.boundingClientRect.bottom <= 0;
+      setShown(past);
+      if (!past) setOpen(false);
+    });
+    io.observe(hero);
+    return () => io.disconnect();
   }, []);
 
   return (
-    <header className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
+    <header className={`${styles.nav} ${shown ? styles.shown : ""}`}>
       <div className="wrap">
         <a className="logo" href="#top" aria-label={`${brand.name} home`}>
           <LogoMark />

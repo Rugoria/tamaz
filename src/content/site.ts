@@ -99,8 +99,11 @@ export const hero = {
    */
   aligner: {
     sources: ["videos/hero-aligner.mov", "videos/hero-aligner.webm"],
-    image: "images/hero-aligner.png",
+    image: "images/hero-aligner-clear.png",
+    width: 1121,
+    height: 667,
     alt: "3D render of a clear aligner",
+    hint: "Drag, or use the arrow keys, to turn the aligner",
     title: "3D render of a clear aligner rotating",
   },
 };
@@ -111,8 +114,9 @@ export const smileReveal = {
   title: "Scroll to see the difference.",
   lede: "[One line about this patient’s treatment, e.g. treatment type and months.]",
   label: "Compare this smile before and after treatment",
-  before: { src: "images/reveal-before.jpg", label: "Before", size: "1040 × 547", alt: "Crowded, uneven front teeth before treatment" },
-  after: { src: "images/reveal-after.jpg", label: "After", size: "1040 × 547", alt: "Straight, even front teeth after treatment" },
+  aspect: "627/418",
+  before: { src: "images/reveal-before.jpg", label: "Before", size: "627 × 418", alt: "Crowded, uneven front teeth before treatment" },
+  after: { src: "images/reveal-after.jpg", label: "After", size: "627 × 418", alt: "Straight, even front teeth after treatment" },
 };
 
 export const team = {

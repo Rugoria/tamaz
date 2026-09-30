@@ -4,7 +4,7 @@ import { ImageSlot } from "./image-slot/ImageSlot";
 import { Copy } from "./Tbd";
 import styles from "./SmileReveal.module.css";
 
-const SIZES = "(max-width: 960px) 100vw, 900px";
+const SIZES = "(max-width: 800px) 100vw, 760px";
 
 export function SmileReveal() {
   return (
@@ -20,7 +20,7 @@ export function SmileReveal() {
         <div className={`${styles.frame} reveal`}>
           <CompareSlider
             motion="scroll"
-            aspect="1040/547"
+            aspect={smileReveal.aspect}
             label={smileReveal.label}
             before={<ImageSlot className={styles.layer} {...smileReveal.before} sizes={SIZES} />}
             after={<ImageSlot className={styles.layer} {...smileReveal.after} sizes={SIZES} />}
