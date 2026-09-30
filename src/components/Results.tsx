@@ -10,7 +10,7 @@ const SIZES = "(max-width: 900px) 100vw, 380px";
 
 export function Results() {
   return (
-    <section id="results" style={{ paddingTop: 0 }}>
+    <section id="results">
       <div className="wrap">
         <SectionHead eyebrow={results.eyebrow} title={results.title} lede={results.lede} />
         <div className={styles.grid} data-stagger>

@@ -12,7 +12,6 @@ import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SmileGuide } from "@/components/SmileGuide";
-import { SmileReveal } from "@/components/SmileReveal";
 import { Team } from "@/components/Team";
 import styles from "./page.module.css";
 
@@ -25,7 +24,6 @@ export default function Home() {
         {/* 1. Hero: 3D aligner display */}
         <Hero />
         {/* 2. Before & after */}
-        <SmileReveal />
         <Results />
         {/* 3. Scroll to see the smile */}
         <Journey />

@@ -45,10 +45,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F4F7F8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0A1520" },
-  ],
+  // Colors never follow the browser or OS setting.
+  colorScheme: "only light",
+  themeColor: "#F4F7F8",
 };
 
 // Review builds only: restore the palette chosen in the picker before first paint.

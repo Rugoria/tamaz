@@ -22,7 +22,7 @@ There is no test suite.
 
 - **Content is data.** All copy, prices, doctors, studios, reviews, FAQs, and articles live in `src/content/site.ts` as typed exports. Components read from it rather than hardcoding text. Strings containing `[bracketed]` text are placeholders: render them through `Copy` (from `src/components/Tbd.tsx`), which wraps each bracketed part in `<Tbd>` (yellow `.tbd` highlight) until real content replaces it.
 - **Sections.** `src/app/page.tsx` composes one component per page section, in the order given in the spec. Each component has a sibling `*.module.css`. Most sections are server components. Interactive pieces are split out as client components (for example `Hero` renders the client `HeroSmileCard`, and `Consultation` renders `ConsultationForm`).
-- **Global styles.** `src/app/globals.css` holds the design tokens (`--bg`, `--ink`, `--accent`, `--aqua`, `--deep`, and so on, with light and dark mode via `prefers-color-scheme` and `[data-theme="dark"]`) plus shared utility classes: `.wrap`, `.reveal`, `.tbd`, and `.readout`. Fonts come from `next/font` in `layout.tsx` and are exposed as `--display`, `--body`, and `--mono`.
+- **Global styles.** `src/app/globals.css` holds the design tokens (`--bg`, `--ink`, `--accent`, `--aqua`, `--deep`, and so on, with a dark variant only under `[data-theme="dark"]`; the site never follows the browser or OS color setting, and `:root` declares `color-scheme: only light`) plus shared utility classes: `.wrap`, `.reveal`, `.tbd`, and `.readout`. Fonts come from `next/font` in `layout.tsx` and are exposed as `--display`, `--body`, and `--mono`.
 - **Color schemes.** `src/app/color-schemes.css` (a copy of `tamaz-handoff/color-schemes.css`, imported after `globals.css`) defines 10 palettes, each with light and dark, keyed by `<html data-scheme>`. No attribute means Coral & Aqua. The production scheme comes from `SITE_SCHEME` (see `.env.example`), and the scheme list lives in `src/lib/schemes.ts`. Components must never hard-code colors: use the scheme tokens or the derived `--accent-text`, `--deep-2`, `--deep-line`, `--deep-muted` and `--deep-aqua`. Smile band colors are passed as `var(--…)` strings so they follow the scheme. The floating `SchemePicker` renders only when `NEXT_PUBLIC_SHOW_SCHEME_PICKER=true` (client review builds; set in `.env.local`, rebuild after changing it).
 - **The `<Smile />` motion component** (`src/components/smile/`) is the hero fallback: `HeroSmileCard` shows it only when no aligner render or video exists.
   - `smileGeometry.ts` holds the pure geometry: tooth `SPEC`, the `CROOK` offsets, the smile-arc formula, the wire path, and `computeFrame`.
@@ -40,6 +40,6 @@ There is no test suite.
 ## Acceptance bar (from the spec)
 
 - The page matches the reference at 1440, 1024, 768, and 390px wide, with no horizontal page scroll.
-- Light and dark mode are both correct.
+- Colors stay the same whatever the browser or OS color setting is. The forced dark theme (`data-theme="dark"`, review picker only) is still correct.
 - Keyboard access works: visible focus states, `aria-expanded` on the menu toggle, `aria-pressed` on toggles, and `<input type="range">` for the before/after sliders.
 - Lighthouse scores are at least 90 for Performance and at least 95 for Accessibility.

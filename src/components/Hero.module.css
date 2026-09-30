@@ -1,2 +1,2 @@
-.hero{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:100vh;min-height:100svh;padding:0 16px;background:var(--surface)}
+.hero{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:100vh;min-height:100svh;padding:0 16px;background:radial-gradient(ellipse 75% 65% at 50% 48%,var(--surface) 30%,transparent 78%),linear-gradient(160deg,var(--surface-2),var(--aqua-soft))}
 .brand{margin:0;font:800 clamp(5rem,28vw,26rem)/.9 var(--display);letter-spacing:-.04em;color:var(--ink)}

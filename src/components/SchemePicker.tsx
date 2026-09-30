@@ -5,7 +5,6 @@ import { DEFAULT_SCHEME, MODE_KEY, SCHEME_KEY, SCHEMES, isSchemeId, schemeAttr, 
 import styles from "./SchemePicker.module.css";
 
 const MODES: { id: ThemeMode; label: string }[] = [
-  { id: "auto", label: "Auto" },
   { id: "light", label: "Light" },
   { id: "dark", label: "Dark" },
 ];
@@ -27,7 +26,7 @@ function subscribe(cb: () => void) {
 }
 const readAttrs = () => {
   const d = document.documentElement.dataset;
-  return `${d.scheme ?? DEFAULT_SCHEME}|${d.theme ?? "auto"}`;
+  return `${d.scheme ?? DEFAULT_SCHEME}|${d.theme === "dark" ? "dark" : "light"}`;
 };
 
 function applyScheme(id: SchemeId) {
@@ -38,7 +37,7 @@ function applyScheme(id: SchemeId) {
 }
 
 function applyMode(m: ThemeMode) {
-  if (m === "auto") document.documentElement.removeAttribute("data-theme");
+  if (m === "light") document.documentElement.removeAttribute("data-theme");
   else document.documentElement.setAttribute("data-theme", m);
   store.set(MODE_KEY, m);
 }
@@ -48,7 +47,7 @@ export function SchemePicker({ initialScheme }: { initialScheme: SchemeId }) {
   const [open, setOpen] = useState(false);
   const btn = useRef<HTMLButtonElement>(null);
   const panelId = useId();
-  const [rawScheme, rawMode] = useSyncExternalStore(subscribe, readAttrs, () => `${initialScheme}|auto`).split("|");
+  const [rawScheme, rawMode] = useSyncExternalStore(subscribe, readAttrs, () => `${initialScheme}|light`).split("|");
   const scheme = SCHEMES.find((s) => s.id === (isSchemeId(rawScheme) ? rawScheme : DEFAULT_SCHEME)) ?? SCHEMES[0];
   const mode = rawMode as ThemeMode;
 

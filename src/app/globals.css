@@ -1,6 +1,8 @@
 /* ---------- design tokens (verbatim from the reference) ----------
    --display / --body / --mono are declared by next/font in app/layout.tsx. */
 :root{
+  /* Always light, whatever the browser or OS prefers (also opts out of Chrome auto dark mode). */
+  color-scheme:only light;
   --bg:#F4F7F8;
   --surface:#FFFFFF;
   --surface-2:#E9F0F2;
@@ -25,15 +27,6 @@
   --deep-line:color-mix(in oklab,var(--deep),white 15%);
   --deep-muted:color-mix(in oklab,var(--deep-ink) 62%,var(--deep));
   --deep-aqua:color-mix(in oklab,var(--aqua),white 22%);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0A1520;--surface:#112131;--surface-2:#16293B;--ink:#E7EEF2;--muted:#94A6B5;--line:#223749;
-    --accent:#FF6F58;--accent-ink:#1A0B08;--aqua:#53CFC5;--aqua-soft:#133A3A;--deep:#07111A;--deep-ink:#E7EEF2;
-    --danger:#FF9A8A;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 36px -14px rgba(0,0,0,.6);
-  }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;

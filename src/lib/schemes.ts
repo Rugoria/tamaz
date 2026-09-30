@@ -16,7 +16,7 @@ export const SCHEMES = [
 ] as const;
 
 export type SchemeId = (typeof SCHEMES)[number]["id"];
-export type ThemeMode = "auto" | "light" | "dark";
+export type ThemeMode = "light" | "dark";
 
 export const DEFAULT_SCHEME: SchemeId = "elastic";
 export const SCHEME_KEY = "tamaz-scheme";

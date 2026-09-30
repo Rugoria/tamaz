@@ -83,7 +83,7 @@ export const hero = {
   lede:
     "Board-certified orthodontists, four neighborhood studios and a free first visit. You leave with a 3D scan, a written treatment plan and your monthly price before you commit to anything.",
   primaryCta: { label: "Book a free consultation", href: "#consult" },
-  secondaryCta: { label: "See real results", href: "#before-after" },
+  secondaryCta: { label: "See real results", href: "#results" },
   trust: [
     { value: "4.9 ★", label: "2,300+ patient reviews" },
     { value: "$0 down", label: "interest-free plans" },
@@ -103,20 +103,8 @@ export const hero = {
     width: 1121,
     height: 667,
     alt: "3D render of a clear aligner",
-    hint: "Drag, or use the arrow keys, to turn the aligner",
     title: "3D render of a clear aligner rotating",
   },
-};
-
-/** Scroll-driven before → after wipe shown right after the hero. */
-export const smileReveal = {
-  eyebrow: "Before & after",
-  title: "Scroll to see the difference.",
-  lede: "[One line about this patient’s treatment, e.g. treatment type and months.]",
-  label: "Compare this smile before and after treatment",
-  aspect: "627/418",
-  before: { src: "images/reveal-before.jpg", label: "Before", size: "627 × 418", alt: "Crowded, uneven front teeth before treatment" },
-  after: { src: "images/reveal-after.jpg", label: "After", size: "627 × 418", alt: "Straight, even front teeth after treatment" },
 };
 
 export const team = {
@@ -475,7 +463,7 @@ export const footer = {
     {
       title: "Explore",
       links: [
-        { label: "Before & after", href: "#before-after" },
+        { label: "Before & after", href: "#results" },
         { label: "Your journey", href: "#journey" },
         { label: "How it works", href: "#process" },
         { label: "Payment packages", href: "#packages" },

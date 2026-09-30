@@ -1,10 +1,8 @@
 /* The aligner is a transparent cutout with see-through plastic, so it floats in front of
    the word and the letters show through it. */
 .stage{position:absolute;inset:0;display:grid;place-items:center;perspective:1100px;pointer-events:none}
-.object{position:relative;opacity:0;width:clamp(280px,64vw,860px);pointer-events:auto;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;will-change:transform;border-radius:24px;filter:drop-shadow(0 18px 30px color-mix(in oklab,var(--ink) 14%,transparent))}
+.object{position:relative;opacity:0;width:clamp(280px,64vw,860px);user-select:none;-webkit-user-select:none;will-change:transform;border-radius:24px;filter:drop-shadow(0 18px 30px color-mix(in oklab,var(--ink) 14%,transparent))}
 .object img{display:block;width:100%;height:auto;-webkit-user-drag:none}
-.object:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
-.grabbing{cursor:grabbing}
 .shadow{position:absolute;left:50%;top:calc(50% + clamp(110px,22vw,300px));width:clamp(180px,40vw,540px);height:clamp(14px,2.4vw,30px);translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,color-mix(in oklab,var(--ink) 14%,transparent),transparent);pointer-events:none}
 @media (max-width:700px){.object{width:94vw}}
 @media (prefers-reduced-motion:reduce){.object{opacity:1}}
