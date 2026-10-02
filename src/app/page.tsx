@@ -1,10 +1,10 @@
+import { AlignerAbout } from "@/components/AlignerAbout";
 import { Consultation } from "@/components/Consultation";
-import { CostCalculator } from "@/components/CostCalculator";
 import { Faq } from "@/components/Faq";
 import { Hero } from "@/components/Hero";
+import { HeroAligner } from "@/components/HeroAligner";
 import { Journey } from "@/components/Journey";
 import { Locations } from "@/components/Locations";
-import { PaymentPackages } from "@/components/PaymentPackages";
 import { Process } from "@/components/Process";
 import { Results } from "@/components/Results";
 import { RevealObserver } from "@/components/RevealObserver";
@@ -13,6 +13,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SmileGuide } from "@/components/SmileGuide";
 import { Team } from "@/components/Team";
+import { hero } from "@/content/site";
 import styles from "./page.module.css";
 
 /** Section order follows the approved website layout (1–11). */
@@ -21,17 +22,18 @@ export default function Home() {
     <>
       <SiteNav />
       <main id="top">
-        {/* 1. Hero: 3D aligner display */}
-        <Hero />
+        {/* 1. Hero: 3D aligner display. On scroll the aligner flies into the aligner section beside it. */}
+        <div className={styles.flight}>
+          <Hero />
+          <AlignerAbout />
+          <HeroAligner src={hero.aligner.image} width={hero.aligner.width} height={hero.aligner.height} alt={hero.aligner.alt} />
+        </div>
+        {/* 3. Scroll to see the smile (moved up, right after the aligner section) */}
+        <Journey />
         {/* 2. Before & after */}
         <Results />
-        {/* 3. Scroll to see the smile */}
-        <Journey />
         {/* 4. Process */}
         <Process />
-        {/* 5. Payment packages */}
-        <PaymentPackages />
-        <CostCalculator />
         {/* 6. Clinic, patients and doctors */}
         <Team />
         {/* 7. Reviews & testimonials */}

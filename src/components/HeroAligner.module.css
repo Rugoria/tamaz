@@ -1,8 +1,9 @@
 /* The aligner is a transparent cutout with see-through plastic, so it floats in front of
-   the word and the letters show through it. */
-.stage{position:absolute;inset:0;display:grid;place-items:center;perspective:1100px;pointer-events:none}
-.object{position:relative;opacity:0;width:clamp(280px,64vw,860px);user-select:none;-webkit-user-select:none;will-change:transform;border-radius:24px;filter:drop-shadow(0 18px 30px color-mix(in oklab,var(--ink) 14%,transparent))}
+   the word and the letters show through it. The stage is positioned and scaled by JS inside
+   the layer that spans the hero and the aligner section. */
+.stage{position:absolute;left:0;top:0;z-index:2;width:clamp(280px,64vw,860px);transform-origin:0 0;pointer-events:none;will-change:transform}
+.object{opacity:0;user-select:none;-webkit-user-select:none;will-change:transform;filter:drop-shadow(0 18px 30px color-mix(in oklab,var(--ink) 14%,transparent))}
 .object img{display:block;width:100%;height:auto;-webkit-user-drag:none}
-.shadow{position:absolute;left:50%;top:calc(50% + clamp(110px,22vw,300px));width:clamp(180px,40vw,540px);height:clamp(14px,2.4vw,30px);translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,color-mix(in oklab,var(--ink) 14%,transparent),transparent);pointer-events:none}
-@media (max-width:700px){.object{width:94vw}}
+.shadow{position:absolute;left:50%;top:calc(100% + 6%);width:62%;height:clamp(14px,2.4vw,30px);translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,color-mix(in oklab,var(--ink) 14%,transparent),transparent)}
+@media (max-width:700px){.stage{width:94vw}}
 @media (prefers-reduced-motion:reduce){.object{opacity:1}}

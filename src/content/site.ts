@@ -31,16 +31,6 @@ export type JourneyStage = StageCopy & { start: number; end: number; aligners?: 
 
 export type Appliance = "braces" | "aligners";
 
-export type CostOption = { label: string; price: number };
-
-export type PaymentPackage = {
-  name: string;
-  price: string;
-  monthly: string;
-  includes: string[];
-  /** Highlights one card as the recommended package. */
-  featured?: boolean;
-};
 
 export type ProcessStep = { title: string; body: string; time: string };
 
@@ -65,10 +55,9 @@ export const brand = {
 
 export const nav: { links: NavLink[]; cta: NavLink } = {
   links: [
-    { label: "Results", href: "#results" },
     { label: "Your journey", href: "#journey" },
+    { label: "Results", href: "#results" },
     { label: "Process", href: "#process" },
-    { label: "Cost", href: "#packages" },
     { label: "Reviews", href: "#reviews" },
     { label: "Locations", href: "#visit" },
   ],
@@ -99,12 +88,27 @@ export const hero = {
    */
   aligner: {
     sources: ["videos/hero-aligner.mov", "videos/hero-aligner.webm"],
-    image: "images/hero-aligner-clear.png",
+    image: "images/hero-aligner-a-clear.png",
     width: 1121,
     height: 667,
     alt: "3D render of a clear aligner",
     title: "3D render of a clear aligner rotating",
   },
+};
+
+/** Two-column section after the hero. On scroll the hero aligner flies into `#aligner-slot` (left column). */
+export const alignerAbout = {
+  eyebrow: "Clear aligners",
+  title: "Nearly invisible, and made for your teeth alone.",
+  lede: "Every aligner is shaped from a 3D scan of your teeth. You switch to a new set every [1 to 2] weeks, and each one moves your teeth a fraction of a millimeter closer to your finished smile.",
+  points: [
+    { title: "Custom from a 3D scan", body: "No impression trays. A four-minute scan maps every tooth, and your orthodontist plans each move on screen." },
+    { title: "Take them out to eat", body: "Remove them for meals, brushing and flossing, so there is no list of foods to avoid." },
+    { title: "Worn 20 to 22 hours a day", body: "Thin, smooth plastic with no wires or brackets, so most people won’t notice you’re wearing them." },
+  ],
+  /** Shown after the average aligner treatment length from `journey.appliances`. */
+  durationBody: "[How often you check in during treatment, e.g. a quick visit every 6 to 8 weeks.]",
+  cta: { label: "Book a free consultation", href: "#consult" },
 };
 
 export const team = {
@@ -217,59 +221,6 @@ export const process = {
     { title: "Out for delivery", body: "Your aligners are packed and on their way to you or your studio.", time: "[Duration]" },
     { title: "Delivered", body: "Your aligners arrive and your treatment begins.", time: "[Duration]" },
   ] satisfies ProcessStep[],
-};
-
-/** Package names, prices and inclusions are placeholders until the client confirms them. */
-export const packages = {
-  eyebrow: "Payment packages",
-  title: "One price, everything included.",
-  lede: "[Short intro to the packages from the client.]",
-  items: [
-    {
-      name: "[Package 1 name]",
-      price: "[$0,000]",
-      monthly: "[or $000/mo]",
-      includes: ["[Inclusion 1]", "[Inclusion 2]", "[Inclusion 3]"],
-    },
-    {
-      name: "[Package 2 name]",
-      price: "[$0,000]",
-      monthly: "[or $000/mo]",
-      includes: ["[Inclusion 1]", "[Inclusion 2]", "[Inclusion 3]", "[Inclusion 4]"],
-      featured: true,
-    },
-    {
-      name: "[Package 3 name]",
-      price: "[$0,000]",
-      monthly: "[or $000/mo]",
-      includes: ["[Inclusion 1]", "[Inclusion 2]", "[Inclusion 3]", "[Inclusion 4]", "[Inclusion 5]"],
-    },
-  ] satisfies PaymentPackage[],
-  featuredLabel: "Most popular",
-  // Points at the booking form until online deposits (Stripe Checkout) are connected.
-  cta: { label: "Reserve this package", href: "#consult" },
-  calculatorLink: { label: "Or estimate your monthly payment", href: "#cost" },
-};
-
-export const cost = {
-  eyebrow: "Cost & financing",
-  title: "Know your monthly payment in 20 seconds.",
-  lede: "Interest-free plans on every treatment. We bill most insurance plans directly and apply your orthodontic benefit up front.",
-  options: [
-    { label: "Metal", price: 4800 },
-    { label: "Ceramic", price: 5600 },
-    { label: "Aligners", price: 5900 },
-    { label: "Phase 1", price: 2900 },
-  ] satisfies CostOption[],
-  /** Estimated benefit = min(maxInsurance, fee × insuranceShare). */
-  maxInsurance: 1500,
-  insuranceShare: 0.5,
-  down: { min: 0, max: 1500, step: 50, initial: 0 },
-  months: { min: 6, max: 36, step: 1, initial: 24 },
-  insuranceLabel: "My insurance includes orthodontic coverage",
-  note: "Sample pricing for illustration. Your exact fee is set at your free consultation.",
-  logosIntro: "In-network with most major plans, including:",
-  logos: ["Insurance logo 1", "Insurance logo 2", "Insurance logo 3", "Insurance logo 4", "Insurance logo 5", "Financing partner"],
 };
 
 export const gallery = {
@@ -463,10 +414,9 @@ export const footer = {
     {
       title: "Explore",
       links: [
-        { label: "Before & after", href: "#results" },
         { label: "Your journey", href: "#journey" },
+        { label: "Before & after", href: "#results" },
         { label: "How it works", href: "#process" },
-        { label: "Payment packages", href: "#packages" },
         { label: "Reviews", href: "#reviews" },
       ],
     },
@@ -474,7 +424,6 @@ export const footer = {
       title: "Patients",
       links: [
         { label: "Book a consultation", href: "#consult" },
-        { label: "Cost & financing", href: "#cost" },
         { label: "[Patient portal link]", href: "#" },
         { label: "[Pay my bill link]", href: "#" },
         { label: "Video tips", href: "#resources" },

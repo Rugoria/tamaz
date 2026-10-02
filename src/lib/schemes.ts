@@ -18,16 +18,20 @@ export const SCHEMES = [
 export type SchemeId = (typeof SCHEMES)[number]["id"];
 export type ThemeMode = "light" | "dark";
 
+/** The base palette in globals.css: it needs no html attribute. */
 export const DEFAULT_SCHEME: SchemeId = "elastic";
-export const SCHEME_KEY = "tamaz-scheme";
+/** The palette the site uses when SITE_SCHEME is not set. */
+export const SITE_DEFAULT_SCHEME: SchemeId = "clinical";
+// Renamed when Clinical Blue became the site palette, so picks saved before then are ignored.
+export const SCHEME_KEY = "tamaz-scheme-v2";
 export const MODE_KEY = "tamaz-mode";
 
 export const isSchemeId = (v: unknown): v is SchemeId => SCHEMES.some((s) => s.id === v);
 
-/** Production scheme from SITE_SCHEME (server only); falls back to the default. */
+/** Production scheme from SITE_SCHEME (server only); falls back to Clinical Blue. */
 export function siteScheme(): SchemeId {
   const v = process.env.SITE_SCHEME;
-  return isSchemeId(v) ? v : DEFAULT_SCHEME;
+  return isSchemeId(v) ? v : SITE_DEFAULT_SCHEME;
 }
 
 /** The html attribute for a scheme; the default scheme uses none. */

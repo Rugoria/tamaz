@@ -47,7 +47,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   // Colors never follow the browser or OS setting.
   colorScheme: "only light",
-  themeColor: "#F4F7F8",
+  themeColor: "#F3F7FC", // Clinical Blue --bg
 };
 
 // Review builds only: restore the palette chosen in the picker before first paint.

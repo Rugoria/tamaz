@@ -1,0 +1,12 @@
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+.slot{position:relative;width:100%;aspect-ratio:1121/667}
+.still{display:none;width:100%;height:auto}
+.copy{display:grid;gap:18px;justify-items:start}
+.copy h2{margin:0}
+.points{list-style:none;margin:6px 0 10px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+.points li{display:grid;gap:6px;align-content:start;padding-top:14px;border-top:1px solid var(--line)}
+.points b{font:700 1.05rem/1.3 var(--display);color:var(--ink)}
+.points span{color:var(--muted);font-size:.95rem;line-height:1.5}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+@media (max-width:560px){.points{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.still{display:block}}

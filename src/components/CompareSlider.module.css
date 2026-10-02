@@ -2,8 +2,8 @@
 .before,.after{position:absolute;inset:0}
 .after{clip-path:inset(0 0 0 var(--pos))}
 .handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.15);pointer-events:none;z-index:3}
-.handle::after{content:"◀ ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;color:#0F2438;font-size:.6rem;letter-spacing:2px;border-radius:999px;padding:9px 10px;box-shadow:var(--shadow)}
+.handle::after{content:"◀ ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;color:var(--deep);font-size:.6rem;letter-spacing:2px;border-radius:999px;padding:9px 10px;box-shadow:var(--shadow)}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
 .ba:has(input:focus-visible){outline:3px solid var(--aqua);outline-offset:3px}
-.lab{position:absolute;top:12px;z-index:2;font:500 .7rem/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;background:rgba(15,36,56,.75);color:#fff;padding:6px 9px;border-radius:999px}
+.lab{position:absolute;top:12px;z-index:2;font:500 .7rem/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;background:color-mix(in oklab,var(--deep) 75%,transparent);color:#fff;padding:6px 9px;border-radius:999px}
 .l{left:12px}.r{right:12px}
