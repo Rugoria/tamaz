@@ -33,7 +33,9 @@
 .toggle{display:inline-flex;justify-self:start;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--deep-line)}
 .toggle button{border:0;background:none;color:var(--deep-muted);font:600 .88rem/1 var(--body);padding:9px 16px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
 .toggle button[aria-pressed="true"]{background:var(--aqua);color:var(--deep)}
-.visual .photos{position:relative;padding:0;overflow:hidden;aspect-ratio:4/3}
-.photo{position:absolute;inset:0}
+/* 3:2 like the photos, so the tray's % position lines up with the teeth at every width. */
+.visual .photos{position:relative;padding:0;overflow:hidden;aspect-ratio:3/2}
+.photo{position:absolute;inset:0;will-change:transform,opacity}
 .photo img{object-fit:cover}
-@media (max-width:960px){.visual .photos{aspect-ratio:16/10}}
+.tray{position:absolute;opacity:0;will-change:transform,opacity;pointer-events:none}
+.tray img{display:block;width:100%;height:auto}

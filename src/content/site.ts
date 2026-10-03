@@ -176,11 +176,16 @@ export const journey = {
   eyebrow: "Your {months}-month journey",
   title: "Scroll to watch a smile move into place.",
   lede: "Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.",
-  /** Real-teeth animation, one photo per step: each fades in over the last as you scroll. */
+  /**
+   * Real-teeth animation (all 3:2, same framing): the start photo, then clear trays (front renders
+   * of the 3D aligner) move onto the upper and lower teeth during Align, then the end photo takes
+   * over during Retain. `fit` places each tray over the start photo's teeth, in % of the frame.
+   */
   photos: {
-    before: { src: "images/journey-before.jpg", alt: "Smile with crooked, uneven teeth before treatment" },
-    after: { src: "images/journey-after.jpg", alt: "The same smile with straight, even teeth after treatment" },
-    retain: { src: "images/journey-retain.jpg", alt: "The straightened smile wearing clear retainers" },
+    start: { src: "images/journey-start.jpg", alt: "Smile with crooked, uneven teeth before treatment" },
+    aligner: { src: "images/journey-aligner.png", width: 840, height: 220, fit: { left: 18, top: 26, width: 65 } },
+    alignerLower: { src: "images/journey-aligner-lower.png", width: 840, height: 220, fit: { left: 21, top: 49, width: 56 } },
+    end: { src: "images/journey-retain.jpg", alt: "The straightened smile wearing clear aligners" },
   },
   toggleLabel: "Show treatment with",
   appliances: {

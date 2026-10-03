@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { journey, type Appliance } from "@/content/site";
-import { clamp, ease } from "@/lib/motion";
+import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
 import { Copy } from "./Tbd";
 import styles from "./Journey.module.css";
 
@@ -15,10 +15,11 @@ const stageCopy = (i: number, a: Appliance) => (a === "aligners" && STAGES[i].al
 const [SCAN, ALIGN, RETAIN] = STAGES;
 /** Treatment progress 0..1 for scroll progress p: teeth move during the Align step (see content/site.ts). */
 const alignAt = (p: number) => clamp((p - ALIGN.start) / (ALIGN.end - ALIGN.start));
-/** The retainer photo fades in over the first part of the Retain step and stays to the end. */
+/** The end photo fades in over the first part of the Retain step and stays to the end. */
 const retainAt = (p: number) => clamp((p - RETAIN.start) / ((RETAIN.end - RETAIN.start) * 0.6));
 
 const PHOTO_SIZES = "(max-width: 960px) 92vw, 640px";
+const { aligner: upper, alignerLower: lower } = journey.photos;
 
 function monthLabel(p: number, total: number) {
   if (p < SCAN.end) return "Day 1";
@@ -28,8 +29,10 @@ function monthLabel(p: number, total: number) {
 
 export function Journey() {
   const scroller = useRef<HTMLDivElement>(null);
-  const after = useRef<HTMLDivElement>(null);
-  const retain = useRef<HTMLDivElement>(null);
+  const startPhoto = useRef<HTMLDivElement>(null);
+  const tray = useRef<HTMLDivElement>(null);
+  const trayLower = useRef<HTMLDivElement>(null);
+  const endPhoto = useRef<HTMLDivElement>(null);
   const month = useRef<HTMLSpanElement>(null);
   const stageLabel = useRef<HTMLSpanElement>(null);
   const bar = useRef<HTMLElement>(null);
@@ -48,6 +51,9 @@ export function Journey() {
 
   useEffect(() => {
     let lastP = -1, ticking = false, raf = 0;
+    // Reduced motion: no movement, just the three states (photo, tray on, end photo).
+    const reduced = prefersReducedMotion();
+    const step = (v: number) => (reduced ? (v < 0.5 ? 0 : 1) : v);
     const update = () => {
       const el = scroller.current;
       if (!el) return;
@@ -58,11 +64,30 @@ export function Journey() {
       let si = STAGES.findIndex((s) => p >= s.start && p < s.end);
       if (si < 0) si = STAGES.length - 1;
       const t = alignAt(p);
-      if (after.current) after.current.style.opacity = ease(t).toFixed(3);
-      if (retain.current) retain.current.style.opacity = ease(retainAt(p)).toFixed(3);
-      const a = applianceRef.current;
-      if (month.current) month.current.textContent = monthLabel(p, journey.appliances[a].months);
-      if (stageLabel.current) stageLabel.current.textContent = stageCopy(si, a).label;
+      const a = ease(step(t));
+      const ret = ease(step(retainAt(p)));
+      // Align: the upper tray comes down from above and the lower one up from below, each settling
+      // onto its teeth, clearly visible while moving, then fading to a subtle clear look once fitted.
+      const show = clamp(step(t) / 0.12);
+      const settle = clamp((step(t) - 0.8) / 0.2);
+      const trayOpacity = (show * lerp(0.8, 0.4, settle) * (1 - ret)).toFixed(3);
+      if (tray.current) {
+        tray.current.style.transform = `translateY(${lerp(-190, 0, a).toFixed(1)}%) scale(${lerp(1.25, 1, a).toFixed(3)}) rotate(${lerp(-6, 0, a).toFixed(2)}deg)`;
+        tray.current.style.opacity = trayOpacity;
+      }
+      if (trayLower.current) {
+        trayLower.current.style.transform = `translateY(${lerp(190, 0, a).toFixed(1)}%) scale(${lerp(1.25, 1, a).toFixed(3)}) rotate(${lerp(6, 0, a).toFixed(2)}deg)`;
+        trayLower.current.style.opacity = trayOpacity;
+      }
+      // Retain: a soft zoom crossfade into the end photo.
+      if (startPhoto.current) startPhoto.current.style.transform = `scale(${lerp(1, 1.05, ret).toFixed(3)})`;
+      if (endPhoto.current) {
+        endPhoto.current.style.opacity = ret.toFixed(3);
+        endPhoto.current.style.transform = `scale(${lerp(1.06, 1, ret).toFixed(3)})`;
+      }
+      const ap = applianceRef.current;
+      if (month.current) month.current.textContent = monthLabel(p, journey.appliances[ap].months);
+      if (stageLabel.current) stageLabel.current.textContent = stageCopy(si, ap).label;
       if (bar.current) bar.current.style.width = (p * 100).toFixed(1) + "%";
       if (crowd.current) crowd.current.textContent = (5.5 * (1 - ease(t))).toFixed(1) + " mm";
       if (pct.current) pct.current.textContent = Math.round(p * 100) + "%";
@@ -130,14 +155,25 @@ export function Journey() {
               </div>
               <div className={styles.progress}><i ref={bar} /></div>
               <div className={`smile-card ${styles.photos}`}>
-                <div className={styles.photo}>
-                  <Image src={`/${journey.photos.before.src}`} alt={journey.photos.before.alt} fill sizes={PHOTO_SIZES} />
+                <div className={styles.photo} ref={startPhoto}>
+                  <Image src={`/${journey.photos.start.src}`} alt={journey.photos.start.alt} fill sizes={PHOTO_SIZES} />
                 </div>
-                <div className={styles.photo} ref={after} style={{ opacity: 0 }}>
-                  <Image src={`/${journey.photos.after.src}`} alt={journey.photos.after.alt} fill sizes={PHOTO_SIZES} />
-                </div>
-                <div className={styles.photo} ref={retain} style={{ opacity: 0 }}>
-                  <Image src={`/${journey.photos.retain.src}`} alt={journey.photos.retain.alt} fill sizes={PHOTO_SIZES} />
+                {[
+                  { t: upper, ref: tray },
+                  { t: lower, ref: trayLower },
+                ].map(({ t, ref }) => (
+                  <div
+                    key={t.src}
+                    className={styles.tray}
+                    ref={ref}
+                    aria-hidden="true"
+                    style={{ left: `${t.fit.left}%`, top: `${t.fit.top}%`, width: `${t.fit.width}%` }}
+                  >
+                    <Image src={`/${t.src}`} alt="" width={t.width} height={t.height} sizes="(max-width: 960px) 60vw, 420px" />
+                  </div>
+                ))}
+                <div className={styles.photo} ref={endPhoto} style={{ opacity: 0 }}>
+                  <Image src={`/${journey.photos.end.src}`} alt={journey.photos.end.alt} fill sizes={PHOTO_SIZES} />
                 </div>
               </div>
               <div className="readouts">
