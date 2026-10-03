@@ -22,14 +22,15 @@ export default function Home() {
     <>
       <SiteNav />
       <main id="top">
-        {/* 1. Hero: 3D aligner display. On scroll the aligner flies into the aligner section beside it. */}
+        {/* 1. Hero: 3D aligner display. On scroll the aligner flies into the aligner section beside it,
+            then on down onto the lower teeth in the Journey photo. */}
         <div className={styles.flight}>
           <Hero />
           <AlignerAbout />
+          {/* 3. Scroll to see the smile (moved up, right after the aligner section) */}
+          <Journey />
           <HeroAligner src={hero.aligner.image} width={hero.aligner.width} height={hero.aligner.height} alt={hero.aligner.alt} model={hero.aligner.model} />
         </div>
-        {/* 3. Scroll to see the smile (moved up, right after the aligner section) */}
-        <Journey />
         {/* 2. Before & after */}
         <Results />
         {/* 4. Process */}

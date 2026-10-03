@@ -14,8 +14,12 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 export type AlignerScene = {
-  /** turn: 0 = imageA pose, 1 = half a turn clockwise from there (seen from above). */
-  render(turn: number): void;
+  /**
+   * turn: 0 = imageA pose, 1 = half a turn clockwise from there (seen from above).
+   * jaw: 0 = that landing pose, 1 = turned on round to face the camera and seen nearly level, as
+   * when worn on the lower teeth in the Journey photo.
+   */
+  render(turn: number, jaw?: number): void;
   dispose(): void;
 };
 
@@ -28,6 +32,15 @@ const START_YAW = (-35 * Math.PI) / 180;
    wide back ends are nearest the camera and need more room. Blended along the turn. */
 const FRAME_START = { distance: 0.086, x: 0.005, z: 0 };
 const FRAME_END = { distance: 0.105, x: -0.004, z: 0.004 };
+/* On the lower teeth: front teeth toward the camera (a full turn from imageA's pose, still
+   clockwise), seen from a little above so the arch curves up at the back like the smile. */
+const JAW_ELEVATION = (12 * Math.PI) / 180;
+const JAW_YAW = -2 * Math.PI;
+/* A long lens from further back flattens the perspective, so the front teeth are not oversized
+   against the back ones and each tooth lines up with the photo's. `widen` stretches the arch
+   sideways to the photo's broader smile and `squash` lowers it to the height of its teeth. */
+const JAW_FOV = 12;
+const FRAME_JAW = { distance: 0.2, x: 0, z: 0.004, widen: 1.16, squash: 0.85 };
 
 /**
  * Renders the 3D aligner (glTF, meters, Y up, front teeth toward +Z) into a transparent canvas
@@ -46,12 +59,17 @@ export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLEle
   scene.environment = env;
 
   const camera = new PerspectiveCamera(FOV, 1, 0.001, 2);
-  const frame = (turn: number) => {
-    const mix = (a: number, b: number) => a + (b - a) * turn;
-    const d = mix(FRAME_START.distance, FRAME_END.distance);
-    const z = mix(FRAME_START.z, FRAME_END.z);
-    camera.position.set(0, Math.sin(ELEVATION) * d, Math.cos(ELEVATION) * d + z);
-    camera.lookAt(mix(FRAME_START.x, FRAME_END.x), 0.002, z);
+  const frame = (turn: number, jaw: number) => {
+    const mix = (a: number, b: number, t = turn) => a + (b - a) * t;
+    const d = mix(mix(FRAME_START.distance, FRAME_END.distance), FRAME_JAW.distance, jaw);
+    const z = mix(mix(FRAME_START.z, FRAME_END.z), FRAME_JAW.z, jaw);
+    const x = mix(mix(FRAME_START.x, FRAME_END.x), FRAME_JAW.x, jaw);
+    const el = mix(ELEVATION, JAW_ELEVATION, jaw);
+    camera.fov = mix(FOV, JAW_FOV, jaw);
+    camera.updateProjectionMatrix();
+    turntable.scale.set(mix(1, FRAME_JAW.widen, jaw), mix(1, FRAME_JAW.squash, jaw), 1);
+    camera.position.set(0, Math.sin(el) * d, Math.cos(el) * d + z);
+    camera.lookAt(x, 0.002, z);
   };
 
   const gltf = await new GLTFLoader().loadAsync(url);
@@ -89,9 +107,10 @@ export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLEle
   ro.observe(box);
 
   return {
-    render(turn) {
-      turntable.rotation.y = START_YAW - Math.PI * turn; // negative = clockwise seen from above
-      frame(turn);
+    render(turn, jaw = 0) {
+      const landed = START_YAW - Math.PI * turn; // negative = clockwise seen from above
+      turntable.rotation.y = landed + (JAW_YAW - landed) * jaw;
+      frame(turn, jaw);
       renderer.render(scene, camera);
     },
     dispose() {

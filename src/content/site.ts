@@ -24,7 +24,7 @@ export type Case = {
   video?: string;
 };
 
-type StageCopy = { name: string; body: string; label: string };
+type StageCopy = { name: string; body: string };
 
 /** `aligners` overrides the copy when the aligner view is selected. */
 export type JourneyStage = StageCopy & { start: number; end: number; aligners?: StageCopy };
@@ -177,15 +177,19 @@ export const journey = {
   title: "Scroll to watch a smile move into place.",
   lede: "Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.",
   /**
-   * Real-teeth animation (all 3:2, same framing): the start photo, then clear trays (front renders
-   * of the 3D aligner) move onto the upper and lower teeth during Align, then the end photo takes
-   * over during Retain. `fit` places each tray over the start photo's teeth, in % of the frame.
+   * Real-teeth animation, one photo per step (all 3:2): the start photo with the hero's 3D aligner
+   * fitted over the lower teeth (Scan), the aligners worn (Align), then the straight smile (Retain).
+   * `start` and `end` share the same framing (both cropped from the same shoot).
    */
   photos: {
     start: { src: "images/journey-start.jpg", alt: "Smile with crooked, uneven teeth before treatment" },
-    aligner: { src: "images/journey-aligner.png", width: 840, height: 220, fit: { left: 18, top: 26, width: 65 } },
-    alignerLower: { src: "images/journey-aligner-lower.png", width: 840, height: 220, fit: { left: 21, top: 49, width: 56 } },
-    end: { src: "images/journey-retain.jpg", alt: "The straightened smile wearing clear aligners" },
+    /**
+     * Where the hero's 3D aligner fits over the lower teeth (it flies down from the aligner section):
+     * the center of its box and its width, in % of the frame.
+     */
+    landing: { x: 51, y: 58, width: 76 },
+    worn: { src: "images/journey-retain.jpg", alt: "The smile wearing clear aligners on both arches" },
+    end: { src: "images/journey-straight.jpg", alt: "The straightened smile after treatment" },
   },
   toggleLabel: "Show treatment with",
   appliances: {
@@ -193,21 +197,21 @@ export const journey = {
     aligners: { label: "Clear aligners", months: 12, average: "[12] months" },
     braces: { label: "Braces", months: 18, average: "18 months" },
   } satisfies Record<Appliance, { label: string; months: number; average: string }>,
-  /** Three steps; start/end are fractions of the scroll through the section. */
+  /** Three steps, one scroll each; start/end are fractions of the scroll through the section. */
   stages: [
     {
-      name: "Scan", label: "Consultation", start: 0, end: 0.25,
+      name: "Scan", start: 0, end: 1 / 3,
       body: "Free consultation and 3D scan, about four minutes with no impression trays. Your orthodontist plans every tooth’s move and shows you the result on screen.",
     },
     {
-      name: "Align", label: "Alignment", start: 0.25, end: 0.75,
+      name: "Align", start: 1 / 3, end: 2 / 3,
       body: "Brackets go on in about an hour, then the archwire gently pulls teeth into line. Adjustment visits every 6–8 weeks.",
-      aligners: { name: "Align", label: "Alignment", body: "A new set of clear trays every one to two weeks, worn 22 hours a day, with check-ins every 8–10 weeks and refinement trays for the last fractions of a millimeter." },
+      aligners: { name: "Align", body: "A new set of clear trays every one to two weeks, worn 22 hours a day, with check-ins every 8–10 weeks and refinement trays for the last fractions of a millimeter." },
     },
     {
-      name: "Retain", label: "Retention", start: 0.75, end: 1.01,
+      name: "Retain", start: 2 / 3, end: 1.01,
       body: "Brackets off, clear retainers on to hold your new smile in place. Your first set is included.",
-      aligners: { name: "Retain", label: "Retention", body: "Last trays done, clear retainers on to hold your new smile in place. Your first set is included." },
+      aligners: { name: "Retain", body: "Last trays done, clear retainers on to hold your new smile in place. Your first set is included." },
     },
   ] satisfies JourneyStage[],
 };
