@@ -12,22 +12,24 @@ const APPLIANCES = Object.keys(journey.appliances) as Appliance[];
 
 const stageCopy = (i: number, a: Appliance) => (a === "aligners" && STAGES[i].aligners) || STAGES[i];
 
-/** Treatment progress 0..1 for scroll progress p: teeth move during the Align stage (see content/site.ts). */
-const alignAt = (p: number) => clamp((p - 0.32) / 0.48);
+const [SCAN, ALIGN, RETAIN] = STAGES;
+/** Treatment progress 0..1 for scroll progress p: teeth move during the Align step (see content/site.ts). */
+const alignAt = (p: number) => clamp((p - ALIGN.start) / (ALIGN.end - ALIGN.start));
+/** The retainer photo fades in over the first part of the Retain step and stays to the end. */
+const retainAt = (p: number) => clamp((p - RETAIN.start) / ((RETAIN.end - RETAIN.start) * 0.6));
 
 const PHOTO_SIZES = "(max-width: 960px) 92vw, 640px";
 
 function monthLabel(p: number, total: number) {
-  if (p < 0.12) return "Day 1";
-  if (p < 0.22) return "Week 1";
-  if (p < 0.32) return "Month 01";
-  if (p < 0.9) return "Month " + String(Math.max(1, Math.round(1 + clamp((p - 0.32) / 0.58) * (total - 1)))).padStart(2, "0");
+  if (p < SCAN.end) return "Day 1";
+  if (p < ALIGN.end) return "Month " + String(Math.max(1, Math.round(1 + alignAt(p) * (total - 1)))).padStart(2, "0");
   return `Month ${total}+`;
 }
 
 export function Journey() {
   const scroller = useRef<HTMLDivElement>(null);
   const after = useRef<HTMLDivElement>(null);
+  const retain = useRef<HTMLDivElement>(null);
   const month = useRef<HTMLSpanElement>(null);
   const stageLabel = useRef<HTMLSpanElement>(null);
   const bar = useRef<HTMLElement>(null);
@@ -57,6 +59,7 @@ export function Journey() {
       if (si < 0) si = STAGES.length - 1;
       const t = alignAt(p);
       if (after.current) after.current.style.opacity = ease(t).toFixed(3);
+      if (retain.current) retain.current.style.opacity = ease(retainAt(p)).toFixed(3);
       const a = applianceRef.current;
       if (month.current) month.current.textContent = monthLabel(p, journey.appliances[a].months);
       if (stageLabel.current) stageLabel.current.textContent = stageCopy(si, a).label;
@@ -132,6 +135,9 @@ export function Journey() {
                 </div>
                 <div className={styles.photo} ref={after} style={{ opacity: 0 }}>
                   <Image src={`/${journey.photos.after.src}`} alt={journey.photos.after.alt} fill sizes={PHOTO_SIZES} />
+                </div>
+                <div className={styles.photo} ref={retain} style={{ opacity: 0 }}>
+                  <Image src={`/${journey.photos.retain.src}`} alt={journey.photos.retain.alt} fill sizes={PHOTO_SIZES} />
                 </div>
               </div>
               <div className="readouts">

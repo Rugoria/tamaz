@@ -176,10 +176,11 @@ export const journey = {
   eyebrow: "Your {months}-month journey",
   title: "Scroll to watch a smile move into place.",
   lede: "Teeth move roughly one millimeter a month under light, steady force. Here is what that looks like from first scan to retainer.",
-  /** Real-teeth animation: the after photo fades in over the before photo as you scroll. */
+  /** Real-teeth animation, one photo per step: each fades in over the last as you scroll. */
   photos: {
     before: { src: "images/journey-before.jpg", alt: "Smile with crooked, uneven teeth before treatment" },
     after: { src: "images/journey-after.jpg", alt: "The same smile with straight, even teeth after treatment" },
+    retain: { src: "images/journey-retain.jpg", alt: "The straightened smile wearing clear retainers" },
   },
   toggleLabel: "Show treatment with",
   appliances: {
@@ -187,25 +188,21 @@ export const journey = {
     aligners: { label: "Clear aligners", months: 12, average: "[12] months" },
     braces: { label: "Braces", months: 18, average: "18 months" },
   } satisfies Record<Appliance, { label: string; months: number; average: string }>,
-  /** start/end are fractions of the scroll through the section. */
+  /** Three steps; start/end are fractions of the scroll through the section. */
   stages: [
-    { name: "Scan", label: "Consultation", start: 0, end: 0.12, body: "Free consultation and 3D scan. About four minutes, with no impression trays." },
-    { name: "Plan", label: "Treatment plan", start: 0.12, end: 0.22, body: "Your orthodontist sets a target position for every tooth and shows you the result on screen." },
     {
-      name: "Bond", label: "Bonding day", start: 0.22, end: 0.32, body: "Brackets go on in about an hour. You pick your band colors.",
-      aligners: { name: "Fit", label: "First trays", body: "You get your first set of clear trays and learn how to put them in and take them out." },
+      name: "Scan", label: "Consultation", start: 0, end: 0.25,
+      body: "Free consultation and 3D scan, about four minutes with no impression trays. Your orthodontist plans every tooth’s move and shows you the result on screen.",
     },
     {
-      name: "Align", label: "Alignment", start: 0.32, end: 0.8, body: "The archwire gently pulls teeth into line. Adjustment visits every 6–8 weeks.",
-      aligners: { name: "Align", label: "Alignment", body: "A new set of trays every one to two weeks, worn 22 hours a day. Check-ins every 8–10 weeks." },
+      name: "Align", label: "Alignment", start: 0.25, end: 0.75,
+      body: "Brackets go on in about an hour, then the archwire gently pulls teeth into line. Adjustment visits every 6–8 weeks.",
+      aligners: { name: "Align", label: "Alignment", body: "A new set of clear trays every one to two weeks, worn 22 hours a day, with check-ins every 8–10 weeks and refinement trays for the last fractions of a millimeter." },
     },
     {
-      name: "Detail", label: "Detailing", start: 0.8, end: 0.9, body: "Fine-tuning of the bite, root angles and the last fractions of a millimeter.",
-      aligners: { name: "Refine", label: "Refinement", body: "Refinement trays fine-tune the bite and the last fractions of a millimeter." },
-    },
-    {
-      name: "Retain", label: "Retention", start: 0.9, end: 1.01, body: "Brackets off, retainers on. Your first set is included.",
-      aligners: { name: "Retain", label: "Retention", body: "Last trays done, retainers on. Your first set is included." },
+      name: "Retain", label: "Retention", start: 0.75, end: 1.01,
+      body: "Brackets off, clear retainers on to hold your new smile in place. Your first set is included.",
+      aligners: { name: "Retain", label: "Retention", body: "Last trays done, clear retainers on to hold your new smile in place. Your first set is included." },
     },
   ] satisfies JourneyStage[],
 };
