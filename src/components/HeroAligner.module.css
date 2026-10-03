@@ -3,7 +3,13 @@
    the layer that spans the hero and the aligner section. */
 .stage{position:absolute;left:0;top:0;z-index:2;width:clamp(280px,64vw,860px);transform-origin:0 0;pointer-events:none;will-change:transform}
 .object{opacity:0;user-select:none;-webkit-user-select:none;will-change:transform;filter:drop-shadow(0 18px 30px color-mix(in oklab,var(--ink) 14%,transparent))}
+.object{position:relative}
 .object img{display:block;width:100%;height:auto;-webkit-user-drag:none}
+/* The 3D model fades in over the still once loaded (.ready). */
+.canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s ease}
+.still{transition:opacity .6s ease}
+.ready .canvas{opacity:1}
+.ready .still{opacity:0}
 .shadow{position:absolute;left:50%;top:calc(100% + 6%);width:62%;height:clamp(14px,2.4vw,30px);translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,color-mix(in oklab,var(--ink) 14%,transparent),transparent)}
 @media (max-width:700px){.stage{width:94vw}}
 @media (prefers-reduced-motion:reduce){.object{opacity:1}}

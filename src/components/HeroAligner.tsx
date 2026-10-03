@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
+import type { AlignerScene } from "./alignerScene";
 import styles from "./HeroAligner.module.css";
 
-type Props = { src: string; width: number; height: number; alt: string };
+type Props = { src: string; width: number; height: number; alt: string; model: string };
 
 const INTRO_MS = 1600;
 
@@ -13,16 +14,19 @@ const INTRO_MS = 1600;
  * The hero aligner. It lives in a layer spanning the hero and the aligner section (both inside
  * its parent), starts centered in front of the wordmark, and flies into `#aligner-slot` as the
  * page scrolls: it stays centered on screen while it slides across and shrinks to the slot, then
- * scrolls with the section. It is never rotated: it always faces the way the original render does.
+ * scrolls with the section. The imageA still shows first; once the 3D model (three.js, loaded
+ * lazily) is ready it fades in and, over the flight, turns half a turn clockwise around its vertical
+ * axis, like a phone spun on a table: front teeth toward you at the start, back ends at the landing.
  * - intro: rises from below and fades in;
  * - idle: a slow float, which settles to a stop as it lands.
  * A rAF loop writes transforms straight to the DOM (no React state) and runs only while the layer is
- * on screen. Reduced motion: it stays still in the hero (the aligner section shows its own still).
+ * on screen. Reduced motion: no 3D model; the still stays in the hero (the aligner section shows its own still).
  */
-export function HeroAligner({ src, width, height, alt }: Props) {
+export function HeroAligner({ src, width, height, alt, model }: Props) {
   const stage = useRef<HTMLDivElement>(null);
   const obj = useRef<HTMLDivElement>(null);
   const shadow = useRef<HTMLSpanElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const st = stage.current;
@@ -34,7 +38,9 @@ export function HeroAligner({ src, width, height, alt }: Props) {
     if (!st || !el || !sh || !layer || !hero) return;
 
     const reduced = prefersReducedMotion();
-    const s = { raf: 0, visible: true };
+    const s = { raf: 0, visible: true, q: 0 };
+    let scene: AlignerScene | null = null;
+    let disposed = false;
     const start = performance.now();
 
     const write = (now: number) => {
@@ -70,6 +76,8 @@ export function HeroAligner({ src, width, height, alt }: Props) {
       const ty = lift + (1 - intro) * 180;
       el.style.transform = `translate3d(0,${ty.toFixed(1)}px,0) scale(${(0.75 + intro * 0.25).toFixed(3)})`;
       el.style.opacity = intro.toFixed(3);
+      s.q = q;
+      scene?.render(ease(q));
 
       const k = (1 - (lift + 12) / 48) * intro;
       sh.style.transform = `scale(${Math.max(k, 0.01).toFixed(3)})`;
@@ -92,17 +100,34 @@ export function HeroAligner({ src, width, height, alt }: Props) {
     io.observe(layer);
     write(start);
 
+    // Swap the still for the 3D model once it has loaded (skipped under reduced motion).
+    const cv = canvas.current;
+    if (!reduced && cv) {
+      import("./alignerScene")
+        .then(({ createAlignerScene }) => createAlignerScene(cv, el, `/${model}`))
+        .then((sc) => {
+          if (disposed) return sc.dispose();
+          scene = sc;
+          sc.render(ease(s.q));
+          st.classList.add(styles.ready);
+        })
+        .catch(() => {}); // keep the still if WebGL or the model is unavailable
+    }
+
     return () => {
+      disposed = true;
+      scene?.dispose();
       io.disconnect();
       cancelAnimationFrame(s.raf);
       window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [model]);
 
   return (
     <div ref={stage} className={styles.stage}>
       <div ref={obj} className={styles.object}>
-        <Image src={`/${src}`} alt={alt} width={width} height={height} priority draggable={false} sizes="(max-width: 700px) 94vw, 860px" />
+        <Image className={styles.still} src={`/${src}`} alt={alt} width={width} height={height} priority draggable={false} sizes="(max-width: 700px) 94vw, 860px" />
+        <canvas ref={canvas} className={styles.canvas} aria-hidden="true" />
       </div>
       <span ref={shadow} className={styles.shadow} aria-hidden="true" />
     </div>

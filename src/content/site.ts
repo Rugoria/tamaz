@@ -89,6 +89,8 @@ export const hero = {
   aligner: {
     sources: ["videos/hero-aligner.mov", "videos/hero-aligner.webm"],
     image: "images/hero-aligner-a-clear.png",
+    /** 3D model (glTF binary, meters, Y up, front teeth toward +Z); turns on scroll. */
+    model: "models/aligner.glb",
     width: 1121,
     height: 667,
     alt: "3D render of a clear aligner",

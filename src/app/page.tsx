@@ -26,7 +26,7 @@ export default function Home() {
         <div className={styles.flight}>
           <Hero />
           <AlignerAbout />
-          <HeroAligner src={hero.aligner.image} width={hero.aligner.width} height={hero.aligner.height} alt={hero.aligner.alt} />
+          <HeroAligner src={hero.aligner.image} width={hero.aligner.width} height={hero.aligner.height} alt={hero.aligner.alt} model={hero.aligner.model} />
         </div>
         {/* 3. Scroll to see the smile (moved up, right after the aligner section) */}
         <Journey />
