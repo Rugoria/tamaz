@@ -5,11 +5,11 @@
 .object{opacity:0;user-select:none;-webkit-user-select:none;will-change:transform;filter:drop-shadow(0 18px 30px color-mix(in oklab,var(--ink) 14%,transparent))}
 .object{position:relative}
 .object img{display:block;width:100%;height:auto;-webkit-user-drag:none}
-/* The 3D model fades in over the still once loaded (.ready). */
-.canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s ease}
-.still{transition:opacity .6s ease}
-.ready .canvas{opacity:1}
-.ready .still{opacity:0}
+/* Only the 3D model shows once loaded (.ready). The still keeps the stage's size and is shown only
+   as a fallback: when WebGL or the model fails (.fallback) or under reduced motion. */
+.canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+.still{opacity:0}
+.ready .canvas,.fallback .still{opacity:1}
 .shadow{position:absolute;left:50%;top:calc(100% + 6%);width:62%;height:clamp(14px,2.4vw,30px);translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,color-mix(in oklab,var(--ink) 14%,transparent),transparent)}
 @media (max-width:700px){.stage{width:94vw}}
-@media (prefers-reduced-motion:reduce){.object{opacity:1}}
+@media (prefers-reduced-motion:reduce){.object,.still{opacity:1}}

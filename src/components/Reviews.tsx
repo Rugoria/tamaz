@@ -55,7 +55,7 @@ export function Reviews() {
           <span className="eyebrow">{testimonials.eyebrow}</span>
           <h3>{testimonials.title}</h3>
         </div>
-        <div className={styles.reviews} data-stagger>
+        <div className={`${styles.reviews} ${styles.videos}`} data-stagger>
           {testimonials.items.map((t, i) => (
             <figure key={i} className={`${styles.testimonial} reveal`}>
               <VideoSlot

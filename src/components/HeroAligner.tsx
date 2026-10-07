@@ -19,15 +19,16 @@ const LANDING = journey.photos.landing;
  * page scrolls: it stays centered on screen while it slides across and shrinks to the slot. Scrolling
  * on, it leaves the slot and glides down to the Journey photo (#journey-photos), fitting over the
  * lower teeth just as that section pins, and fades out into the aligners-worn photo at the Align step.
- * The imageA still shows first; once the 3D model (three.js, loaded lazily) is ready it fades in and,
+ * Nothing shows until the 3D model (three.js, loaded lazily) is ready; then it rises in and,
  * over the flight, turns half a turn clockwise around its vertical axis, like a phone spun on a table:
  * front teeth toward you at the start, back ends at the slot. On the way to the teeth it keeps turning
  * clockwise until the front faces you again, seen nearly level, as worn. Without the model the still
  * (in the slot's pose, which cannot fit the teeth) fades out on the way down.
- * - intro: rises from below and fades in;
+ * - intro: rises from below and fades in once the model is ready;
  * - idle: a slow float, which settles to a stop as it lands.
  * A rAF loop writes transforms straight to the DOM (no React state) and runs only while the layer is
- * on screen. Reduced motion: no 3D model; the still stays in the hero (the aligner section shows its own still).
+ * on screen. The imageA still is only a fallback: under reduced motion (no 3D model, the still stays in the
+ * hero and the aligner section shows its own still) or when WebGL or the model fails to load.
  */
 export function HeroAligner({ src, width, height, alt, model }: Props) {
   const stage = useRef<HTMLDivElement>(null);
@@ -57,10 +58,12 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
     let scene: AlignerScene | null = null;
     let disposed = false;
     const start = performance.now();
+    // The intro starts once there is something to show: the model, or the still as a fallback.
+    let introStart = reduced ? start : -1;
 
     const write = (now: number) => {
       const t = (now - start) / 1000;
-      const intro = reduced ? 1 : ease(clamp((now - start) / INTRO_MS));
+      const intro = reduced ? 1 : introStart < 0 ? 0 : ease(clamp((now - introStart) / INTRO_MS));
       const lr = layer.getBoundingClientRect();
       const hr = hero.getBoundingClientRect();
       const w = st.offsetWidth;
@@ -149,7 +152,7 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
     io.observe(layer);
     write(start);
 
-    // Swap the still for the 3D model once it has loaded (skipped under reduced motion).
+    // Show the 3D model once it has loaded (skipped under reduced motion); the still only if it fails.
     const cv = canvas.current;
     if (!reduced && cv) {
       import("./alignerScene")
@@ -159,8 +162,14 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
           scene = sc;
           sc.render(ease(s.q), ease(s.r));
           st.classList.add(styles.ready);
+          introStart = performance.now();
         })
-        .catch(() => {}); // keep the still if WebGL or the model is unavailable
+        .catch(() => {
+          // No WebGL or no model: fall back to the still.
+          if (disposed) return;
+          st.classList.add(styles.fallback);
+          introStart = performance.now();
+        });
     }
 
     return () => {
@@ -175,7 +184,7 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
   return (
     <div ref={stage} className={styles.stage}>
       <div ref={obj} className={styles.object}>
-        <Image className={styles.still} src={`/${src}`} alt={alt} width={width} height={height} priority draggable={false} sizes="(max-width: 700px) 94vw, 860px" />
+        <Image className={styles.still} src={`/${src}`} alt={alt} width={width} height={height} draggable={false} sizes="(max-width: 700px) 94vw, 860px" />
         <canvas ref={canvas} className={styles.canvas} aria-hidden="true" />
       </div>
       <span ref={shadow} className={styles.shadow} aria-hidden="true" />

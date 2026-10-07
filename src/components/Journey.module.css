@@ -1,10 +1,10 @@
 .journey{padding:0}
 /* One screen of scroll while pinned: about three scrolls, one per step. */
 .scroll{height:200vh;position:relative}
-.sticky{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden}
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;padding-block:72px 12px;--chrome:290px}
 .journey :global(.wrap){width:100%;display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,72px);align-items:center}
 .stages{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:4px;counter-reset:s}
-.stages li{display:grid;grid-template-columns:44px 1fr;gap:4px 14px;padding:12px 14px;border-radius:14px;opacity:.42;transition:opacity .4s,background .4s}
+.stages li{display:grid;grid-template-columns:44px 1fr;gap:4px 14px;align-content:start;padding:12px 14px;border-radius:14px;opacity:.42;transition:opacity .4s,background .4s}
 .stages li::before{counter-increment:s;content:"0" counter(s);font:500 .82rem/1.6 var(--mono);color:var(--accent-text);grid-row:span 2}
 .stages li b{font:650 1.08rem/1.3 var(--display)}
 .stages li p{font-size:.93rem;color:var(--muted);max-height:0;overflow:hidden;transition:max-height .5s}
@@ -15,18 +15,47 @@
 .progress{height:4px;border-radius:4px;background:var(--line);overflow:hidden}
 .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--aqua),var(--accent))}
 @media (max-width:960px){
+  .sticky{--chrome:430px}
   .journey :global(.wrap){grid-template-columns:1fr;gap:14px}
   .journey h2{font-size:1.7rem}
   .journey :global(.lede){display:none}
-  .stages{margin-top:10px}
-  .stages li{display:none}
-  .stages li.on{display:grid}
+  /* Only the active step shows. All steps share one cell so the block keeps the tallest step's
+     height (no jump between steps) and the hidden ones still count for the step numbers. */
+  .stages{margin-top:10px;gap:0}
+  .stages li{grid-area:1/1;visibility:hidden}
+  .stages li.on{visibility:visible}
+  .stages li p,.stages li.on p{max-height:none}
   .visual :global(.readouts){display:none}
+}
+/* Short desktop windows: drop the lede so the steps fit under the nav. */
+@media (min-width:961px) and (max-height:700px){
+  .journey :global(.lede){display:none}
+}
+/* Small phones (iPhone SE size): tighter type so the step and photo fit under the nav. */
+@media (max-width:960px) and (max-height:700px) and (orientation:portrait){
+  .sticky{padding-block:68px 8px;--chrome:380px}
+  .journey :global(.wrap){gap:10px}
+  .journey h2{font-size:1.4rem;margin-top:8px!important}
+  .stages li{padding:8px 10px;grid-template-columns:32px 1fr}
+  .stages li p{font-size:.85rem;line-height:1.45}
+  .visual{gap:10px}
+}
+/* Phones held sideways: copy and photo side by side, sized to the short screen. */
+@media (max-width:960px) and (max-height:540px) and (orientation:landscape){
+  .sticky{padding-block:64px 8px;--chrome:160px}
+  .journey :global(.wrap){grid-template-columns:1fr 1fr;gap:24px}
+  .journey :global(.eyebrow){display:none}
+  .journey h2{font-size:1.35rem;margin-top:0!important}
+  .stages li{padding:8px 10px;grid-template-columns:32px 1fr}
+  .stages li p{font-size:.85rem;line-height:1.45}
+  .visual{gap:10px}
 }
 .toggle{display:inline-flex;justify-self:start;gap:4px;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
 .toggle button{border:0;background:none;color:var(--muted);font:600 .88rem/1 var(--body);padding:9px 16px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
 .toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 /* 3:2 like the photos, so the 3D aligner's % landing spot lines up with the teeth at every width. */
-.visual .photos{position:relative;padding:0;overflow:hidden;aspect-ratio:3/2}
+/* --chrome is the height everything else in the pinned view needs (nav, toggle, text), so the
+   photo never grows taller than the screen. */
+.visual .photos{position:relative;padding:0;overflow:hidden;aspect-ratio:3/2;width:min(100%,calc((100vh - var(--chrome)) * 1.5));width:min(100%,calc((100svh - var(--chrome)) * 1.5));justify-self:center}
 .photo{position:absolute;inset:0;will-change:transform,opacity}
 .photo img{object-fit:cover}
