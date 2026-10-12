@@ -1,12 +1,26 @@
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
 .slot{position:relative;width:100%;aspect-ratio:1121/667}
 .still{display:none;width:100%;height:auto}
+/* The aligner case (3D, drawn by HeroAligner through the slot's camera). It reaches well above the slot for
+   the open lid, a little below for the case's front, and a little to the sides for the lid as it swings. */
+.case{position:absolute;left:-8%;top:-165%;width:116%;height:290%;pointer-events:none;opacity:0;transition:opacity .8s}
+.case[data-ready]{opacity:1}
 .copy{display:grid;gap:18px;justify-items:start}
 .copy h2{margin:0}
 .points{list-style:none;margin:6px 0 10px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
 .points li{display:grid;gap:6px;align-content:start;padding-top:14px;border-top:1px solid var(--line)}
 .points b{font:700 1.05rem/1.3 var(--display);color:var(--ink)}
 .points span{color:var(--muted);font-size:.95rem;line-height:1.5}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
+/* One column: the slot (and so the aligner and its case) stays about the size it is on desktop, centered,
+   with room under it for the front of the case. */
+@media (max-width:900px){.grid{grid-template-columns:1fr}.slot{width:min(80%,440px);justify-self:center;margin-bottom:11%}}
 @media (max-width:560px){.points{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){.still{display:block}}
+/* Phones: the case first, then the Journey with its teeth photo (where the aligner lands) right under it, then
+   this copy. The section and grid step aside (display:contents) so the case and the copy can sit either side of
+   the Journey in the .flight column (see page.module.css); they take over the section's spacing. */
+@media (max-width:700px){
+  .section,.grid{display:contents}
+  .slot{order:1;align-self:center;width:calc((100% - 40px) * .8);margin-top:72px}
+  .copy{order:3;padding:72px 20px}
+}
+@media (prefers-reduced-motion:reduce){.still{display:block}.case{display:none}}

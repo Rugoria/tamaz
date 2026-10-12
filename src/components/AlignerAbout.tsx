@@ -5,7 +5,8 @@ import styles from "./AlignerAbout.module.css";
 
 /**
  * Aligner on the left, product copy on the right. The left column is an empty landing slot:
- * the hero aligner (HeroAligner) flies into `#aligner-slot` as the page scrolls.
+ * the hero aligner (HeroAligner) flies into `#aligner-slot` as the page scrolls and settles into the
+ * aligner case drawn on the slot's canvas.
  */
 export function AlignerAbout() {
   const { image, width, height } = hero.aligner;
@@ -14,10 +15,12 @@ export function AlignerAbout() {
     { title: `${journey.appliances.aligners.average} on average`, body: alignerAbout.durationBody },
   ];
   return (
-    <section id="aligners">
+    <section id="aligners" className={styles.section}>
       <div className={`wrap ${styles.grid}`}>
         <div id="aligner-slot" className={styles.slot}>
           {/* Only shown under reduced motion, when the hero aligner stays in the hero. */}
+          {/* The case the aligner lands in (drawn by HeroAligner). */}
+          <canvas className={styles.case} data-case aria-hidden="true" />
           <Image className={styles.still} src={`/${image}`} alt="" width={width} height={height} sizes="(max-width: 900px) 92vw, 560px" />
         </div>
         <div className={`${styles.copy} reveal`}>
@@ -38,9 +41,6 @@ export function AlignerAbout() {
               </li>
             ))}
           </ul>
-          <a className="btn btn-primary" href={alignerAbout.cta.href}>
-            {alignerAbout.cta.label} <span className="arr">→</span>
-          </a>
         </div>
       </div>
     </section>

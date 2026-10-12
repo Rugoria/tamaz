@@ -1,4 +1,5 @@
 import { AlignerAbout } from "@/components/AlignerAbout";
+import { Clinics } from "@/components/Clinics";
 import { Consultation } from "@/components/Consultation";
 import { Faq } from "@/components/Faq";
 import { Hero } from "@/components/Hero";
@@ -35,6 +36,8 @@ export default function Home() {
         <Results />
         {/* 4. Process */}
         <Process />
+        {/* For clinics (B2B): dentists and orthodontists offering tamaz aligners */}
+        <Clinics />
         {/* 6. Clinic, patients and doctors */}
         <Team />
         {/* 7. Reviews & testimonials */}

@@ -10,6 +10,7 @@ import {
   SRGBColorSpace,
   WebGLRenderer,
 } from "three";
+import { aim, caseOccluder, FOV, JAW_YAW, setFrustum, START_YAW, FRAME_JAW } from "./alignerRig";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
@@ -18,29 +19,13 @@ export type AlignerScene = {
    * turn: 0 = imageA pose, 1 = half a turn clockwise from there (seen from above).
    * jaw: 0 = that landing pose, 1 = turned on round to face the camera and seen nearly level, as
    * when worn on the lower teeth in the Journey photo.
+   * lift: how far (meters) the aligner is raised over its resting height: below 0 it sinks into the case.
+   * tray: while the aligner is over the case, the slot's screen rect (the case is drawn through the slot's
+   * camera): the case's wall then hides the part of the aligner inside the tray.
    */
-  render(turn: number, jaw?: number): void;
+  render(turn: number, jaw?: number, lift?: number, tray?: DOMRect | null): void;
   dispose(): void;
 };
-
-/* Camera and starting turn matched to the imageA render: looking down at the aligner on a
-   "table", turned so the open back ends point up and to the right. */
-const ELEVATION = (35 * Math.PI) / 180;
-const FOV = 30;
-const START_YAW = (-35 * Math.PI) / 180;
-/* Framing (meters; the model is about 5.5 x 5 cm) at the start and after the half turn, when the
-   wide back ends are nearest the camera and need more room. Blended along the turn. */
-const FRAME_START = { distance: 0.086, x: 0.005, z: 0 };
-const FRAME_END = { distance: 0.105, x: -0.004, z: 0.004 };
-/* On the lower teeth: front teeth toward the camera (a full turn from imageA's pose, still
-   clockwise), seen from a little above so the arch curves up at the back like the smile. */
-const JAW_ELEVATION = (12 * Math.PI) / 180;
-const JAW_YAW = -2 * Math.PI;
-/* A long lens from further back flattens the perspective, so the front teeth are not oversized
-   against the back ones and each tooth lines up with the photo's. `widen` stretches the arch
-   sideways to the photo's broader smile and `squash` lowers it to the height of its teeth. */
-const JAW_FOV = 12;
-const FRAME_JAW = { distance: 0.2, x: 0, z: 0.004, widen: 1.16, squash: 0.85 };
 
 /**
  * Renders the 3D aligner (glTF, meters, Y up, front teeth toward +Z) into a transparent canvas
@@ -58,19 +43,23 @@ export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLEle
   const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = env;
 
-  const camera = new PerspectiveCamera(FOV, 1, 0.001, 2);
+  const camera = new PerspectiveCamera();
+  // The canvas reaches above its box (room for the aligner to rise out of the case); the box is the frame.
+  const view = () => ({ x: canvas.offsetLeft, y: canvas.offsetTop, w: canvas.offsetWidth, h: canvas.offsetHeight });
   const frame = (turn: number, jaw: number) => {
-    const mix = (a: number, b: number, t = turn) => a + (b - a) * t;
-    const d = mix(mix(FRAME_START.distance, FRAME_END.distance), FRAME_JAW.distance, jaw);
-    const z = mix(mix(FRAME_START.z, FRAME_END.z), FRAME_JAW.z, jaw);
-    const x = mix(mix(FRAME_START.x, FRAME_END.x), FRAME_JAW.x, jaw);
-    const el = mix(ELEVATION, JAW_ELEVATION, jaw);
-    camera.fov = mix(FOV, JAW_FOV, jaw);
-    camera.updateProjectionMatrix();
-    turntable.scale.set(mix(1, FRAME_JAW.widen, jaw), mix(1, FRAME_JAW.squash, jaw), 1);
-    camera.position.set(0, Math.sin(el) * d, Math.cos(el) * d + z);
-    camera.lookAt(x, 0.002, z);
+    const mix = (a: number, b: number) => a + (b - a) * jaw;
+    const fov = aim(camera, turn, jaw);
+    setFrustum(camera, fov, { w: box.clientWidth, h: box.clientHeight }, view());
+    turntable.scale.set(mix(1, FRAME_JAW.widen), mix(1, FRAME_JAW.squash), 1);
   };
+
+  // The case's base, drawn depth-only first through the slot's camera (see render's `tray`).
+  const occluder = caseOccluder();
+  const trayScene = new Scene();
+  trayScene.add(occluder.group);
+  const trayCamera = new PerspectiveCamera();
+  aim(trayCamera, 1, 0);
+  renderer.autoClear = false;
 
   const gltf = await new GLTFLoader().loadAsync(url);
   // Transmission needs something opaque behind it in the same scene; on a transparent canvas over
@@ -96,27 +85,32 @@ export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLEle
   scene.add(turntable);
 
   const resize = () => {
-    const w = Math.max(1, box.clientWidth);
-    const h = Math.max(1, box.clientHeight);
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
+    renderer.setSize(Math.max(1, canvas.offsetWidth), Math.max(1, canvas.offsetHeight), false);
   };
   resize();
   const ro = new ResizeObserver(resize);
   ro.observe(box);
 
   return {
-    render(turn, jaw = 0) {
+    render(turn, jaw = 0, lift = 0, tray = null) {
       const landed = START_YAW - Math.PI * turn; // negative = clockwise seen from above
       turntable.rotation.y = landed + (JAW_YAW - landed) * jaw;
+      turntable.position.y = lift;
       frame(turn, jaw);
+      renderer.clear();
+      if (tray) {
+        // The slot's camera, drawn into this canvas: where the slot is relative to the canvas on screen.
+        const c = canvas.getBoundingClientRect();
+        setFrustum(trayCamera, FOV, { w: tray.width, h: tray.height }, { x: c.left - tray.left, y: c.top - tray.top, w: c.width, h: c.height });
+        renderer.render(trayScene, trayCamera);
+      }
       renderer.render(scene, camera);
     },
     dispose() {
       ro.disconnect();
       gltf.scene.traverse((o) => (o as Mesh).geometry?.dispose());
       plastic.dispose();
+      occluder.dispose();
       env.dispose();
       pmrem.dispose();
       renderer.dispose();

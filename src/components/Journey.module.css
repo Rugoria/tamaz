@@ -27,6 +27,12 @@
   .stages li p,.stages li.on p{max-height:none}
   .visual :global(.readouts){display:none}
 }
+/* Phones: the photo first, right under the aligner case in the section above, then the toggle and the steps. */
+@media (max-width:700px){
+  .journey{order:2}
+  .journey :global(.wrap) > .visual{order:-1}
+  .visual .photos{order:-1}
+}
 /* Short desktop windows: drop the lede so the steps fit under the nav. */
 @media (min-width:961px) and (max-height:700px){
   .journey :global(.lede){display:none}

@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { journey, type Appliance } from "@/content/site";
-import { alignAt, retainAt, wornAt } from "@/lib/journeyTimeline";
+import { JOURNEY_STOPS, alignAt, retainAt, wornAt } from "@/lib/journeyTimeline";
 import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
+import { STEP_SCROLL_EVENT, stepScroll } from "@/lib/stepScroll";
 import { Copy } from "./Tbd";
 import styles from "./Journey.module.css";
 
@@ -75,10 +76,15 @@ export function Journey() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    window.addEventListener(STEP_SCROLL_EVENT, update);
     raf = requestAnimationFrame(update);
+    // One scroll per step: 0% (Scan), 40% (Align), 100% (Retain).
+    const unstep = scroller.current ? stepScroll(scroller.current, JOURNEY_STOPS, reduced) : undefined;
     return () => {
+      unstep?.();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener(STEP_SCROLL_EVENT, update);
       cancelAnimationFrame(raf);
     };
   }, []);
