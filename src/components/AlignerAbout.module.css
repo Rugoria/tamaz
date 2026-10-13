@@ -11,16 +11,21 @@
 .points li{display:grid;gap:6px;align-content:start;padding-top:14px;border-top:1px solid var(--line)}
 .points b{font:700 1.05rem/1.3 var(--display);color:var(--ink)}
 .points span{color:var(--muted);font-size:.95rem;line-height:1.5}
-/* One column: the slot (and so the aligner and its case) stays about the size it is on desktop, centered,
-   with room under it for the front of the case. */
-@media (max-width:900px){.grid{grid-template-columns:1fr}.slot{width:min(80%,440px);justify-self:center;margin-bottom:11%}}
-@media (max-width:560px){.points{grid-template-columns:1fr}}
-/* Phones: the case first, then the Journey with its teeth photo (where the aligner lands) right under it, then
-   this copy. The section and grid step aside (display:contents) so the case and the copy can sit either side of
-   the Journey in the .flight column (see page.module.css); they take over the section's spacing. */
+/* "Read more" is for phones only (see below). */
+.more{display:none}
+/* The case and the copy stay side by side at every width, as on desktop; smaller screens get a tighter gap,
+   one column of points and smaller type so the copy fits its half. */
+@media (max-width:900px){.grid{gap:clamp(16px,4vw,32px)}.points{grid-template-columns:1fr}}
+/* Phones: the copy is as tall as the case beside it. The slot keeps room above it for the open lid and below
+   for the case's front, which sets the row's height; the copy adds nothing to it (contain:size) and fills it,
+   the intro fading out where it is cut. The points and the booking button move to the about page, which
+   "Read more" opens. */
 @media (max-width:700px){
-  .section,.grid{display:contents}
-  .slot{order:1;align-self:center;width:calc((100% - 40px) * .8);margin-top:72px}
-  .copy{order:3;padding:72px 20px}
+  .slot{margin-block:85% 11%}
+  .copy{align-self:stretch;contain:size;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .copy h2{font-size:clamp(1.1rem,5vw,1.6rem);flex:none}
+  .copy :global(.lede){flex:1 1 0;min-height:1.5em;overflow:hidden;font-size:.85rem;line-height:1.45;mask-image:linear-gradient(to bottom,#000 55%,transparent)}
+  .points,.cta{display:none}
+  .more{display:inline-flex;flex:none;padding:10px 16px;font-size:.88rem}
 }
 @media (prefers-reduced-motion:reduce){.still{display:block}.case{display:none}}

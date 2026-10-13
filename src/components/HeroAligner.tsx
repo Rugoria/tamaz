@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 import { journey } from "@/content/site";
 import { wornAt } from "@/lib/journeyTimeline";
 import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
-import { STEP_SCROLL_EVENT } from "@/lib/stepScroll";
 import { RISE, SEAT_DROP } from "./alignerRig";
 import type { AlignerScene } from "./alignerScene";
 import type { CaseScene } from "./caseScene";
@@ -188,9 +187,6 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
       write(performance.now());
     };
     window.addEventListener("resize", onResize);
-    // The Journey's stepped scroll moves the page from its own frame loop; follow it in the same frame.
-    const onStep = () => write(performance.now());
-    window.addEventListener(STEP_SCROLL_EVENT, onStep);
 
     // Run the loop only while the layer is on screen (and never under reduced motion). Being fixed to the
     // screen, the stage is hidden while the layer is off screen, so it never floats over later sections.
@@ -240,7 +236,6 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
       io.disconnect();
       cancelAnimationFrame(s.raf);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener(STEP_SCROLL_EVENT, onStep);
     };
   }, [model]);
 

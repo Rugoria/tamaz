@@ -27,9 +27,8 @@
   .stages li p,.stages li.on p{max-height:none}
   .visual :global(.readouts){display:none}
 }
-/* Phones: the photo first, right under the aligner case in the section above, then the toggle and the steps. */
+/* Phones: the photo first, then the toggle and the steps. */
 @media (max-width:700px){
-  .journey{order:2}
   .journey :global(.wrap) > .visual{order:-1}
   .visual .photos{order:-1}
 }

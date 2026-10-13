@@ -111,6 +111,14 @@ export const alignerAbout = {
   /** Shown after the average aligner treatment length from `journey.appliances`. */
   durationBody: "[How often you check in during treatment, e.g. a quick visit every 6 to 8 weeks.]",
   cta: { label: "Book a free consultation", href: "#consult" },
+  /** Phones only: the section shows a short version, and this opens the about page with all of it. */
+  readMore: { label: "Read more", href: "/about" },
+};
+
+/** The about page (/about): the aligner section's copy in full, opened from its "Read more" on phones. */
+export const aboutPage = {
+  metaTitle: "About our aligners",
+  back: { label: "Back to home", href: "/#aligners" },
 };
 
 export const team = {
