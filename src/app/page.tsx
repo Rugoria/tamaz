@@ -1,4 +1,5 @@
 import { AlignerAbout } from "@/components/AlignerAbout";
+import { Clinics } from "@/components/Clinics";
 import { Consultation } from "@/components/Consultation";
 import { Faq } from "@/components/Faq";
 import { Hero } from "@/components/Hero";
@@ -12,7 +13,6 @@ import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SmileGuide } from "@/components/SmileGuide";
-import { Team } from "@/components/Team";
 import { hero } from "@/content/site";
 import styles from "./page.module.css";
 
@@ -35,8 +35,8 @@ export default function Home() {
         <Results />
         {/* 4. Process */}
         <Process />
-        {/* 6. Clinic, patients and doctors */}
-        <Team />
+        {/* For clinics (B2B): dentists and orthodontists offering tamaz aligners */}
+        <Clinics />
         {/* 7. Reviews & testimonials */}
         <Reviews />
         {/* 8. FAQs, studios & map */}

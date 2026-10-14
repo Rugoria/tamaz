@@ -7,14 +7,6 @@
 
 export type NavLink = { label: string; href: string };
 
-export type Doctor = {
-  name: string;
-  image: string;
-  alt: string;
-  credentials: string[];
-  bio: string;
-};
-
 export type Case = {
   title: string;
   detail: string;
@@ -58,10 +50,11 @@ export const nav: { links: NavLink[]; cta: NavLink } = {
     { label: "Your journey", href: "#journey" },
     { label: "Results", href: "#results" },
     { label: "Process", href: "#process" },
+    { label: "For clinics", href: "#clinics" },
     { label: "Reviews", href: "#reviews" },
     { label: "Locations", href: "#visit" },
   ],
-  cta: { label: "Book free consult", href: "#consult" },
+  cta: { label: "Book your consultation", href: "#consult" },
 };
 
 export const hero = {
@@ -71,7 +64,7 @@ export const hero = {
   headlineAfter: "at a time.",
   lede:
     "Board-certified orthodontists, four neighborhood studios and a free first visit. You leave with a 3D scan, a written treatment plan and your monthly price before you commit to anything.",
-  primaryCta: { label: "Book a free consultation", href: "#consult" },
+  primaryCta: { label: "Book your consultation", href: "#consult" },
   secondaryCta: { label: "See real results", href: "#results" },
   trust: [
     { value: "4.9 ★", label: "2,300+ patient reviews" },
@@ -110,7 +103,7 @@ export const alignerAbout = {
   ],
   /** Shown after the average aligner treatment length from `journey.appliances`. */
   durationBody: "[How often you check in during treatment, e.g. a quick visit every 6 to 8 weeks.]",
-  cta: { label: "Book a free consultation", href: "#consult" },
+  cta: { label: "Book your consultation", href: "#consult" },
   /** Phones only: the section shows a short version, and this opens the about page with all of it. */
   readMore: { label: "Read more", href: "/about" },
 };
@@ -119,35 +112,6 @@ export const alignerAbout = {
 export const aboutPage = {
   metaTitle: "About our aligners",
   back: { label: "Back to home", href: "/#aligners" },
-};
-
-export const team = {
-  eyebrow: "Meet your orthodontists",
-  title: "Specialists who finished two to three extra years of orthodontic training.",
-  lede: "You see the same doctor from your first scan to the day your braces come off.",
-  doctors: [
-    {
-      name: "Dr. [Full name], DDS, MS",
-      image: "images/doctor-1.jpg",
-      alt: "Portrait of the founding orthodontist",
-      credentials: ["Founder", "Board certified"],
-      bio: "[Short bio: residency, years in practice, what patients like about them.]",
-    },
-    {
-      name: "Dr. [Full name], DMD, MS",
-      image: "images/doctor-2.jpg",
-      alt: "Portrait of an orthodontist",
-      credentials: ["Adult & aligner care"],
-      bio: "[Short bio: residency, focus areas, languages spoken.]",
-    },
-    {
-      name: "Dr. [Full name], DDS, MS",
-      image: "images/doctor-3.jpg",
-      alt: "Portrait of an orthodontist",
-      credentials: ["Early treatment"],
-      bio: "[Short bio: residency, focus areas, community work.]",
-    },
-  ] satisfies Doctor[],
 };
 
 export const results = {
@@ -199,7 +163,6 @@ export const journey = {
     worn: { src: "images/journey-retain.jpg", alt: "The smile wearing clear aligners on both arches" },
     end: { src: "images/journey-straight.jpg", alt: "The straightened smile after treatment" },
   },
-  toggleLabel: "Show treatment with",
   appliances: {
     // Placeholder average until the client confirms it; update `months` to match.
     aligners: { label: "Clear aligners", months: 12, average: "[12] months" },
@@ -209,7 +172,7 @@ export const journey = {
   stages: [
     {
       name: "Scan", start: 0, end: 1 / 3,
-      body: "Free consultation and 3D scan, about four minutes with no impression trays. Your orthodontist plans every tooth’s move and shows you the result on screen.",
+      body: "Consultation and 3D scan, about four minutes with no impression trays. Your orthodontist plans every tooth’s move and shows you the result on screen.",
     },
     {
       name: "Align", start: 1 / 3, end: 2 / 3,
@@ -239,24 +202,44 @@ export const process = {
   ] satisfies ProcessStep[],
 };
 
-export const gallery = {
-  eyebrow: "Inside our studios",
-  title: "Bright rooms, short waits and a coffee bar for parents.",
-  images: [
-    { src: "images/studio-1.jpg", label: "Studio interior, wide", size: "1600 × 1200", alt: "Treatment area at a tamaz studio" },
-    { src: "images/studio-2.jpg", label: "Reception", size: "800 × 600", alt: "Reception desk" },
-    { src: "images/studio-3.jpg", label: "3D scanner in use", size: "800 × 600", alt: "Patient having a 3D scan" },
-    { src: "images/studio-4.jpg", label: "Team photo", size: "800 × 600", alt: "The tamaz clinical team" },
-    { src: "images/studio-5.jpg", label: "Smiling patient", size: "800 × 600", alt: "Patient smiling after braces removal" },
-  ] satisfies GalleryImage[],
-  patientsTitle: "Our patients",
-  patientsLede: "Real tamaz patients, shared with their permission.",
-  patients: [
-    { src: "images/patient-1.jpg", label: "Patient photo", size: "800 × 800", alt: "Patient smiling while wearing clear aligners" },
-    { src: "images/patient-2.jpg", label: "Patient photo", size: "800 × 800", alt: "tamaz patient smiling" },
-    { src: "images/patient-3.jpg", label: "Patient photo", size: "800 × 800", alt: "tamaz patient smiling" },
-    { src: "images/patient-4.jpg", label: "Patient photo", size: "800 × 800", alt: "tamaz patient smiling" },
-  ] satisfies GalleryImage[],
+/**
+ * For clinics (B2B): dentists and orthodontists who offer tamaz aligners in their own practice. Shaped after
+ * aligner-lab provider pages (Vitaware OrthoLab, invisibleTx, SureSmile, 3Shape): send scans, get a plan,
+ * we make and ship the aligners. Bracketed parts are the client's to fill in.
+ */
+export const clinics = {
+  eyebrow: "For dentists & orthodontists",
+  title: "Offer tamaz aligners in your own practice.",
+  lede:
+    "Send us your scans. Our orthodontists plan the case, our lab makes the aligners, and we ship them to your clinic, ready to hand over. You keep the patient and set the fee.",
+  audiences: ["General dentists", "Orthodontists", "Dental groups"],
+  cta: { label: "Become a partner clinic", href: "mailto:partners@your-domain.com" }, // TODO: real partners address
+  contact: "Or email partners@[your-domain].com",
+  benefits: [
+    {
+      title: "Any scanner, no new kit",
+      body: "Upload intraoral scans straight from 3Shape TRIOS, Medit or iTero, or as STL files, with photos and X-rays.",
+    },
+    {
+      title: "A plan in [2 to 3 days]",
+      body: "An orthodontist designs every tooth movement and sends you a 3D plan to approve, change or discuss.",
+    },
+    {
+      title: "Show the result chairside",
+      body: "Share the 3D simulation with your patient at the consultation, so they can see their smile before they commit.",
+    },
+    {
+      title: "One clear price per case",
+      body: "[Case price] shown before you order. No subscription, no minimum volume, and refinements [included].",
+    },
+  ],
+  steps: [
+    { title: "Scan", body: "Upload the scan and photos from your practice.", time: "Day 1" },
+    { title: "Plan", body: "Review the 3D plan and simulation; ask for changes until it is right.", time: "[2 to 3 days]" },
+    { title: "Make", body: "We print, trim and check every aligner in our lab.", time: "[5 to 7 working days]" },
+    { title: "Treat", body: "Aligners arrive in tamaz cases. We handle refinements and retainers with you.", time: "[Ongoing]" },
+  ],
+  support: "Every case has a named orthodontist you can message, from the first plan to the final retainer.",
 };
 
 export const reviews = {
@@ -341,7 +324,7 @@ export const faq = {
       items: [
         {
           question: "Am I a suitable candidate for clear aligners?",
-          answer: "Aligners treat most mild to moderate cases, including crowding, spacing and simple overbites or underbites. More severe or complex bite problems may need traditional braces or a combination of both. The only way to know for sure is an orthodontic evaluation with a 3D scan and digital imaging, which is part of your free consultation.",
+          answer: "Aligners treat most mild to moderate cases, including crowding, spacing and simple overbites or underbites. More severe or complex bite problems may need traditional braces or a combination of both. The only way to know for sure is an orthodontic evaluation with a 3D scan and digital imaging, which is part of your consultation.",
         },
         {
           question: "How long will my treatment take?",
@@ -402,7 +385,7 @@ export const smileGuide = {
 };
 
 export const consultation = {
-  title: "Book your free consultation.",
+  title: "Book your consultation.",
   lede: "Tell us a little about yourself and a coordinator will call to confirm a time within one business day.",
   perks: ["3D scan and exam", "Written plan and exact price", "No obligation, no pressure"],
   treatmentOptions: ["Not sure yet", "Metal braces", "Clear ceramic braces", "Clear aligners", "Early treatment for my child"],
@@ -433,6 +416,7 @@ export const footer = {
         { label: "Your journey", href: "#journey" },
         { label: "Before & after", href: "#results" },
         { label: "How it works", href: "#process" },
+        { label: "For clinics", href: "#clinics" },
         { label: "Reviews", href: "#reviews" },
       ],
     },

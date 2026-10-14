@@ -1,5 +1,9 @@
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
-.slot{position:relative;width:100%;aspect-ratio:1121/667}
+/* Sits a little below the copy's middle. Offset with top (not margin) so the row keeps its height; the case
+   and the aligner's landing spot follow the slot, since HeroAligner measures where it is on screen. */
+.slot{position:relative;top:clamp(24px,6vw,88px);width:100%;aspect-ratio:1121/667}
+/* Desktop: lower still. */
+@media (min-width:901px){.slot{top:clamp(80px,8.5vw,128px)}}
 .still{display:none;width:100%;height:auto}
 /* The aligner case (3D, drawn by HeroAligner through the slot's camera). It reaches well above the slot for
    the open lid, a little below for the case's front, and a little to the sides for the lid as it swings. */

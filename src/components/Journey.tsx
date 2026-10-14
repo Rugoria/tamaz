@@ -2,16 +2,15 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { journey, type Appliance } from "@/content/site";
+import { journey } from "@/content/site";
 import { alignAt, retainAt, wornAt } from "@/lib/journeyTimeline";
 import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
 import { Copy } from "./Tbd";
 import styles from "./Journey.module.css";
 
 const STAGES = journey.stages;
-const APPLIANCES = Object.keys(journey.appliances) as Appliance[];
-
-const stageCopy = (i: number, a: Appliance) => (a === "aligners" && STAGES[i].aligners) || STAGES[i];
+/** The steps as told for clear aligners (the site has no braces/aligners switch). */
+const stageCopy = (i: number) => STAGES[i].aligners ?? STAGES[i];
 
 
 const PHOTO_SIZES = "(max-width: 960px) 92vw, 640px";
@@ -26,8 +25,7 @@ export function Journey() {
   const crowd = useRef<HTMLSpanElement>(null);
   const pct = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState(0);
-  const [appliance, setAppliance] = useState<Appliance>("aligners");
-  const { months, average } = journey.appliances[appliance];
+  const { months, average } = journey.appliances.aligners;
 
   useEffect(() => {
     let lastP = -1, ticking = false, raf = 0;
@@ -94,7 +92,7 @@ export function Journey() {
               <p className="lede" style={{ marginTop: 16 }}>{journey.lede}</p>
               <ol className={styles.stages}>
                 {STAGES.map((s, i) => {
-                  const c = stageCopy(i, appliance);
+                  const c = stageCopy(i);
                   return (
                     <li
                       key={s.name}
@@ -109,13 +107,6 @@ export function Journey() {
               </ol>
             </div>
             <div className={styles.visual}>
-              <div className={styles.toggle} role="group" aria-label={journey.toggleLabel}>
-                {APPLIANCES.map((a) => (
-                  <button key={a} type="button" aria-pressed={appliance === a} onClick={() => setAppliance(a)}>
-                    {journey.appliances[a].label}
-                  </button>
-                ))}
-              </div>
               <div className={styles.progress}><i ref={bar} /></div>
               {/* HeroAligner flies the 3D aligner down onto the lower teeth here. */}
               <div id="journey-photos" className={`smile-card ${styles.photos}`}>
