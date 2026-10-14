@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { LogoMark } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 import { Copy } from "@/components/Tbd";
 import { aboutPage, alignerAbout, brand, hero, journey } from "@/content/site";
 import styles from "./page.module.css";
@@ -22,8 +22,7 @@ export default function About() {
       <header className={styles.bar}>
         <div className="wrap">
           <Link className="logo" href="/" aria-label={`${brand.name} home`}>
-            <LogoMark />
-            {brand.name}
+            <Logo />
           </Link>
           <Link className={styles.back} href={aboutPage.back.href}>
             <span aria-hidden="true">←</span> {aboutPage.back.label}

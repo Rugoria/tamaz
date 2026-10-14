@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { brand, footer } from "@/content/site";
-import { LogoMark } from "./Logo";
+import { LogoStacked } from "./Logo";
 import { Copy } from "./Tbd";
 import styles from "./SiteFooter.module.css";
 
@@ -18,9 +18,8 @@ export function SiteFooter() {
     <footer className={styles.footer}>
       <div className={`wrap ${styles.grid}`}>
         <div>
-          <a className="logo" href="#top">
-            <LogoMark />
-            {brand.name}
+          <a className="logo" href="#top" aria-label={`${brand.name} home`}>
+            <LogoStacked className="logo-stacked" />
           </a>
           <p style={{ marginTop: 14, maxWidth: "34ch" }}>{footer.blurb}</p>
           <div className={styles.social}>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { brand, nav } from "@/content/site";
-import { LogoMark } from "./Logo";
+import { Logo } from "./Logo";
 import styles from "./SiteNav.module.css";
 
 export function SiteNav() {
@@ -26,8 +26,7 @@ export function SiteNav() {
     <header className={`${styles.nav} ${shown ? styles.shown : ""}`}>
       <div className="wrap">
         <a className="logo" href="#top" aria-label={`${brand.name} home`}>
-          <LogoMark />
-          {brand.name}
+          <Logo />
         </a>
         <ul id="menu" className={open ? styles.open : undefined} onClick={(e) => (e.target as HTMLElement).tagName === "A" && setOpen(false)}>
           {nav.links.map((l) => (

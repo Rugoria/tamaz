@@ -71,8 +71,12 @@ section{padding-block:clamp(72px,10vw,128px)}
 .chipbtn{border:1.5px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.9rem;transition:border-color .2s,background .2s}
 .chipbtn[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 
-.logo{display:flex;align-items:center;gap:10px;font:700 1.25rem/1 var(--display);text-decoration:none;letter-spacing:-.02em}
-.logo svg{width:34px;height:34px}
+/* The logo (components/Logo.tsx): the tooth and the wordmark side by side in bars, the stacked lockup with the
+   tagline in the footer. It draws in the link's color. */
+.logo{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
+.logo .logo-mark{height:38px;width:auto}
+.logo .logo-word{height:19px;width:auto}
+.logo .logo-stacked{width:132px;height:auto}
 
 /* smile card + readouts (hero, journey, band studio) */
 .smile-card{position:relative;background:linear-gradient(160deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:28px;padding:22px 22px 18px;box-shadow:var(--shadow)}
