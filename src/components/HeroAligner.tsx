@@ -12,7 +12,7 @@ import styles from "./HeroAligner.module.css";
 
 type Props = { src: string; width: number; height: number; alt: string; model: string };
 
-const INTRO_MS = 1600;
+const INTRO_MS = 900;
 const LANDING = journey.photos.landing;
 /** Share of the scroll from the slot to the teeth spent at the case (resting in it, then rising out), at most
     HOLD_VH of the screen height, so the case is still well on screen when the aligner leaves it on any screen. */
@@ -202,8 +202,14 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
     // Show the 3D model once it has loaded (skipped under reduced motion); the still only if it fails.
     const cv = canvas.current;
     if (!reduced && cv) {
+      // The model downloads alongside three.js, not after it.
+      const data = fetch(`/${model}`).then((r) => {
+        if (!r.ok) throw new Error(`model ${r.status}`);
+        return r.arrayBuffer();
+      });
+      data.catch(() => {}); // handled below, through createAlignerScene
       import("./alignerScene")
-        .then(({ createAlignerScene }) => createAlignerScene(cv, el, `/${model}`))
+        .then(({ createAlignerScene }) => createAlignerScene(cv, el, data))
         .then((sc) => {
           if (disposed) return sc.dispose();
           scene = sc;

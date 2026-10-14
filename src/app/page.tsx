@@ -13,11 +13,15 @@ import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SmileGuide } from "@/components/SmileGuide";
+import { preload } from "react-dom";
 import { hero } from "@/content/site";
 import styles from "./page.module.css";
 
 /** Section order follows the approved website layout (1–11). */
 export default function Home() {
+  // Start the 3D aligner's download with the page (HeroAligner fetches the same file once it runs). Skipped under
+  // reduced motion, where the model is never shown.
+  preload(`/${hero.aligner.model}`, { as: "fetch", crossOrigin: "anonymous", media: "(prefers-reduced-motion: no-preference)" });
   return (
     <>
       <SiteNav />

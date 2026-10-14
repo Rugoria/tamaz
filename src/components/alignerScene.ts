@@ -12,6 +12,7 @@ import {
 } from "three";
 import { aim, caseOccluder, FOV, JAW_YAW, setFrustum, START_YAW, FRAME_JAW } from "./alignerRig";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 export type AlignerScene = {
@@ -29,9 +30,10 @@ export type AlignerScene = {
 
 /**
  * Renders the 3D aligner (glTF, meters, Y up, front teeth toward +Z) into a transparent canvas
- * that fills `box`. Loaded lazily by HeroAligner so three.js stays out of the initial bundle.
+ * that fills `box`. Loaded lazily by HeroAligner so three.js stays out of the initial bundle. `model` is the
+ * .glb file's bytes (meshopt-compressed), fetched by the caller in parallel with this module.
  */
-export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLElement, url: string): Promise<AlignerScene> {
+export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLElement, model: Promise<ArrayBuffer>): Promise<AlignerScene> {
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = SRGBColorSpace;
@@ -61,7 +63,7 @@ export async function createAlignerScene(canvas: HTMLCanvasElement, box: HTMLEle
   aim(trayCamera, 1, 0);
   renderer.autoClear = false;
 
-  const gltf = await new GLTFLoader().loadAsync(url);
+  const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).parseAsync(await model, "");
   // Transmission needs something opaque behind it in the same scene; on a transparent canvas over
   // the page it renders dark. A plain see-through glossy plastic shows the page through instead.
   const plastic = new MeshPhysicalMaterial({

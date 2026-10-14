@@ -3,7 +3,6 @@ import {
   BoxGeometry,
   CanvasTexture,
   CircleGeometry,
-  Color,
   DoubleSide,
   Group,
   Mesh,
@@ -25,12 +24,7 @@ export type CaseScene = {
   dispose(): void;
 };
 
-/** A color token from the page's scheme, read once when the case is made. */
-function token(name: string, fallback: string) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
-}
-
-/** The brand on the lid, in the color that reads on the accent (the shell's color). */
+/** The brand on the lid, in the scheme's accent, read once when the case is made. */
 function brandTexture() {
   const c = document.createElement("canvas");
   c.width = c.height = 512;
@@ -38,7 +32,7 @@ function brandTexture() {
   if (g) {
     const css = getComputedStyle(document.documentElement);
     const font = css.getPropertyValue("--display").trim() || "sans-serif";
-    g.fillStyle = css.getPropertyValue("--accent-ink").trim() || "#fff";
+    g.fillStyle = css.getPropertyValue("--accent").trim() || "#888";
     g.font = `700 112px ${font}`;
     g.textAlign = "center";
     g.textBaseline = "middle";
@@ -49,17 +43,15 @@ function brandTexture() {
   return tex;
 }
 
-/** A soft contact shadow under the case, in the scheme's ink (as the site's other shadows are). */
+/** A soft contact shadow under the case: dark under its base, gone a few millimeters past its edge. */
 function shadowTexture() {
   const c = document.createElement("canvas");
   c.width = c.height = 128;
   const g = c.getContext("2d");
   if (g) {
-    const ink = new Color(token("--ink", "#0B1F3A")).getHexString();
-    const [r, gr, b] = [0, 2, 4].map((i) => parseInt(ink.slice(i, i + 2), 16));
-    const grad = g.createRadialGradient(64, 64, 20, 64, 64, 64);
-    grad.addColorStop(0, `rgba(${r},${gr},${b},0.4)`);
-    grad.addColorStop(1, `rgba(${r},${gr},${b},0)`);
+    const grad = g.createRadialGradient(64, 64, 44, 64, 64, 64);
+    grad.addColorStop(0, "rgba(0,0,0,0.45)");
+    grad.addColorStop(1, "rgba(0,0,0,0)");
     g.fillStyle = grad;
     g.fillRect(0, 0, 128, 128);
   }
@@ -82,9 +74,8 @@ export function createCaseScene(canvas: HTMLCanvasElement, slot: HTMLElement): C
   const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = env;
 
-  // The shell in the scheme's accent and the tray in its light surface tint, so the case matches the site.
-  const shell = new MeshPhysicalMaterial({ color: new Color(token("--accent", "#1D6FE8")), roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.3, side: DoubleSide });
-  const tray = new MeshPhysicalMaterial({ color: new Color(token("--surface-2", "#E6EEF8")), roughness: 0.55, side: DoubleSide });
+  const shell = new MeshPhysicalMaterial({ color: 0x141518, roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.3, side: DoubleSide });
+  const tray = new MeshPhysicalMaterial({ color: 0xeef1f3, roughness: 0.55, side: DoubleSide });
   const mirror = new MeshPhysicalMaterial({ color: 0xffffff, metalness: 1, roughness: 0.03, envMapIntensity: 1.2, side: DoubleSide });
 
   const box = new Group();
@@ -110,7 +101,8 @@ export function createCaseScene(canvas: HTMLCanvasElement, slot: HTMLElement): C
   pivot.add(lid);
   box.add(pivot);
 
-  const floor = new Mesh(new PlaneGeometry(0.13, 0.13), new MeshBasicMaterial({ map: shadowTexture(), transparent: true, depthWrite: false }));
+  // Kept small enough to fade out inside the canvas; larger, the canvas edges cut it into a rectangle.
+  const floor = new Mesh(new PlaneGeometry(0.098, 0.098), new MeshBasicMaterial({ map: shadowTexture(), transparent: true, depthWrite: false }));
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = -0.0002;
   box.add(floor);

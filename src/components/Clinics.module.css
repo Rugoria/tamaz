@@ -1,5 +1,6 @@
 /* A dark band, so the section for clinics reads apart from the patient sections around it. */
-.clinics{background:var(--deep);color:var(--deep-ink)}
+/* The space below matches the site's section padding; the next section (Reviews) has no top padding of its own. */
+.clinics{background:var(--deep);color:var(--deep-ink);margin-bottom:clamp(72px,10vw,128px)}
 .clinics h2,.clinics h3{color:inherit}
 .clinics :global(.eyebrow){color:var(--deep-aqua)}
 .clinics :global(.lede){color:var(--deep-muted)}

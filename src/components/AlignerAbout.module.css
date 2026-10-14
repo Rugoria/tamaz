@@ -6,8 +6,9 @@
 @media (min-width:901px){.slot{top:clamp(80px,8.5vw,128px)}}
 .still{display:none;width:100%;height:auto}
 /* The aligner case (3D, drawn by HeroAligner through the slot's camera). It reaches well above the slot for
-   the open lid, a little below for the case's front, and a little to the sides for the lid as it swings. */
-.case{position:absolute;left:-8%;top:-165%;width:116%;height:290%;pointer-events:none;opacity:0;transition:opacity .8s}
+   the open lid, below for the case's front and its contact shadow, and a little to the sides for the lid as it
+   swings. */
+.case{position:absolute;left:-8%;top:-165%;width:116%;height:310%;pointer-events:none;opacity:0;transition:opacity .8s}
 .case[data-ready]{opacity:1}
 .copy{display:grid;gap:18px;justify-items:start}
 .copy h2{margin:0}

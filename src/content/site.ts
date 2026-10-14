@@ -42,7 +42,7 @@ export type VideoTip = { kicker: string; title: string; video: string; poster?: 
 export const brand = {
   name: "tamaz",
   description:
-    "Braces and clear aligners for kids, teens and adults, from board-certified orthodontists. Free first visit with a 3D scan, a written plan and your monthly price.",
+    "Braces and clear aligners for kids, teens and adults, from board-certified orthodontists. A first visit with a 3D scan, a written plan and your monthly price.",
 };
 
 export const nav: { links: NavLink[]; cta: NavLink } = {
