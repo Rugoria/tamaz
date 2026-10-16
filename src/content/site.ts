@@ -58,6 +58,8 @@ export const nav: { links: NavLink[]; cta: NavLink } = {
 };
 
 export const hero = {
+  /** Shown under the "tamaz" wordmark. */
+  tagline: "Better choice Better smile",
   eyebrow: "Braces & clear aligners · kids, teens, adults",
   headlineBefore: "Straighter smiles, one",
   headlineWord: "millimeter",

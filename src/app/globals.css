@@ -41,6 +41,9 @@
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body{transition:background-color .45s,color .45s}
+/* The hero's aqua wash behind the whole site, fixed to the screen so every section shows the same tint
+   (sections are transparent; the B2B band paints its own dark background). */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(160deg,var(--surface-2),var(--aqua-soft))}
 h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.02em}
 h2{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:700}
 h3{font-size:1.3rem;font-weight:650;letter-spacing:-.01em}
