@@ -1,5 +1,7 @@
 .hero{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:100vh;min-height:100svh;padding:0 16px;background:radial-gradient(ellipse 75% 65% at 50% 48%,var(--surface) 30%,transparent 78%),linear-gradient(160deg,var(--surface-2),var(--aqua-soft))}
 .brand{margin:0;font:800 clamp(5rem,28vw,26rem)/.9 var(--display);letter-spacing:-.04em;color:var(--ink)}
-/* The tagline hangs just under the word, out of flow, so the word itself stays centered under the aligner. */
+/* The tagline hangs just under the word, out of flow, so the word itself stays centered under the aligner. It is
+   the artwork's own tagline lettering (Logo.tsx), set small: 33% of the word's width. */
 .title{position:relative}
-.tagline{position:absolute;left:50%;top:100%;translate:-50% 0;width:max-content;max-width:calc(100vw - 32px);margin:clamp(.25rem,1vw,.75rem) 0 0;text-align:center;font:600 clamp(1.125rem,2.6vw,2.25rem)/1.2 var(--display);letter-spacing:-.01em;color:var(--ink)}
+.tagline{position:absolute;left:50%;top:100%;translate:-50% 0;width:33%;margin:-1.5% 0 0;color:var(--ink)}
+.tagline svg{display:block;width:100%;height:auto}

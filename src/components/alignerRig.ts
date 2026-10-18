@@ -68,7 +68,7 @@ export function setFrustum(camera: PerspectiveCamera, fov: number, base: Box, vi
   camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
 }
 
-/* The case, after the round clamshell retainer case: a black shell, a white tray inside and a mirror
+/* The case, after the round clamshell retainer case: a shell in the scheme accent, a white tray inside and a mirror
    in the lid, hinged at the back (-Z). Meters; the aligner (5.5 x 5 cm across its back ends) fits inside. */
 export const CASE = { outer: 0.0425, inner: 0.039, height: 0.013, floor: 0.003, lid: 0.011 };
 /** The aligner, at rest 4 mm over the rim, drops this far to sit on the tray floor. */

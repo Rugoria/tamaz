@@ -3,6 +3,7 @@ import {
   BoxGeometry,
   CanvasTexture,
   CircleGeometry,
+  Color,
   DoubleSide,
   Group,
   Mesh,
@@ -16,6 +17,7 @@ import {
   WebGLRenderer,
 } from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { MARK, TAGLINE, WORD } from "./Logo";
 import { aim, baseShell, baseTray, CASE, CASE_Y, disposeTree, lidShell, setFrustum } from "./alignerRig";
 
 export type CaseScene = {
@@ -24,22 +26,28 @@ export type CaseScene = {
   dispose(): void;
 };
 
-/** The brand on the lid, in the scheme's accent, read once when the case is made. */
-function brandTexture() {
+/** The logo on the lid, as in the artwork ("Final Mono.pdf"): tooth, wordmark and tagline, read once when the case is made. */
+function brandTexture(color: string) {
   const c = document.createElement("canvas");
-  c.width = c.height = 512;
+  c.width = c.height = 1024;
   const g = c.getContext("2d");
   if (g) {
-    const css = getComputedStyle(document.documentElement);
-    const font = css.getPropertyValue("--display").trim() || "sans-serif";
-    g.fillStyle = css.getPropertyValue("--accent").trim() || "#888";
-    g.font = `700 112px ${font}`;
-    g.textAlign = "center";
-    g.textBaseline = "middle";
-    g.fillText("tamaz", 256, 256);
+    // The stacked lockup's box (Logo.tsx), fitted inside the round lid with a margin.
+    const [x, y, w, h] = [3.42, 2.58, 60.15, 61.33];
+    const k = 680 / h;
+    g.translate(512 - (w * k) / 2, 512 - (h * k) / 2);
+    g.scale(k, k);
+    g.translate(-x, -y);
+    g.strokeStyle = g.fillStyle = color;
+    g.lineWidth = 1.51;
+    g.lineCap = g.lineJoin = "round";
+    g.stroke(new Path2D(MARK));
+    g.fill(new Path2D(WORD), "evenodd");
+    g.fill(new Path2D(TAGLINE));
   }
   const tex = new CanvasTexture(c);
   tex.colorSpace = SRGBColorSpace;
+  tex.anisotropy = 4;
   return tex;
 }
 
@@ -74,7 +82,11 @@ export function createCaseScene(canvas: HTMLCanvasElement, slot: HTMLElement): C
   const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = env;
 
-  const shell = new MeshPhysicalMaterial({ color: 0x141518, roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.3, side: DoubleSide });
+  // The shell takes the scheme's accent (Clinical Blue on the site); the logo on it the accent's ink.
+  const css = getComputedStyle(document.documentElement);
+  const accent = css.getPropertyValue("--accent").trim() || "#1D6FE8";
+  const accentInk = css.getPropertyValue("--accent-ink").trim() || "#FFFFFF";
+  const shell = new MeshPhysicalMaterial({ color: new Color(accent), roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.3, side: DoubleSide });
   const tray = new MeshPhysicalMaterial({ color: 0xeef1f3, roughness: 0.55, side: DoubleSide });
   const mirror = new MeshPhysicalMaterial({ color: 0xffffff, metalness: 1, roughness: 0.03, envMapIntensity: 1.2, side: DoubleSide });
 
@@ -94,7 +106,7 @@ export function createCaseScene(canvas: HTMLCanvasElement, slot: HTMLElement): C
   const glass = new Mesh(new CircleGeometry(0.033, 96), mirror);
   glass.rotation.x = Math.PI / 2; // faces down, into the closed case
   glass.position.y = 0.0012;
-  const brand = new Mesh(new CircleGeometry(0.03, 64), new MeshBasicMaterial({ map: brandTexture(), transparent: true, toneMapped: false }));
+  const brand = new Mesh(new CircleGeometry(0.03, 64), new MeshBasicMaterial({ map: brandTexture(accentInk), transparent: true, toneMapped: false }));
   brand.rotation.x = -Math.PI / 2; // faces up, reads from the front
   brand.position.y = CASE.lid + 0.0001;
   lid.add(glass, brand);
