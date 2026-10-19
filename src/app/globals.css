@@ -27,6 +27,8 @@
   --deep-line:color-mix(in oklab,var(--deep),white 15%);
   --deep-muted:color-mix(in oklab,var(--deep-ink) 62%,var(--deep));
   --deep-aqua:color-mix(in oklab,var(--aqua),white 22%);
+  /* The logo navy from the artwork ("Final Mono.pdf", CMYK 100/100/0/0); a brand color, the same in every scheme. */
+  --logo:#2E3092;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -34,6 +36,7 @@
   --accent:#FF6F58;--accent-ink:#1A0B08;--aqua:#53CFC5;--aqua-soft:#133A3A;--deep:#07111A;--deep-ink:#E7EEF2;
   --danger:#FF9A8A;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 36px -14px rgba(0,0,0,.6);
+  --logo:var(--ink); /* the navy would vanish on a dark page */
 }
 
 /* ---------- base ---------- */

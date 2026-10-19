@@ -45,6 +45,12 @@ export const brand = {
     "Braces and clear aligners for kids, teens and adults, from board-certified orthodontists. A first visit with a 3D scan, a written plan and your monthly price.",
 };
 
+/** The floating WhatsApp button (bottom right). `number` is international, digits only: 0306 1336555 in Pakistan. */
+export const whatsapp = {
+  number: "923061336555",
+  label: "Chat with tamaz on WhatsApp (0306 1336555)",
+};
+
 export const nav: { links: NavLink[]; cta: NavLink } = {
   links: [
     { label: "Your journey", href: "#journey" },
@@ -54,7 +60,7 @@ export const nav: { links: NavLink[]; cta: NavLink } = {
     { label: "Reviews", href: "#reviews" },
     { label: "Locations", href: "#visit" },
   ],
-  cta: { label: "Book your consultation", href: "#consult" },
+  cta: { label: "Book your appointment", href: "#consult" },
 };
 
 export const hero = {
@@ -66,7 +72,7 @@ export const hero = {
   headlineAfter: "at a time.",
   lede:
     "Board-certified orthodontists, four neighborhood studios and a free first visit. You leave with a 3D scan, a written treatment plan and your monthly price before you commit to anything.",
-  primaryCta: { label: "Book your consultation", href: "#consult" },
+  primaryCta: { label: "Book your appointment", href: "#consult" },
   secondaryCta: { label: "See real results", href: "#results" },
   trust: [
     { value: "4.9 ★", label: "2,300+ patient reviews" },
@@ -105,7 +111,7 @@ export const alignerAbout = {
   ],
   /** Shown after the average aligner treatment length from `journey.appliances`. */
   durationBody: "[How often you check in during treatment, e.g. a quick visit every 6 to 8 weeks.]",
-  cta: { label: "Book your consultation", href: "#consult" },
+  cta: { label: "Book your appointment", href: "#consult" },
   /** Phones only: the section shows a short version, and this opens the about page with all of it. */
   readMore: { label: "Read more", href: "/about" },
 };
@@ -387,12 +393,12 @@ export const smileGuide = {
 };
 
 export const consultation = {
-  title: "Book your consultation.",
+  title: "Book your appointment.",
   lede: "Tell us a little about yourself and a coordinator will call to confirm a time within one business day.",
   perks: ["3D scan and exam", "Written plan and exact price", "No obligation, no pressure"],
   treatmentOptions: ["Not sure yet", "Metal braces", "Clear ceramic braces", "Clear aligners", "Early treatment for my child"],
-  submit: "Request my consultation",
-  note: "We’ll only use your details to arrange your consultation.",
+  submit: "Request my appointment",
+  note: "We’ll only use your details to arrange your appointment.",
   errors: {
     firstName: "Add your first name so we know who to ask for.",
     phone: "Add a phone number so a coordinator can reach you.",
@@ -425,7 +431,7 @@ export const footer = {
     {
       title: "Patients",
       links: [
-        { label: "Book a consultation", href: "#consult" },
+        { label: "Book an appointment", href: "#consult" },
         { label: "[Patient portal link]", href: "#" },
         { label: "[Pay my bill link]", href: "#" },
         { label: "Video tips", href: "#resources" },

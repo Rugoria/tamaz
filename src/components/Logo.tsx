@@ -18,9 +18,9 @@ export function LogoMark({ className }: { className?: string }) {
 }
 
 /** The "tamaz" wordmark on its own. */
-export function LogoWord({ className }: { className?: string }) {
+export function LogoWord({ className, label }: { className?: string; label?: string }) {
   return (
-    <svg className={className} viewBox="6.68 44.09 53.45 13.12" aria-hidden="true">
+    <svg className={className} viewBox="6.68 44.09 53.45 13.12" {...(label ? { role: "img", "aria-label": label } : { "aria-hidden": true })}>
       <path d={WORD} fill="currentColor" fillRule="evenodd" />
     </svg>
   );

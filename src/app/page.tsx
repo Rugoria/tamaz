@@ -13,6 +13,7 @@ import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { SmileGuide } from "@/components/SmileGuide";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { preload } from "react-dom";
 import { hero } from "@/content/site";
 import styles from "./page.module.css";
@@ -57,6 +58,7 @@ export default function Home() {
       </main>
       {/* 11. Bottom bar */}
       <SiteFooter />
+      <WhatsAppButton />
       <RevealObserver />
     </>
   );
