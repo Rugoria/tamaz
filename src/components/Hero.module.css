@@ -1,4 +1,4 @@
-.hero{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:100vh;min-height:100svh;padding:0 16px;background:radial-gradient(ellipse 75% 65% at 50% 48%,var(--surface) 30%,transparent 78%),linear-gradient(160deg,var(--surface-2),var(--aqua-soft))}
+.hero{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:100vh;min-height:100svh;padding:0 16px}
 /* The wordmark is the logo's own lettering from "Final Mono.pdf" (Logo.tsx), as wide as the old typed word. */
 .brand{margin:0;line-height:0;color:var(--logo)}
 .brand svg{display:block;width:min(76vw,68rem);height:auto}
