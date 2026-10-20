@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
-import { consultation, locations } from "@/content/site";
+import type { SiteContent } from "@/content/site";
+import { fill } from "@/lib/i18n";
 import styles from "./Consultation.module.css";
 
 type Field = "firstName" | "phone" | "email";
@@ -9,7 +10,15 @@ type Errors = Partial<Record<Field, string>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(data: FormData): Errors {
+type Option = { label: string; value: string };
+type Props = {
+  copy: SiteContent["consultation"];
+  labels: SiteContent["ui"]["form"];
+  treatments: Option[];
+  studios: Option[];
+};
+
+function validate(data: FormData, consultation: Props["copy"]): Errors {
   const errors: Errors = {};
   const get = (k: string) => String(data.get(k) ?? "").trim();
   if (!get("firstName")) errors.firstName = consultation.errors.firstName;
@@ -18,7 +27,7 @@ function validate(data: FormData): Errors {
   return errors;
 }
 
-export function ConsultationForm() {
+export function ConsultationForm({ copy: consultation, labels, treatments, studios }: Props) {
   const form = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -28,7 +37,7 @@ export function ConsultationForm() {
     e.preventDefault();
     const el = e.currentTarget;
     const data = new FormData(el);
-    const found = validate(data);
+    const found = validate(data, consultation);
     setErrors(found);
     const firstInvalid = (["firstName", "phone", "email"] as const).find((k) => found[k]);
     if (firstInvalid) {
@@ -47,7 +56,8 @@ export function ConsultationForm() {
       });
       const json = (await res.json()) as { ok: boolean };
       if (!res.ok || !json.ok) throw new Error("Request failed");
-      setSentMessage(consultation.success(String(payload.firstName).trim(), String(payload.studio)));
+      const studio = studios.find((s) => s.value === payload.studio)?.label ?? String(payload.studio);
+      setSentMessage(fill(consultation.success, { name: String(payload.firstName).trim(), studio }));
       setStatus("sent");
       form.current?.reset();
     } catch {
@@ -71,47 +81,51 @@ export function ConsultationForm() {
   return (
     <form ref={form} className={styles.card} noValidate onSubmit={onSubmit}>
       <label>
-        First name
+        {labels.firstName}
         <input {...fieldProps("firstName")} autoComplete="given-name" required aria-required="true" />
         {errorText("firstName")}
       </label>
       <label>
-        Last name
+        {labels.lastName}
         <input name="lastName" autoComplete="family-name" />
       </label>
       <label>
-        Phone
+        {labels.phone}
         <input {...fieldProps("phone")} type="tel" autoComplete="tel" required aria-required="true" />
         {errorText("phone")}
       </label>
       <label>
-        Email
+        {labels.email}
         <input {...fieldProps("email")} type="email" autoComplete="email" />
         {errorText("email")}
       </label>
       <label>
-        Interested in
+        {labels.treatment}
         <select name="treatment">
-          {consultation.treatmentOptions.map((o) => (
-            <option key={o}>{o}</option>
+          {treatments.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
           ))}
         </select>
       </label>
       <label>
-        Preferred studio
+        {labels.studio}
         <select name="studio">
-          {locations.studios.map((s) => (
-            <option key={s.name}>{s.name}</option>
+          {studios.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
           ))}
         </select>
       </label>
       <label className={styles.full}>
-        Anything we should know?
+        {labels.message}
         <textarea name="message" rows={3} />
       </label>
       <div className={styles.full}>
         <button className="btn btn-primary" type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "Sending…" : consultation.submit} <span className="arr">→</span>
+          {status === "sending" ? labels.sending : consultation.submit} <span className="arr">→</span>
         </button>
       </div>
       <div className={styles.full} role="status" aria-live="polite">

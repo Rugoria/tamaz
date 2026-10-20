@@ -1,7 +1,8 @@
-import { faq } from "@/content/site";
+import { getSiteContent } from "@/content/server";
 import styles from "./Faq.module.css";
 
-export function Faq() {
+export async function Faq() {
+  const { faq } = await getSiteContent();
   return (
     <div className="reveal">
       <span className="eyebrow">{faq.eyebrow}</span>

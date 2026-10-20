@@ -12,3 +12,5 @@
 .social svg{width:18px;height:18px;fill:var(--ink)}
 .bottom{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;border-top:1px solid var(--line);padding-top:24px}
 .legal{display:flex;gap:20px;flex-wrap:wrap}
+/* The tagline under the logo is black, as in the artwork ("Final Mono.pdf"); the navy comes from .logo. */
+.footer :global(.logo-tagline){fill:var(--logo-tagline)}

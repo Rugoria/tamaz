@@ -1,4 +1,5 @@
-import { results } from "@/content/site";
+import { getSiteContent } from "@/content/server";
+import { fill } from "@/lib/i18n";
 import { publicFileExists } from "@/lib/publicFile";
 import { CompareSlider } from "./CompareSlider";
 import { ImageSlot } from "./image-slot/ImageSlot";
@@ -8,7 +9,8 @@ import styles from "./Results.module.css";
 
 const SIZES = "(max-width: 900px) 100vw, 380px";
 
-export function Results() {
+export async function Results() {
+  const { results, ui } = await getSiteContent();
   return (
     <section id="results">
       <div className="wrap">
@@ -20,14 +22,16 @@ export function Results() {
                 <VideoSlot
                   src={c.video}
                   poster={c.after.src}
-                  title={`Case ${i + 1}: ${c.title}, before to after`}
-                  label={`Case ${i + 1} clip`}
+                  title={fill(ui.caseClipTitle, { n: i + 1, title: c.title })}
+                  label={fill(ui.caseClip, { n: i + 1 })}
                   aspect="4/3"
                   mode="ambient"
                 />
               ) : (
                 <CompareSlider
-                  label={`Compare case ${i + 1} before and after`}
+                  label={fill(ui.compare, { n: i + 1 })}
+                  beforeLabel={ui.before}
+                  afterLabel={ui.after}
                   before={<ImageSlot className={styles.layer} {...c.before} size="1200 × 900" sizes={SIZES} />}
                   after={<ImageSlot className={styles.layer} {...c.after} size="1200 × 900" sizes={SIZES} />}
                 />

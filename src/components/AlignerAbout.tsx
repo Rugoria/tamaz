@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { alignerAbout, hero, journey } from "@/content/site";
+import { getLocale, getSiteContent } from "@/content/server";
+import { fill, localize } from "@/lib/i18n";
 import { Copy } from "./Tbd";
 import styles from "./AlignerAbout.module.css";
 
@@ -10,11 +11,13 @@ import styles from "./AlignerAbout.module.css";
  * aligner case drawn on the slot's canvas. On phones the copy is cut to the case's height and a
  * "Read more" link opens the about page (/about) with all of it.
  */
-export function AlignerAbout() {
+export async function AlignerAbout() {
+  const locale = await getLocale();
+  const { alignerAbout, hero, journey, ui } = await getSiteContent();
   const { image, width, height } = hero.aligner;
   const points = [
     ...alignerAbout.points,
-    { title: `${journey.appliances.aligners.average} on average`, body: alignerAbout.durationBody },
+    { title: fill(ui.onAverage, { average: journey.appliances.aligners.average }), body: alignerAbout.durationBody },
   ];
   return (
     <section id="aligners">
@@ -46,7 +49,7 @@ export function AlignerAbout() {
           <a className={`btn btn-primary ${styles.cta}`} href={alignerAbout.cta.href}>
             {alignerAbout.cta.label} <span className="arr">→</span>
           </a>
-          <Link className={`btn btn-ghost ${styles.more}`} href={alignerAbout.readMore.href}>
+          <Link className={`btn btn-ghost ${styles.more}`} href={localize(locale, alignerAbout.readMore.href)}>
             {alignerAbout.readMore.label} <span className="arr">→</span>
           </Link>
         </div>

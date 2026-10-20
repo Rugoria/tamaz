@@ -3,29 +3,33 @@ import Image from "next/image";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { Copy } from "@/components/Tbd";
-import { aboutPage, alignerAbout, brand, hero, journey } from "@/content/site";
+import { getLocale, getSiteContent } from "@/content/server";
+import { fill, localize } from "@/lib/i18n";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
-  title: `${aboutPage.metaTitle} · ${brand.name}`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { aboutPage, brand } = await getSiteContent();
+  return { title: `${aboutPage.metaTitle} · ${brand.name}` };
+}
 
 /** The aligner section's copy in full; on phones the home page shows a short version and links here. */
-export default function About() {
+export default async function About() {
+  const locale = await getLocale();
+  const { aboutPage, alignerAbout, brand, hero, journey, ui } = await getSiteContent();
   const { image, width, height, alt } = hero.aligner;
   const points = [
     ...alignerAbout.points,
-    { title: `${journey.appliances.aligners.average} on average`, body: alignerAbout.durationBody },
+    { title: fill(ui.onAverage, { average: journey.appliances.aligners.average }), body: alignerAbout.durationBody },
   ];
   return (
     <>
       <header className={styles.bar}>
         <div className="wrap">
-          <Link className="logo" href="/" aria-label={`${brand.name} home`}>
+          <Link className="logo" href={localize(locale, "/")} aria-label={fill(ui.home, { brand: brand.name })}>
             <Logo />
           </Link>
-          <Link className={styles.back} href={aboutPage.back.href}>
-            <span aria-hidden="true">←</span> {aboutPage.back.label}
+          <Link className={styles.back} href={localize(locale, aboutPage.back.href)}>
+            <span className="arr-back" aria-hidden="true">←</span> {aboutPage.back.label}
           </Link>
         </div>
       </header>
@@ -51,7 +55,7 @@ export default function About() {
                   </li>
                 ))}
               </ul>
-              <Link className="btn btn-primary" href={`/${alignerAbout.cta.href}`}>
+              <Link className="btn btn-primary" href={localize(locale, `/${alignerAbout.cta.href}`)}>
                 {alignerAbout.cta.label} <span className="arr">→</span>
               </Link>
             </div>

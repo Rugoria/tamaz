@@ -42,7 +42,7 @@ export function LogoStacked({ className }: { className?: string }) {
     <svg className={className} viewBox="3.42 2.58 60.15 61.33" aria-hidden="true">
       <path d={MARK} fill="none" stroke="currentColor" strokeWidth="1.51" strokeLinecap="round" strokeLinejoin="round" />
       <path d={WORD} fill="currentColor" fillRule="evenodd" />
-      <path d={TAGLINE} fill="currentColor" />
+      <path className="logo-tagline" d={TAGLINE} fill="currentColor" />
     </svg>
   );
 }

@@ -1,4 +1,5 @@
-.ba{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;max-width:100%;--pos:50%}
+/* Before is always on the left and after on the right, on Arabic pages too (the range input follows). */
+.ba{direction:ltr;position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;max-width:100%;--pos:50%}
 .before,.after{position:absolute;inset:0}
 .after{clip-path:inset(0 0 0 var(--pos))}
 .handle{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.15);pointer-events:none;z-index:3}

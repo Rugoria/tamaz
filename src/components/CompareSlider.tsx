@@ -8,6 +8,9 @@ type Props = {
   before: ReactNode;
   after: ReactNode;
   label: string;
+  /** The corner labels. */
+  beforeLabel: string;
+  afterLabel: string;
   /** "wiggle" nudges the handle once when in view; "scroll" wipes from before to after as the slider scrolls up the screen. */
   motion?: "wiggle" | "scroll";
   /** CSS aspect-ratio. Defaults to 4/3. */
@@ -15,7 +18,7 @@ type Props = {
 };
 
 /** Before/after comparison driven by a native range input. */
-export function CompareSlider({ before, after, label, motion = "wiggle", aspect }: Props) {
+export function CompareSlider({ before, after, label, beforeLabel, afterLabel, motion = "wiggle", aspect }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const touched = useRef(false);
@@ -81,8 +84,8 @@ export function CompareSlider({ before, after, label, motion = "wiggle", aspect 
     <div ref={root} className={styles.ba} style={aspect ? ({ aspectRatio: aspect } as CSSProperties) : undefined}>
       <div className={styles.before}>{before}</div>
       <div className={styles.after}>{after}</div>
-      <span className={`${styles.lab} ${styles.l}`}>Before</span>
-      <span className={`${styles.lab} ${styles.r}`}>After</span>
+      <span className={`${styles.lab} ${styles.l}`}>{beforeLabel}</span>
+      <span className={`${styles.lab} ${styles.r}`}>{afterLabel}</span>
       <span className={styles.handle} />
       <input
         ref={input}

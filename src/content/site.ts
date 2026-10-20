@@ -3,6 +3,11 @@
  *
  * Anything written in [square brackets] is a placeholder: it renders with a
  * yellow highlight on the page until you replace it with real content.
+ *
+ * This file is the English copy and the source for everything that is not text (links, images, numbers).
+ * The other languages (src/content/locales/) translate its text only; anything they leave out falls back to
+ * the English here. Components get the copy for the page's language from `getSiteContent()`
+ * (src/content/server.ts), or as props in client components.
  */
 
 export type NavLink = { label: string; href: string };
@@ -30,14 +35,9 @@ export type GalleryImage = { src: string; label: string; size: string; alt: stri
 
 export type Review = { quote: string; name: string; detail: string; initials: string; color: string };
 
-export type Testimonial = { name: string; detail: string; quote: string; video: string; poster?: string };
-
 export type Studio = { name: string; hours: string; address: string; phone: string };
 
 export type Faq = { question: string; answer: string };
-
-/** `video` is a YouTube URL or a path relative to public/. */
-export type VideoTip = { kicker: string; title: string; video: string; poster?: string };
 
 export const brand = {
   name: "tamaz",
@@ -59,6 +59,7 @@ export const nav: { links: NavLink[]; cta: NavLink } = {
     { label: "For clinics", href: "#clinics" },
     { label: "Reviews", href: "#reviews" },
     { label: "Locations", href: "#visit" },
+    { label: "Shop", href: "/shop" },
   ],
   cta: { label: "Book your appointment", href: "#consult" },
 };
@@ -283,16 +284,6 @@ export const reviews = {
   google: { rating: "4.9", count: "[2,300+] Google reviews", url: "", linkLabel: "Read all reviews on Google" },
 };
 
-export const testimonials = {
-  eyebrow: "Testimonials",
-  title: "In their own words.",
-  items: [
-    { name: "[Patient name]", detail: "[Treatment]", quote: "[Short quote from the video.]", video: "videos/testimonial-1.mp4", poster: "images/testimonial-1.jpg" },
-    { name: "[Patient name]", detail: "[Treatment]", quote: "[Short quote from the video.]", video: "videos/testimonial-2.mp4", poster: "images/testimonial-2.jpg" },
-    { name: "[Patient name]", detail: "[Treatment]", quote: "[Short quote from the video.]", video: "videos/testimonial-3.mp4", poster: "images/testimonial-3.jpg" },
-  ] satisfies Testimonial[],
-};
-
 export const locations = {
   eyebrow: "Studios",
   title: "Four studios, open evenings and Saturdays.",
@@ -382,16 +373,6 @@ export const faq = {
   ] satisfies { title: string; items: Faq[] }[],
 };
 
-export const smileGuide = {
-  eyebrow: "Video tips",
-  title: "Tips for life with braces and aligners.",
-  tips: [
-    { kicker: "Braces care · [0:00]", title: "[Tutorial 1 title]", video: "videos/tip-1.mp4", poster: "images/tip-1.jpg" },
-    { kicker: "Aligners · [0:00]", title: "[Tutorial 2 title]", video: "videos/tip-2.mp4", poster: "images/tip-2.jpg" },
-    { kicker: "Parents · [0:00]", title: "[Tutorial 3 title]", video: "videos/tip-3.mp4", poster: "images/tip-3.jpg" },
-  ] satisfies VideoTip[],
-};
-
 export const consultation = {
   title: "Book your appointment.",
   lede: "Tell us a little about yourself and a coordinator will call to confirm a time within one business day.",
@@ -405,8 +386,9 @@ export const consultation = {
     email: "Check the email address, or leave it blank.",
     server: "Something went wrong sending your request. Please try again or call your nearest studio.",
   },
-  success: (name: string, studio: string) =>
-    `Thanks, ${name}. We’ve received your request for the ${studio} studio, and a coordinator will call to confirm a time within one business day.`,
+  /** {name} and {studio} are filled in from the form. */
+  success:
+    "Thanks, {name}. We’ve received your request for the {studio} studio, and a coordinator will call to confirm a time within one business day.",
 };
 
 export const footer = {
@@ -426,6 +408,7 @@ export const footer = {
         { label: "How it works", href: "#process" },
         { label: "For clinics", href: "#clinics" },
         { label: "Reviews", href: "#reviews" },
+        { label: "Shop", href: "/shop" },
       ],
     },
     {
@@ -434,7 +417,6 @@ export const footer = {
         { label: "Book an appointment", href: "#consult" },
         { label: "[Patient portal link]", href: "#" },
         { label: "[Pay my bill link]", href: "#" },
-        { label: "Video tips", href: "#resources" },
       ],
     },
     {
@@ -456,3 +438,166 @@ export const footer = {
     { label: "Notice of privacy practices", href: "#" },
   ],
 };
+
+/**
+ * The shop page (/shop): aligner plans, a starter kit, products by category and gift cards. Laid out after the
+ * ALIGNERCO clear-aligner collection page, in tamaz's own words. There is no checkout yet: every "buy" button
+ * opens a WhatsApp chat (`whatsapp.number`) with `whatsappMessage` filled in. Prices and plan details in
+ * [brackets] are placeholders until the client confirms them. Images go in public/images/ (shop-*.jpg). `categories` filter the page; each
+ * product has one `category`, the plans and the kit are "aligners".
+ */
+export const shop = {
+  metaTitle: "Shop",
+  back: { label: "Back to home", href: "/" },
+  hero: {
+    eyebrow: "tamaz shop",
+    title: "Everything your smile needs.",
+    lede: "Clear aligner plans, a starter kit to try first, and the care products that keep your aligners and retainers fresh.",
+    image: { src: "images/shop-hero.jpg", label: "Shop hero", size: "1600 × 1200", alt: "tamaz clear aligners and care products" },
+  },
+  plans: {
+    eyebrow: "Clear aligners",
+    title: "Clear aligner plans for every smile.",
+    lede: "Two ways to straighten your teeth: wear your aligners all day, or mostly while you sleep.",
+    review: "Every plan is checked by a licensed orthodontist before you start. [If aligners aren’t right for you, you get a full refund.]",
+    items: [
+      {
+        id: "all-day",
+        name: "All-day plan",
+        badge: "Best value",
+        duration: "[4 to 6] months",
+        wear: "22 hours a day",
+        summary: "The quickest way to a straighter smile: wear your aligners day and night, taking them out only to eat and brush.",
+        image: { src: "images/shop-plan-all-day.jpg", label: "All-day plan", size: "1600 × 900", alt: "tamaz clear aligners for the all-day plan" },
+        oneTime: { price: "[Price]", was: "[Regular price]" },
+        monthly: [
+          { name: "[12] monthly payments", price: "[Price] / month" },
+          { name: "[24] monthly payments", price: "[Price] / month" },
+        ],
+        includes: ["All your aligners, made from a 3D scan", "Free whitening kit", "Retainers to keep your new smile"],
+      },
+      {
+        id: "night",
+        name: "Night plan",
+        badge: "Most popular",
+        duration: "[6 to 8] months",
+        wear: "10 hours a day",
+        summary: "Wear your aligners in the evening and overnight, and go through your day without them.",
+        image: { src: "images/shop-plan-night.jpg", label: "Night plan", size: "1600 × 900", alt: "tamaz clear aligners for the night plan" },
+        oneTime: { price: "[Price]", was: "[Regular price]" },
+        monthly: [
+          { name: "[12] monthly payments", price: "[Price] / month" },
+          { name: "[24] monthly payments", price: "[Price] / month" },
+        ],
+        includes: ["All your aligners, made from a 3D scan", "Free whitening kit", "Retainers to keep your new smile"],
+      },
+    ],
+  },
+  kit: {
+    eyebrow: "Not sure yet?",
+    title: "Start with an impression kit.",
+    body: "Take impressions of your teeth at home and send them back. Our orthodontists check whether aligners are right for you before you choose a plan.",
+    image: { src: "images/shop-kit.jpg", label: "Impression kit", size: "1200 × 900", alt: "The tamaz at-home impression kit" },
+    price: "[Price]",
+    was: "[Regular price]",
+  },
+  categoriesLabel: "Shop by category",
+  categories: [{ id: "all", label: "All products" }, { id: "aligners", label: "Clear aligners" }, { id: "retainers", label: "Retainers" }, { id: "night-guard", label: "Night guard" }, { id: "mouth-guard", label: "Mouth guard" }, { id: "accessories", label: "Accessories" }],
+  products: {
+    eyebrow: "Products",
+    title: "Care, protection and accessories.",
+    items: [
+      { id: "retainers", category: "retainers", name: "Retainers", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-retainers.jpg", size: "1000 × 1000" } },
+      { id: "night-guard", category: "night-guard", name: "Custom-fit soft night guard, both arches", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-night-guard.jpg", size: "1000 × 1000" } },
+      { id: "sports-guard", category: "mouth-guard", name: "Custom-fit sports mouth guard", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-sports-guard.jpg", size: "1000 × 1000" } },
+      { id: "uv-cleaner", category: "accessories", name: "UV ultrasonic cleaner", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-uv-cleaner.jpg", size: "1000 × 1000" } },
+      { id: "whitening-kit", category: "accessories", name: "Smart teeth whitening kit", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-whitening-kit.jpg", size: "1000 × 1000" } },
+      { id: "cleaner", category: "accessories", name: "Aligner cleaner + whitener", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-cleaner.jpg", size: "1000 × 1000" } },
+      { id: "tablets", category: "accessories", name: "Cleansing tablets for aligners, retainers & dentures, 120 pcs", price: "[Price]", was: "", badge: "", image: { src: "images/shop-tablets.jpg", size: "1000 × 1000" } },
+      { id: "whitening-pen", category: "accessories", name: "Teeth whitening pen", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-whitening-pen.jpg", size: "1000 × 1000" } },
+      { id: "pull-tool", category: "accessories", name: "Aligner pull tool", price: "[Price]", was: "", badge: "", image: { src: "images/shop-pull-tool.jpg", size: "1000 × 1000" } },
+      { id: "chewies", category: "accessories", name: "Chewies", price: "[Price]", was: "", badge: "", image: { src: "images/shop-chewies.jpg", size: "1000 × 1000" } },
+      { id: "essentials", category: "accessories", name: "Aligner essentials kit", price: "[Price]", was: "[Regular price]", badge: "[Sale: amount off]", image: { src: "images/shop-essentials.jpg", size: "1000 × 1000" } },
+      { id: "cheek-retractor", category: "accessories", name: "Cheek retractor", price: "[Price]", was: "", badge: "", image: { src: "images/shop-cheek-retractor.jpg", size: "1000 × 1000" } },
+      { id: "case", category: "accessories", name: "Aligner case", price: "[Price]", was: "", badge: "", image: { src: "images/shop-case.jpg", size: "1000 × 1000" } },
+    ],
+  },
+  gift: {
+    eyebrow: "Gift cards",
+    title: "Give someone a better smile.",
+    body: "tamaz gift cards from [amount], to spend on any plan or product.",
+  },
+  cta: {
+    title: "Ready to transform your smile?",
+    lede: "Book a visit for a 3D scan and a written plan, or message us to ask anything first.",
+    label: "Book your appointment",
+    href: "/#consult",
+  },
+  /** Typed into WhatsApp when a buy button is pressed; {item} is the product and payment chosen. */
+  whatsappMessage: "Hi tamaz, I’d like to order: {item}.",
+  labels: {
+    duration: "Treatment time",
+    wear: "Wear time",
+    oneTime: "One-time payment",
+    monthly: "Or pay monthly",
+    includes: "Included",
+    was: "Regular price",
+    buy: "Buy now",
+    order: "Order now",
+    giftCta: "Buy a gift card",
+    giftItem: "a tamaz gift card",
+  },
+};
+
+/** Labels and short texts used by the page's controls. `{x}` parts are filled in by the component. */
+export const ui = {
+  menu: "Menu",
+  home: "{brand} home",
+  language: "Language",
+  before: "Before",
+  after: "After",
+  compare: "Compare case {n} before and after",
+  caseClip: "Case {n} clip",
+  caseClipTitle: "Case {n}: {title}, before to after",
+  onAverage: "{average} on average",
+  journeyLabel: "Treatment timeline",
+  readouts: { crowding: "Crowding", average: "Average treatment", complete: "Plan complete" },
+  clinicsAudiences: "Who it is for",
+  clinicsSteps: "How a partner case works",
+  stars: "5 out of 5 stars",
+  directions: "Directions",
+  map: { tabs: "Show studio on map", show: "Show map", loads: "Loads Google Maps", title: "Map of {name}" },
+  form: {
+    firstName: "First name",
+    lastName: "Last name",
+    phone: "Phone",
+    email: "Email",
+    treatment: "Interested in",
+    studio: "Preferred studio",
+    message: "Anything we should know?",
+    sending: "Sending…",
+  },
+};
+
+/** All of the copy, as one object: the shape every language follows. */
+export const content = {
+  brand,
+  whatsapp,
+  nav,
+  hero,
+  alignerAbout,
+  aboutPage,
+  results,
+  journey,
+  process,
+  clinics,
+  reviews,
+  locations,
+  faq,
+  consultation,
+  footer,
+  shop,
+  ui,
+};
+
+export type SiteContent = typeof content;

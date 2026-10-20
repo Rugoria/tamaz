@@ -4,7 +4,9 @@
 .step{position:relative;display:grid;grid-row:span 4;grid-template-rows:subgrid;align-content:start;justify-items:start}
 .num{position:relative;z-index:1;width:var(--dot);height:var(--dot);border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--aqua);color:var(--aqua);font:500 .85rem/1 var(--mono)}
 .step:last-child .num{background:var(--aqua);color:var(--surface)}
-.step::before{content:"";position:absolute;top:calc(var(--dot) / 2 - 1px);left:var(--dot);right:-18px;height:2px;background:linear-gradient(90deg,var(--aqua),var(--line))}
+.step::before{content:"";position:absolute;top:calc(var(--dot) / 2 - 1px);inset-inline:var(--dot) -18px;height:2px;background:linear-gradient(90deg,var(--aqua),var(--line))}
+/* The line runs toward the next step: leftward on Arabic pages. */
+[dir="rtl"] .step::before{background:linear-gradient(270deg,var(--aqua),var(--line))}
 .step:last-child::before{display:none}
 .step h3{font-size:1.08rem;margin-top:8px;align-self:end}
 .step p{color:var(--muted);font-size:.95rem}
@@ -15,5 +17,5 @@
   .step > :not(.num){grid-column:2}
   .num{grid-row:span 3}
   .step h3{margin-top:10px;align-self:start}
-  .step::before{top:var(--dot);bottom:0;left:calc(var(--dot) / 2 - 1px);right:auto;width:2px;height:auto;background:var(--line)}
+  .step::before{top:var(--dot);bottom:0;inset-inline:calc(var(--dot) / 2 - 1px) auto;width:2px;height:auto;background:var(--line)}
 }

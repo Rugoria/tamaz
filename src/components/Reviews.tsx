@@ -1,7 +1,6 @@
-import { reviews, testimonials } from "@/content/site";
+import { getSiteContent } from "@/content/server";
 import { SectionHead } from "./SectionHead";
 import { Copy } from "./Tbd";
-import { VideoSlot } from "./video-slot/VideoSlot";
 import styles from "./Reviews.module.css";
 
 const GoogleG = () => (
@@ -13,7 +12,8 @@ const GoogleG = () => (
   </svg>
 );
 
-export function Reviews() {
+export async function Reviews() {
+  const { reviews, ui } = await getSiteContent();
   const g = reviews.google;
   return (
     <section id="reviews" style={{ paddingTop: 0 }}>
@@ -38,7 +38,7 @@ export function Reviews() {
         <div className={styles.reviews} data-stagger>
           {reviews.items.map((r) => (
             <figure key={r.name} className={`${styles.review} reveal`}>
-              <div className={styles.stars} role="img" aria-label="5 out of 5 stars">★★★★★</div>
+              <div className={styles.stars} role="img" aria-label={ui.stars}>★★★★★</div>
               <blockquote>{r.quote}</blockquote>
               <figcaption className={styles.who}>
                 <span className={styles.av} style={{ background: r.color }} aria-hidden="true">{r.initials}</span>
@@ -46,31 +46,6 @@ export function Reviews() {
                   {r.name}
                   <small>{r.detail}</small>
                 </span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-        <div className={`${styles.sub} reveal`}>
-          <span className="eyebrow">{testimonials.eyebrow}</span>
-          <h3>{testimonials.title}</h3>
-        </div>
-        <div className={`${styles.reviews} ${styles.videos}`} data-stagger>
-          {testimonials.items.map((t, i) => (
-            <figure key={i} className={`${styles.testimonial} reveal`}>
-              <VideoSlot
-                src={t.video}
-                poster={t.poster}
-                title={`Video testimonial ${i + 1}`}
-                label={`Testimonial ${i + 1}`}
-                size="1080 × 1350"
-                aspect="4/5"
-              />
-              <blockquote>
-                <Copy text={t.quote} />
-              </blockquote>
-              <figcaption>
-                <b><Copy text={t.name} /></b> · <Copy text={t.detail} />
               </figcaption>
             </figure>
           ))}

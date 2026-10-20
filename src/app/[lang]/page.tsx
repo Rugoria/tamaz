@@ -12,20 +12,21 @@ import { RevealObserver } from "@/components/RevealObserver";
 import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
-import { SmileGuide } from "@/components/SmileGuide";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { preload } from "react-dom";
-import { hero } from "@/content/site";
+import { getLocale, getSiteContent } from "@/content/server";
 import styles from "./page.module.css";
 
 /** Section order follows the approved website layout (1–11). */
-export default function Home() {
+export default async function Home() {
+  const locale = await getLocale();
+  const { brand, hero, journey, nav, ui } = await getSiteContent();
   // Start the 3D aligner's download with the page (HeroAligner fetches the same file once it runs). Skipped under
   // reduced motion, where the model is never shown.
   preload(`/${hero.aligner.model}`, { as: "fetch", crossOrigin: "anonymous", media: "(prefers-reduced-motion: no-preference)" });
   return (
     <>
-      <SiteNav />
+      <SiteNav locale={locale} brand={brand.name} nav={nav} ui={ui} />
       <main id="top">
         {/* 1. Hero: 3D aligner display. On scroll the aligner flies into the aligner section beside it,
             then on down onto the lower teeth in the Journey photo. */}
@@ -33,7 +34,7 @@ export default function Home() {
           <Hero />
           <AlignerAbout />
           {/* 3. Scroll to see the smile (moved up, right after the aligner section) */}
-          <Journey />
+          <Journey journey={journey} ui={ui} />
           <HeroAligner src={hero.aligner.image} width={hero.aligner.width} height={hero.aligner.height} alt={hero.aligner.alt} model={hero.aligner.model} />
         </div>
         {/* 2. Before & after */}
@@ -42,7 +43,7 @@ export default function Home() {
         <Process />
         {/* For clinics (B2B): dentists and orthodontists offering tamaz aligners */}
         <Clinics />
-        {/* 7. Reviews & testimonials */}
+        {/* 7. Reviews */}
         <Reviews />
         {/* 8. FAQs, studios & map */}
         <section id="visit" style={{ paddingTop: 0 }}>
@@ -51,8 +52,6 @@ export default function Home() {
             <Locations />
           </div>
         </section>
-        {/* 9. Tips & video tutorials */}
-        <SmileGuide />
         {/* 10. Book your session */}
         <Consultation />
       </main>

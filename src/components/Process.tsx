@@ -1,8 +1,9 @@
-import { process } from "@/content/site";
+import { getSiteContent } from "@/content/server";
 import { Copy } from "./Tbd";
 import styles from "./Process.module.css";
 
-export function Process() {
+export async function Process() {
+  const { process } = await getSiteContent();
   return (
     <section id="process">
       <div className="wrap">

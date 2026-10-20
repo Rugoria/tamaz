@@ -1,4 +1,4 @@
-import { locations } from "@/content/site";
+import { getSiteContent } from "@/content/server";
 import { isPlaceholder } from "@/lib/placeholder";
 import { ImageSlot } from "./image-slot/ImageSlot";
 import { StudioMap } from "./StudioMap";
@@ -8,7 +8,8 @@ import styles from "./Locations.module.css";
 const directions = (address: string) =>
   `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
 
-export function Locations() {
+export async function Locations() {
+  const { locations, ui } = await getSiteContent();
   return (
     <div className="reveal">
       <span className="eyebrow">{locations.eyebrow}</span>
@@ -22,7 +23,7 @@ export function Locations() {
             <span className="mono"><Copy text={s.phone} /></span>
             {!isPlaceholder(s.address) && (
               <a className={styles.dir} href={directions(s.address)} target="_blank" rel="noopener noreferrer">
-                Directions ↗
+                {ui.directions} ↗
               </a>
             )}
           </div>
@@ -30,6 +31,7 @@ export function Locations() {
       </div>
       <StudioMap
         studios={locations.studios}
+        ui={ui.map}
         fallback={<ImageSlot {...locations.map} className={styles.map} aspect="16/9" sizes="(max-width: 900px) 100vw, 580px" />}
       />
     </div>

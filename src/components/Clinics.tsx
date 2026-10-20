@@ -1,9 +1,10 @@
-import { clinics } from "@/content/site";
+import { getSiteContent } from "@/content/server";
 import { Copy } from "./Tbd";
 import styles from "./Clinics.module.css";
 
 /** For clinics (B2B): how dentists and orthodontists offer tamaz aligners in their own practice. */
-export function Clinics() {
+export async function Clinics() {
+  const { clinics, ui } = await getSiteContent();
   return (
     <section id="clinics" className={styles.clinics} aria-labelledby="clinics-title">
       <div className="wrap">
@@ -16,7 +17,7 @@ export function Clinics() {
             </p>
           </div>
           <div className={`${styles.join} reveal`}>
-            <ul className={styles.audiences} aria-label="Who it is for">
+            <ul className={styles.audiences} aria-label={ui.clinicsAudiences}>
               {clinics.audiences.map((a) => (
                 <li key={a}>{a}</li>
               ))}
@@ -43,9 +44,9 @@ export function Clinics() {
           ))}
         </ul>
 
-        <ol className={styles.steps} data-stagger aria-label="How a partner case works">
+        <ol className={styles.steps} data-stagger aria-label={ui.clinicsSteps}>
           {clinics.steps.map((s, i) => (
-            <li key={s.title} className="reveal">
+            <li key={i} className="reveal">
               <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
               <b>{s.title}</b>
               <p>

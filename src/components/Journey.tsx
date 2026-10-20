@@ -2,21 +2,22 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { journey } from "@/content/site";
+import { journey as en, type SiteContent } from "@/content/site";
 import { alignAt, retainAt, wornAt } from "@/lib/journeyTimeline";
 import { clamp, ease, lerp, prefersReducedMotion } from "@/lib/motion";
 import { Copy } from "./Tbd";
 import styles from "./Journey.module.css";
 
-const STAGES = journey.stages;
-/** The steps as told for clear aligners (the site has no braces/aligners switch). */
-const stageCopy = (i: number) => STAGES[i].aligners ?? STAGES[i];
+/** The steps' timing (the same in every language). */
+const STAGES = en.stages;
 
 
 const PHOTO_SIZES = "(max-width: 960px) 92vw, 640px";
 
 
-export function Journey() {
+type Props = { journey: SiteContent["journey"]; ui: SiteContent["ui"] };
+
+export function Journey({ journey, ui }: Props) {
   const scroller = useRef<HTMLDivElement>(null);
   const startPhoto = useRef<HTMLDivElement>(null);
   const wornPhoto = useRef<HTMLDivElement>(null);
@@ -82,7 +83,7 @@ export function Journey() {
   }, []);
 
   return (
-    <section className={styles.journey} id="journey" aria-label="Treatment timeline">
+    <section className={styles.journey} id="journey" aria-label={ui.journeyLabel}>
       <div id="journey-scroll" className={styles.scroll} ref={scroller}>
         <div className={styles.sticky}>
           <div className="wrap">
@@ -91,11 +92,12 @@ export function Journey() {
               <h2 style={{ marginTop: 14 }}>{journey.title}</h2>
               <p className="lede" style={{ marginTop: 16 }}>{journey.lede}</p>
               <ol className={styles.stages}>
-                {STAGES.map((s, i) => {
-                  const c = stageCopy(i);
+                {journey.stages.map((s, i) => {
+                  // The steps as told for clear aligners (the site has no braces/aligners switch).
+                  const c = s.aligners ?? s;
                   return (
                     <li
-                      key={s.name}
+                      key={i}
                       className={i === active ? styles.on : i < active ? styles.done : undefined}
                       aria-current={i === active ? "step" : undefined}
                     >
@@ -121,9 +123,9 @@ export function Journey() {
                 </div>
               </div>
               <div className="readouts">
-                <div className="readout"><small>Crowding</small><span ref={crowd}>5.5 mm</span></div>
-                <div className="readout"><small>Average treatment</small><span><Copy text={average} /></span></div>
-                <div className="readout"><small>Plan complete</small><span ref={pct}>0%</span></div>
+                <div className="readout"><small>{ui.readouts.crowding}</small><span ref={crowd}>5.5 mm</span></div>
+                <div className="readout"><small>{ui.readouts.average}</small><span><Copy text={average} /></span></div>
+                <div className="readout"><small>{ui.readouts.complete}</small><span ref={pct}>0%</span></div>
               </div>
             </div>
           </div>
