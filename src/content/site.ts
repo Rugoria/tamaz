@@ -45,10 +45,16 @@ export const brand = {
     "Braces and clear aligners for kids, teens and adults, from board-certified orthodontists. A first visit with a 3D scan, a written plan and your monthly price.",
 };
 
-/** The floating WhatsApp button (bottom right). `number` is international, digits only: 0306 1336555 in Pakistan. */
+/** The floating WhatsApp button (bottom right, raised above the corner). `number` is international, digits only: 0306 1336555 in Pakistan. */
 export const whatsapp = {
   number: "923061336555",
   label: "Chat with tamaz on WhatsApp (0306 1336555)",
+};
+
+/** The floating Doctor Portal button (bottom left), linking dentists to the tamaz portal. */
+export const portal = {
+  url: "https://portal.tamazcorp.com",
+  label: "Doctor Portal",
 };
 
 export const nav: { links: NavLink[]; cta: NavLink } = {
@@ -583,6 +589,7 @@ export const ui = {
 export const content = {
   brand,
   whatsapp,
+  portal,
   nav,
   hero,
   alignerAbout,

@@ -7,6 +7,7 @@ export const fr: Translation = {
       "Appareils dentaires et aligneurs transparents pour enfants, ados et adultes, par des orthodontistes diplômés. Une première visite avec scan 3D, un plan écrit et votre mensualité.",
   },
   whatsapp: { label: "Discuter avec tamaz sur WhatsApp (0306 1336555)" },
+  portal: { label: "Portail médecins" },
   nav: {
     links: [
       { label: "Votre parcours" },

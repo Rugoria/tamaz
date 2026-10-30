@@ -82,11 +82,11 @@ export function createCaseScene(canvas: HTMLCanvasElement, slot: HTMLElement): C
   const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = env;
 
-  // The shell takes the scheme's accent (Clinical Blue on the site); the logo on it the accent's ink.
+  // The shell takes the logo navy (--logo, the same in every scheme); the logo on it is white.
   const css = getComputedStyle(document.documentElement);
-  const accent = css.getPropertyValue("--accent").trim() || "#1D6FE8";
-  const accentInk = css.getPropertyValue("--accent-ink").trim() || "#FFFFFF";
-  const shell = new MeshPhysicalMaterial({ color: new Color(accent), roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.3, side: DoubleSide });
+  const logo = css.getPropertyValue("--logo").trim() || "#2E3092";
+  const accentInk = "#FFFFFF";
+  const shell = new MeshPhysicalMaterial({ color: new Color(logo),roughness: 0.42, clearcoat: 0.35, clearcoatRoughness: 0.3, side: DoubleSide });
   const tray = new MeshPhysicalMaterial({ color: 0xeef1f3, roughness: 0.55, side: DoubleSide });
   const mirror = new MeshPhysicalMaterial({ color: 0xffffff, metalness: 1, roughness: 0.03, envMapIntensity: 1.2, side: DoubleSide });
 

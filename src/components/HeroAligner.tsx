@@ -21,6 +21,9 @@ const HOLD_VH = 0.22;
 /** The case lid: open as the aligner comes in, a little wider as it rises out (radians). */
 const LID_OPEN = (100 * Math.PI) / 180;
 const LID_WIDER = (10 * Math.PI) / 180;
+/** Where the aligner lands: the slot's center this many slot heights below the middle of the screen, so the open
+    lid above the case is fully on screen as it comes in. */
+const LAND_DROP = 0.55;
 
 /**
  * The hero aligner. It lives in a layer spanning the hero and the aligner section (both inside
@@ -87,7 +90,7 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
       const w = st.offsetWidth;
       const h = st.offsetHeight;
 
-      // Start: hero center. End: slot center, reached when the slot is centered on screen.
+      // Start: hero center. End: slot center, reached when the slot is just below the middle of the screen (LAND_DROP).
       const hx = hr.left - lr.left + hr.width / 2;
       const hy = hr.top - lr.top + hr.height / 2;
       let sr: DOMRect | null = null;
@@ -101,9 +104,10 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
       if (slot && !reduced) {
         const vh = window.innerHeight;
         sr = slot.getBoundingClientRect();
+        const land = vh / 2 + sr.height * LAND_DROP;
         const sx = sr.left - lr.left + sr.width / 2;
         const sy = sr.top - lr.top + sr.height / 2;
-        const travel = sy - (hr.top - lr.top) - vh / 2;
+        const travel = sy - (hr.top - lr.top) - land;
         q = travel > 0 ? clamp(-hr.top / travel) : 1;
         const e = ease(q);
         x = lerp(hx, sx, e);
@@ -116,9 +120,9 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
           const kr = sticky.getBoundingClientRect();
           const pr = photos.getBoundingClientRect();
           const slotCy = sr.top + sr.height / 2;
-          const span = cr.top - slotCy + vh / 2;
+          const span = cr.top - slotCy + land;
           // First it rests in the case and rises out (u), riding along with the page; then it flies (r).
-          const d = vh / 2 - slotCy;
+          const d = land - slotCy;
           const hold = Math.min(span * HOLD, vh * HOLD_VH);
           u = hold > 0 ? clamp(d / hold) : 1;
           r = span > hold ? clamp((d - hold) / (span - hold)) : 1;
@@ -133,7 +137,7 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
             const g = ease(r);
             // Start from where it came out of the case, held there on screen while the page scrolls on.
             x = lerp(sx, jx, g);
-            y = lerp(vh / 2 - hold - lr.top, jy, g);
+            y = lerp(land - hold - lr.top, jy, g);
             sc = lerp(sr.width / w, tsc, g);
           }
         }
@@ -161,11 +165,12 @@ export function HeroAligner({ src, width, height, alt, model }: Props) {
       el.style.opacity = (intro * fade).toFixed(3);
       // In the case: it sinks onto the tray as it lands, rises out over the second part of the hold and is
       // back at its own height by halfway to the teeth.
-      const seat = ease(clamp((q - 0.9) / 0.1));
+      const seat = ease(clamp((q - 0.94) / 0.06));
       const rise = ease(clamp((u - 0.25) / 0.75));
       const raise = box ? -SEAT_DROP * seat * (1 - rise) + RISE * rise * (1 - ease(clamp(r / 0.5))) : 0;
-      // The lid opens as the aligner comes in, a little wider as it comes out, and closes once it has flown.
-      const lid = (LID_OPEN * ease(clamp((q - 0.55) / 0.35)) + LID_WIDER * rise) * (1 - ease(clamp((r - 0.15) / 0.45)));
+      // The case comes into view closed, the logo on its lid up; the lid opens only as the aligner arrives (it is
+      // open by the time the aligner sinks in), a little wider as it comes out, and closes once it has flown.
+      const lid = (LID_OPEN * ease(clamp((q - 0.84) / 0.1)) + LID_WIDER * rise) * (1 - ease(clamp((r - 0.15) / 0.45)));
       box?.render(lid);
       s.q = q;
       s.r = r;

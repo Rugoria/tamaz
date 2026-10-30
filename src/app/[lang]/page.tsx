@@ -12,6 +12,7 @@ import { RevealObserver } from "@/components/RevealObserver";
 import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
+import { PortalButton } from "@/components/PortalButton";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { preload } from "react-dom";
 import { getLocale, getSiteContent } from "@/content/server";
@@ -57,6 +58,7 @@ export default async function Home() {
       </main>
       {/* 11. Bottom bar */}
       <SiteFooter />
+      <PortalButton />
       <WhatsAppButton />
       <RevealObserver />
     </>

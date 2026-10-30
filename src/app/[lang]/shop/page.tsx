@@ -5,6 +5,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Logo } from "@/components/Logo";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Copy } from "@/components/Tbd";
+import { PortalButton } from "@/components/PortalButton";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLocale, getSiteContent } from "@/content/server";
 import { fill, localize } from "@/lib/i18n";
@@ -237,6 +238,7 @@ export default async function Shop() {
         </section>
       </main>
       <SiteFooter />
+      <PortalButton />
       <WhatsAppButton />
     </>
   );

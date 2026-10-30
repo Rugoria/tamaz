@@ -7,6 +7,7 @@ export const es: Translation = {
       "Brackets y alineadores transparentes para niños, adolescentes y adultos, de ortodoncistas certificados. Una primera visita con escaneo 3D, un plan por escrito y tu precio mensual.",
   },
   whatsapp: { label: "Chatea con tamaz por WhatsApp (0306 1336555)" },
+  portal: { label: "Portal para doctores" },
   nav: {
     links: [
       { label: "Tu tratamiento" },
