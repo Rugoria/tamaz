@@ -29,7 +29,9 @@
 @media (max-width:700px){
   .grid{grid-template-columns:1fr;gap:0}
   .copy{order:-1;gap:12px}
-  .slot{width:min(80%,55vh);margin-block:62% 10%}
+  /* The case is drawn about 4% of the slot's width right of its middle (the slot camera looks a little left of
+     the case, to frame the aligner), so the slot moves back by as much to put the case in the middle. */
+  .slot{width:min(80%,55vh);margin-block:62% 10%;translate:-4.2% 0}
   .points,.cta{display:none}
   .more{display:inline-flex;padding:10px 16px;font-size:.88rem}
 }

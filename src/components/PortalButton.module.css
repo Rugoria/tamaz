@@ -4,7 +4,7 @@
 .icon svg{width:20px;height:20px}
 .label{white-space:nowrap}
 @media (max-width:900px){
-  .portal{padding:10px;width:44px;height:44px;justify-content:center}
+  .portal{flex:none;padding:0;width:40px;height:40px;justify-content:center}
   .label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 }
 @media (prefers-reduced-motion:reduce){.portal{transition:none}}
