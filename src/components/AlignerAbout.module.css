@@ -1,9 +1,9 @@
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(32px,5vw,72px);align-items:center}
 /* Sits a little below the copy's middle. Offset with top (not margin) so the row keeps its height; the case
    and the aligner's landing spot follow the slot, since HeroAligner measures where it is on screen. No wider
-   than 55% of the screen's height, so on short screens too the closed case is fully in view before it opens,
+   than 65% of the screen's height, so on short screens too the closed case is fully in view before it opens,
    and the open lid fits on screen. */
-.slot{position:relative;top:clamp(16px,4vw,56px);width:min(100%,55vh);justify-self:center;aspect-ratio:1121/667}
+.slot{position:relative;top:clamp(16px,4vw,56px);width:min(100%,65vh);justify-self:center;aspect-ratio:1121/667}
 /* Desktop: a little lower. */
 @media (min-width:901px){.slot{top:clamp(40px,5vw,80px)}}
 .still{display:none;width:100%;height:auto}
@@ -23,16 +23,14 @@
 /* The case and the copy stay side by side at every width, as on desktop; smaller screens get a tighter gap,
    one column of points and smaller type so the copy fits its half. */
 @media (max-width:900px){.grid{gap:clamp(16px,4vw,32px)}.points{grid-template-columns:1fr}}
-/* Phones: the copy is as tall as the case beside it. The slot keeps room above it for the open lid and below
-   for the case's front, which sets the row's height; the copy adds nothing to it (contain:size) and fills it,
-   the intro fading out where it is cut. The points and the booking button move to the about page, which
-   "Read more" opens. */
+/* Phones: one column, the copy first and the case below it, so the aligner floats down over the copy and
+   lands in the case. The slot keeps room above it for the open lid and below for the case's front. The
+   points and the booking button move to the about page, which "Read more" opens. */
 @media (max-width:700px){
-  .slot{margin-block:85% 11%}
-  .copy{align-self:stretch;contain:size;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-  .copy h2{font-size:clamp(1.1rem,5vw,1.6rem);flex:none}
-  .copy :global(.lede){flex:1 1 0;min-height:1.5em;overflow:hidden;font-size:.85rem;line-height:1.45;mask-image:linear-gradient(to bottom,#000 55%,transparent)}
+  .grid{grid-template-columns:1fr;gap:0}
+  .copy{order:-1;gap:12px}
+  .slot{width:min(80%,55vh);margin-block:62% 10%}
   .points,.cta{display:none}
-  .more{display:inline-flex;flex:none;padding:10px 16px;font-size:.88rem}
+  .more{display:inline-flex;padding:10px 16px;font-size:.88rem}
 }
 @media (prefers-reduced-motion:reduce){.still{display:block}.case{display:none}}

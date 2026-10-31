@@ -5,11 +5,12 @@ import type { SiteContent } from "@/content/site";
 import { fill, localize, type Locale } from "@/lib/i18n";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
+import { PortalButton } from "./PortalButton";
 import styles from "./SiteNav.module.css";
 
-type Props = { locale: Locale; brand: string; nav: SiteContent["nav"]; ui: SiteContent["ui"] };
+type Props = { locale: Locale; brand: string; nav: SiteContent["nav"]; portal: SiteContent["portal"]; ui: SiteContent["ui"] };
 
-export function SiteNav({ locale, brand, nav, ui }: Props) {
+export function SiteNav({ locale, brand, nav, portal, ui }: Props) {
   const [shown, setShown] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -40,9 +41,7 @@ export function SiteNav({ locale, brand, nav, ui }: Props) {
           ))}
         </ul>
         <LanguageSwitcher className={styles.lang} locale={locale} label={ui.language} />
-        <a className="btn btn-primary" href={nav.cta.href}>
-          {nav.cta.label}
-        </a>
+        <PortalButton portal={portal} />
         <button type="button" className={styles.menuBtn} aria-expanded={open} aria-controls="menu" onClick={() => setOpen((o) => !o)}>
           {ui.menu}
         </button>

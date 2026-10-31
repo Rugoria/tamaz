@@ -55,7 +55,7 @@ export default async function About() {
                   </li>
                 ))}
               </ul>
-              <Link className="btn btn-primary" href={localize(locale, `/${alignerAbout.cta.href}`)}>
+              <Link className="btn btn-logo" href={localize(locale, `/${alignerAbout.cta.href}`)}>
                 {alignerAbout.cta.label} <span className="arr">→</span>
               </Link>
             </div>

@@ -12,7 +12,6 @@ import { RevealObserver } from "@/components/RevealObserver";
 import { Reviews } from "@/components/Reviews";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
-import { PortalButton } from "@/components/PortalButton";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { preload } from "react-dom";
 import { getLocale, getSiteContent } from "@/content/server";
@@ -21,13 +20,13 @@ import styles from "./page.module.css";
 /** Section order follows the approved website layout (1–11). */
 export default async function Home() {
   const locale = await getLocale();
-  const { brand, hero, journey, nav, ui } = await getSiteContent();
+  const { brand, hero, journey, nav, portal, ui } = await getSiteContent();
   // Start the 3D aligner's download with the page (HeroAligner fetches the same file once it runs). Skipped under
   // reduced motion, where the model is never shown.
   preload(`/${hero.aligner.model}`, { as: "fetch", crossOrigin: "anonymous", media: "(prefers-reduced-motion: no-preference)" });
   return (
     <>
-      <SiteNav locale={locale} brand={brand.name} nav={nav} ui={ui} />
+      <SiteNav locale={locale} brand={brand.name} nav={nav} portal={portal} ui={ui} />
       <main id="top">
         {/* 1. Hero: 3D aligner display. On scroll the aligner flies into the aligner section beside it,
             then on down onto the lower teeth in the Journey photo. */}
@@ -58,7 +57,6 @@ export default async function Home() {
       </main>
       {/* 11. Bottom bar */}
       <SiteFooter />
-      <PortalButton />
       <WhatsAppButton />
       <RevealObserver />
     </>

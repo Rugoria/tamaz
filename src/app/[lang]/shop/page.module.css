@@ -3,8 +3,7 @@
 .bar :global(.wrap){display:flex;align-items:center;gap:16px;min-height:64px}
 .back{display:inline-flex;align-items:center;gap:8px;margin-inline-start:auto;font-weight:600;font-size:.92rem;color:var(--ink);text-decoration:none}
 .back:hover{color:var(--accent-text)}
-.book{padding:11px 18px;font-size:.95rem}
-@media (max-width:700px){.back{display:none}.lang{margin-inline-start:auto}.book{display:none}}
+@media (max-width:700px){.back{display:none}.lang{margin-inline-start:auto}}
 
 .hero{padding-block:clamp(40px,7vw,88px) clamp(32px,5vw,56px)}
 .heroGrid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}

@@ -51,7 +51,7 @@ export const whatsapp = {
   label: "Chat with tamaz on WhatsApp (0306 1336555)",
 };
 
-/** The floating Doctor Portal button (bottom left), linking dentists to the tamaz portal. */
+/** The Doctor Portal button in the navbar, linking dentists to the tamaz portal. */
 export const portal = {
   url: "https://portal.tamazcorp.com",
   label: "Doctor Portal",

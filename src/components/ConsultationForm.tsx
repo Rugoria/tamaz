@@ -124,7 +124,7 @@ export function ConsultationForm({ copy: consultation, labels, treatments, studi
         <textarea name="message" rows={3} />
       </label>
       <div className={styles.full}>
-        <button className="btn btn-primary" type="submit" disabled={status === "sending"}>
+        <button className="btn btn-logo" type="submit" disabled={status === "sending"}>
           {status === "sending" ? labels.sending : consultation.submit} <span className="arr">→</span>
         </button>
       </div>

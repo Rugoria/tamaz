@@ -1,4 +1,4 @@
-.consult{background:var(--accent);color:var(--accent-ink);border-radius:32px;padding:clamp(26px,5vw,60px);display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,56px);position:relative;overflow:hidden}
+.consult{background:var(--logo);color:var(--surface);border-radius:32px;padding:clamp(26px,5vw,60px);display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,56px);position:relative;overflow:hidden}
 @media (max-width:900px){.consult{grid-template-columns:1fr}}
 .consult h2{color:inherit}
 .consult :global(.lede){color:inherit;opacity:.85}

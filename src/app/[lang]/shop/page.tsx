@@ -40,7 +40,7 @@ function Price({ price, was, wasLabel }: { price: string; was?: string; wasLabel
  */
 export default async function Shop() {
   const locale = await getLocale();
-  const { brand, nav, shop, ui, whatsapp } = await getSiteContent();
+  const { brand, portal, shop, ui, whatsapp } = await getSiteContent();
   const { labels } = shop;
   const order = (item: string) => `https://wa.me/${whatsapp.number}?text=${encodeURIComponent(fill(shop.whatsappMessage, { item }))}`;
   const external = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -56,9 +56,7 @@ export default async function Shop() {
             <span className="arr-back" aria-hidden="true">←</span> {shop.back.label}
           </Link>
           <LanguageSwitcher className={styles.lang} locale={locale} label={ui.language} />
-          <Link className={`btn btn-primary ${styles.book}`} href={localize(locale, `/${nav.cta.href}`)}>
-            {nav.cta.label}
-          </Link>
+          <PortalButton portal={portal} />
         </div>
       </header>
 
@@ -231,14 +229,13 @@ export default async function Shop() {
           <div className="wrap">
             <h2>{shop.cta.title}</h2>
             <p className="lede">{shop.cta.lede}</p>
-            <Link className="btn btn-primary" href={localize(locale, shop.cta.href)}>
+            <Link className="btn btn-logo" href={localize(locale, shop.cta.href)}>
               {shop.cta.label} <span className="arr">→</span>
             </Link>
           </div>
         </section>
       </main>
       <SiteFooter />
-      <PortalButton />
       <WhatsAppButton />
     </>
   );

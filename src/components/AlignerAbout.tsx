@@ -8,7 +8,7 @@ import styles from "./AlignerAbout.module.css";
 /**
  * Aligner on the left, product copy on the right. The left column is an empty landing slot:
  * the hero aligner (HeroAligner) flies into `#aligner-slot` as the page scrolls and settles into the
- * aligner case drawn on the slot's canvas. On phones the copy is cut to the case's height and a
+ * aligner case drawn on the slot's canvas. On phones the copy sits above the case and a
  * "Read more" link opens the about page (/about) with all of it.
  */
 export async function AlignerAbout() {
@@ -46,7 +46,7 @@ export async function AlignerAbout() {
               </li>
             ))}
           </ul>
-          <a className={`btn btn-primary ${styles.cta}`} href={alignerAbout.cta.href}>
+          <a className={`btn btn-logo ${styles.cta}`} href={alignerAbout.cta.href}>
             {alignerAbout.cta.label} <span className="arr">→</span>
           </a>
           <Link className={`btn btn-ghost ${styles.more}`} href={localize(locale, alignerAbout.readMore.href)}>
