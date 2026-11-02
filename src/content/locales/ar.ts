@@ -375,7 +375,7 @@ export const ar: Translation = {
     clinicsSteps: "كيف تسير حالة الشريك",
     stars: "5 من 5 نجوم",
     directions: "الاتجاهات",
-    map: { tabs: "اعرض الفرع على الخريطة", show: "اعرض الخريطة", loads: "يحمّل خرائط Google", title: "خريطة {name}" },
+    map: { tabs: "اعرض الفرع على الخريطة", title: "خريطة {name}" },
     form: {
       firstName: "الاسم الأول",
       lastName: "اسم العائلة",

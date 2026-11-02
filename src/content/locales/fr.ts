@@ -375,7 +375,7 @@ export const fr: Translation = {
     clinicsSteps: "Déroulement d’un cas partenaire",
     stars: "5 étoiles sur 5",
     directions: "Itinéraire",
-    map: { tabs: "Afficher le cabinet sur la carte", show: "Afficher la carte", loads: "Charge Google Maps", title: "Carte de {name}" },
+    map: { tabs: "Afficher le cabinet sur la carte", title: "Carte de {name}" },
     form: {
       firstName: "Prénom",
       lastName: "Nom",

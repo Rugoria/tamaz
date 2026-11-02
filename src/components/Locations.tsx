@@ -1,12 +1,13 @@
 import { getSiteContent } from "@/content/server";
+import type { Studio } from "@/content/site";
 import { isPlaceholder } from "@/lib/placeholder";
 import { ImageSlot } from "./image-slot/ImageSlot";
 import { StudioMap } from "./StudioMap";
 import { Copy } from "./Tbd";
 import styles from "./Locations.module.css";
 
-const directions = (address: string) =>
-  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+const directions = (s: Studio) =>
+  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.coords ? `${s.coords.lat},${s.coords.lng}` : s.address)}`;
 
 export async function Locations() {
   const { locations, ui } = await getSiteContent();
@@ -21,8 +22,8 @@ export async function Locations() {
             <b><Copy text={s.name} /></b>
             <span><Copy text={s.address} /></span>
             <span className="mono"><Copy text={s.phone} /></span>
-            {!isPlaceholder(s.address) && (
-              <a className={styles.dir} href={directions(s.address)} target="_blank" rel="noopener noreferrer">
+            {(s.coords || !isPlaceholder(s.address)) && (
+              <a className={styles.dir} href={directions(s)} target="_blank" rel="noopener noreferrer">
                 {ui.directions} ↗
               </a>
             )}

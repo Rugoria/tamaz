@@ -35,7 +35,8 @@ export type GalleryImage = { src: string; label: string; size: string; alt: stri
 
 export type Review = { quote: string; name: string; detail: string; initials: string; color: string };
 
-export type Studio = { name: string; hours: string; address: string; phone: string };
+/** `coords` pins the studio on the map (and the directions link) even while its address is still a placeholder. */
+export type Studio = { name: string; hours: string; address: string; phone: string; coords?: { lat: number; lng: number } };
 
 export type Faq = { question: string; answer: string };
 
@@ -294,7 +295,7 @@ export const locations = {
   eyebrow: "Studios",
   title: "Four studios, open evenings and Saturdays.",
   studios: [
-    { hours: "Mon–Fri 8a–7p", name: "[Studio 1 name]", address: "[Street address, city, ZIP]", phone: "[Phone number]" },
+    { hours: "Mon–Fri 8a–7p", name: "[Studio 1 name]", address: "[Street address, city, ZIP]", phone: "[Phone number]", coords: { lat: 31.5257059, lng: 74.3243595 } },
     { hours: "Mon–Fri 9a–8p", name: "[Studio 2 name]", address: "[Street address, city, ZIP]", phone: "[Phone number]" },
     { hours: "Mon–Fri 8a–6p", name: "[Studio 3 name]", address: "[Street address, city, ZIP]", phone: "[Phone number]" },
     { hours: "Sat 8a–2p", name: "[Studio 4 name]", address: "[Street address, city, ZIP]", phone: "[Phone number]" },
@@ -572,7 +573,7 @@ export const ui = {
   clinicsSteps: "How a partner case works",
   stars: "5 out of 5 stars",
   directions: "Directions",
-  map: { tabs: "Show studio on map", show: "Show map", loads: "Loads Google Maps", title: "Map of {name}" },
+  map: { tabs: "Show studio on map", title: "Map of {name}" },
   form: {
     firstName: "First name",
     lastName: "Last name",
